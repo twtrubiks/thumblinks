@@ -1,5 +1,6 @@
 package com.twtrubiks.thumblinks
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material3.Surface
@@ -111,39 +112,42 @@ fun ThumbLinksApp(sharedText: String? = null, onSharedTextTaken: () -> Unit = {}
     }
 
     ThumbLinksTheme(container.theme.value) {
+        // 底色畫到系統列後面（不然狀態列後面露出的是視窗底色，那是跟著系統的深淺，App 設成深色時狀態列的字會看不見），
+        // 內容再讓開系統列與鍵盤
         Surface(
             Modifier
                 .fillMaxSize()
-                .safeDrawingPadding()
                 // 讓 UiAutomator 用 By.res(...) 找得到 testTag
                 .semantics { testTagsAsResourceId = true },
         ) {
-            val route = stack.last()
-            // 新增、編輯頁自己接返回鍵：要先刪掉在那一頁上傳、還沒存的圖；瀏覽器的返回鍵先回上一頁
-            holder.SaveableStateProvider(route.key) {
-                when (route) {
-                    Route.Home -> ListScreen(
-                        links = links,
-                        onAdd = { add(null) },
-                        onOpen = { browse(it.url) },
-                        onEdit = { push(Route.Edit(it.id)) },
-                        onBrowse = { browse(null) },
-                    )
-                    is Route.Add -> AddScreen(
-                        initialText = route.shared,
-                        onBack = { close(route) },
-                        onAdded = { close(route) },
-                        onOpenExisting = { replace(route, Route.Edit(it)) },
-                    )
-                    is Route.Edit -> EditScreen(id = route.id, onBack = { close(route) }, onOpenBrowser = ::browse)
-                    is Route.Browser -> BrowserScreen(
-                        tabKey = route.key,
-                        initialUrl = route.url,
-                        links = links,
-                        onClose = { close(route) },
-                        onAdd = ::add,
-                        onEdit = { push(Route.Edit(it)) },
-                    )
+            Box(Modifier.fillMaxSize().safeDrawingPadding()) {
+                val route = stack.last()
+                // 新增、編輯頁自己接返回鍵：要先刪掉在那一頁上傳、還沒存的圖；瀏覽器的返回鍵先回上一頁
+                holder.SaveableStateProvider(route.key) {
+                    when (route) {
+                        Route.Home -> ListScreen(
+                            links = links,
+                            onAdd = { add(null) },
+                            onOpen = { browse(it.url) },
+                            onEdit = { push(Route.Edit(it.id)) },
+                            onBrowse = { browse(null) },
+                        )
+                        is Route.Add -> AddScreen(
+                            initialText = route.shared,
+                            onBack = { close(route) },
+                            onAdded = { close(route) },
+                            onOpenExisting = { replace(route, Route.Edit(it)) },
+                        )
+                        is Route.Edit -> EditScreen(id = route.id, onBack = { close(route) }, onOpenBrowser = ::browse)
+                        is Route.Browser -> BrowserScreen(
+                            tabKey = route.key,
+                            initialUrl = route.url,
+                            links = links,
+                            onClose = { close(route) },
+                            onAdd = ::add,
+                            onEdit = { push(Route.Edit(it)) },
+                        )
+                    }
                 }
             }
         }
