@@ -84,9 +84,12 @@ fun ListScreen(links: List<Link>?, onAdd: () -> Unit, onOpen: (Link) -> Unit) {
             TextButton(onClick = { choosingFormat = true }, enabled = !links.isNullOrEmpty()) { Text("匯出") }
         },
         fab = {
+            // Material3 的 ExtendedFloatingActionButton 把 text 包在 clearAndSetSemantics 裡，「新增」不會給無障礙服務
+            // （TalkBack、UiAutomator 都讀不到），所以名字放在圖示的 contentDescription；測試與 record.sh 用 testTag 找
             ExtendedFloatingActionButton(
                 onClick = onAdd,
-                icon = { Icon(painterResource(R.drawable.ic_add), contentDescription = null) },
+                modifier = Modifier.testTag("add_button"),
+                icon = { Icon(painterResource(R.drawable.ic_add), contentDescription = "新增") },
                 text = { Text("新增") },
             )
         },

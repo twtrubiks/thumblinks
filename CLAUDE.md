@@ -196,7 +196,9 @@ CI 錄影前也會跑 `testDebugUnitTest`，沒過就不會錄影（失敗原因
 - 不要用 `ActivityScenario` 開 App，用 `UiTest.launchApp()`（`context.startActivity`）；找元件用 `waitFor` 每 0.1 秒輪詢，
   不要用 `device.wait(Until...)` 或 `device.waitForIdle()`。元件找到之後畫面又重組了，按之前要重新找一次，否則會拿到 `StaleObjectException`
 - 一個 `@Test` 跑完整的展示流程，每個操作之間停 1～1.5 秒讓影片看得清楚；全長控制在 150 秒內（`screenrecord` 上限 180 秒）
-- 用 `By.text(...)` 找元件；要用 testTag 時用 `By.res(...)`（`ThumbLinksApp` 的 root 已經開了 `testTagsAsResourceId`）
+- 用 `By.text(...)` 找元件；要用 testTag 時用 `By.res(...)`（`ThumbLinksApp` 的 root 已經開了 `testTagsAsResourceId`）。
+  Material3 的 `ExtendedFloatingActionButton` 把 text 包在 `clearAndSetSemantics {}` 裡，`By.text` 與 `uiautomator dump` 都看不到「新增」，
+  所以首頁的 FAB 用 testTag `add_button` 找（圖示的 contentDescription 給 TalkBack 念）
 - 要確認細節的畫面用 `screenshot("名稱")` 另存截圖
 - **網頁由模擬器上的假網站提供**（`mockwebserver3`，debug 版允許 127.0.0.1 明碼連線），不連外：
   有 og:image 與 og:title 的網頁、沒有縮圖的網頁、圖片本身（測試裡用 `Bitmap` 畫一張 PNG），都在 `FakeSite`。

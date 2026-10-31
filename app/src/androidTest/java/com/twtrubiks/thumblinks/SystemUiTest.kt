@@ -52,7 +52,7 @@ class SystemUiTest : UiTest() {
         waitFor(By.text("還沒有連結"), timeout = 30_000)
 
         setClipboard(site.url("/plain"))
-        find(By.text("新增")).click()
+        find(By.res("add_button")).click()
         find(By.text("貼上")).click()
         waitFor(By.text("這個網頁沒有提供縮圖"), timeout = 20_000)
         find(By.text("從手機選圖")).click()
