@@ -65,6 +65,38 @@ class DeviceTest {
         assertFalse(File(thumbs, "c.jpg").exists())
     }
 
+    /** 手機上已經有的清單（還沒有 favorite 欄位）：Android 9 的 SQLite 上 PRAGMA、ALTER TABLE 補欄位，原本的資料留著。 */
+    @Test
+    fun oldTableGetsFavoriteColumnOnAndroidSqlite() {
+        sql.execute(
+            """
+            CREATE TABLE links (
+                id TEXT PRIMARY KEY,
+                url TEXT NOT NULL UNIQUE,
+                title TEXT,
+                thumbnail_url TEXT,
+                thumbnail_file TEXT,
+                created_at TEXT NOT NULL,
+                CHECK ((thumbnail_url IS NULL) <> (thumbnail_file IS NULL))
+            )
+            """.trimIndent(),
+        )
+        sql.execute(
+            "INSERT INTO links (id, url, title, thumbnail_url, created_at) VALUES ('old', 'https://old.example/', '舊的', 'https://old.example/og.jpg', '2026-10-30T09:12:00+08:00')",
+        )
+
+        val store = LinkStore(sql, thumbs)
+        val old = store.find("old")!!
+        assertEquals("舊的", old.title)
+        assertFalse(old.favorite)
+        store.setFavorite("old", true)
+        store.update("old", "改過的標題", old.thumbnail)
+        // 下次打開 App：欄位已經有了，不會再加一次；愛心不會被存標題蓋掉
+        val reopened = LinkStore(sql, thumbs).find("old")!!
+        assertTrue(reopened.favorite)
+        assertEquals("改過的標題", reopened.title)
+    }
+
     /** 直拍的照片：像素是橫的、方向記在 EXIF。存下來的要轉正、長邊縮到 1024px 以內、是 JPEG。 */
     @Test
     fun portraitPhotoIsTurnedUprightAndScaledDown() {

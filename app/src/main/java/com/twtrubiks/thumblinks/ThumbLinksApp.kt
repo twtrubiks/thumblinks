@@ -8,7 +8,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.produceState
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.saveable.rememberSaveableStateHolder
@@ -19,6 +20,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.UUID
 
@@ -82,8 +84,16 @@ fun ThumbLinksApp(sharedText: String? = null, onSharedTextTaken: () -> Unit = {}
     var stack by rememberSaveable(stateSaver = StackSaver) { mutableStateOf(listOf<Route>(Route.Home)) }
     val holder = rememberSaveableStateHolder()
     // 每換一頁（新增完、編輯完回來）重讀一次清單；讀的時候畫面上留著舊的，不會閃一下空白
-    val links by produceState<List<Link>?>(null, stack) {
-        value = withContext(Dispatchers.IO) { container.links.all() }
+    var links by remember { mutableStateOf<List<Link>?>(null) }
+    LaunchedEffect(stack) {
+        links = withContext(Dispatchers.IO) { container.links.all() }
+    }
+    val scope = rememberCoroutineScope()
+
+    // 按愛心：畫面上先換，不用等資料庫；寫進資料庫在背景
+    fun setFavorite(link: Link, favorite: Boolean) {
+        links = links?.map { if (it.id == link.id) it.copy(favorite = favorite) else it }
+        scope.launch(Dispatchers.IO) { container.links.setFavorite(link.id, favorite) }
     }
 
     fun push(route: Route) {
@@ -132,6 +142,7 @@ fun ThumbLinksApp(sharedText: String? = null, onSharedTextTaken: () -> Unit = {}
                             onAdd = { add(null) },
                             onOpen = { browse(it.url) },
                             onEdit = { push(edit(it.id)) },
+                            onFavorite = ::setFavorite,
                             onBrowse = { browse(null) },
                         )
                         is Route.Add -> AddScreen(

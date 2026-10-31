@@ -46,4 +46,14 @@ class LinkSortTest {
     fun emptyStaysEmpty() {
         for (order in SortOrder.entries) assertEquals(emptyList<Link>(), sortLinks(emptyList(), order))
     }
+
+    @Test
+    fun favoritesOnlyKeepsTheOrder() {
+        val marked = links.map { if (it.id in setOf("a", "d")) it.copy(favorite = true) else it }
+
+        assertEquals(listOf("e", "d", "c", "b", "a"), visibleLinks(marked, SortOrder.NEWEST, favoritesOnly = false).map { it.id })
+        assertEquals(listOf("d", "a"), visibleLinks(marked, SortOrder.NEWEST, favoritesOnly = true).map { it.id })
+        assertEquals(listOf("a", "d"), visibleLinks(marked, SortOrder.TITLE, favoritesOnly = true).map { it.id })
+        assertEquals(emptyList<String>(), visibleLinks(links, SortOrder.NEWEST, favoritesOnly = true).map { it.id })
+    }
 }

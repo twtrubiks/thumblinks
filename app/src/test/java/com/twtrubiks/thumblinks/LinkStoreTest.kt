@@ -106,6 +106,52 @@ class LinkStoreTest {
         assertNull(store.update("no-such-id", "x", Thumbnail.Remote("https://a.example/2.jpg")))
     }
 
+    @Test
+    fun favoriteIsKeptWhenEditing() {
+        val link = store.add("https://a.example/", "A", Thumbnail.Remote("https://a.example/og.jpg"))
+        val other = store.add("https://b.example/", "B", Thumbnail.Remote("https://b.example/og.jpg"))
+        assertFalse(link.favorite)
+
+        store.setFavorite(link.id, true)
+        assertTrue(store.find(link.id)!!.favorite)
+        assertFalse(store.find(other.id)!!.favorite)
+
+        // 編輯頁存標題、縮圖時不能把愛心蓋掉
+        store.update(link.id, "新標題", Thumbnail.Remote("https://a.example/2.jpg"))
+        assertTrue(store.find(link.id)!!.favorite)
+
+        store.setFavorite(link.id, false)
+        assertFalse(store.find(link.id)!!.favorite)
+    }
+
+    /** 手機上已經有的清單（還沒有 favorite 欄位的表）：補上欄位，原本的每一筆都留著、都不是愛心。 */
+    @Test
+    fun oldTableGetsFavoriteColumn() {
+        sql.execute(
+            """
+            CREATE TABLE links (
+                id TEXT PRIMARY KEY,
+                url TEXT NOT NULL UNIQUE,
+                title TEXT,
+                thumbnail_url TEXT,
+                thumbnail_file TEXT,
+                created_at TEXT NOT NULL,
+                CHECK ((thumbnail_url IS NULL) <> (thumbnail_file IS NULL))
+            )
+            """.trimIndent(),
+        )
+        sql.execute(
+            "INSERT INTO links (id, url, title, thumbnail_url, created_at) VALUES ('old', 'https://old.example/', '舊的', 'https://old.example/og.jpg', '2026-10-30T09:12:00+08:00')",
+        )
+
+        val old = store.find("old")!!
+        assertEquals("舊的", old.title)
+        assertFalse(old.favorite)
+        store.setFavorite("old", true)
+        // 下次打開 App 再建一次 LinkStore：欄位已經有了，不能再加一次
+        assertTrue(LinkStore(sql, thumbs).find("old")!!.favorite)
+    }
+
     /** 換掉上傳的縮圖時，舊的檔案要刪；換成同一張（只改標題）時不能刪。 */
     @Test
     fun replacingUploadedThumbnailDeletesTheOldFile() {

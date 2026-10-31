@@ -43,7 +43,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-/** 編輯一筆：改標題、換縮圖（重新抓、貼圖片網址、上傳）、用瀏覽器開、刪除。網址不能改。 */
+/** 編輯一筆：改標題、換縮圖（重新抓、貼圖片網址、上傳）、用瀏覽器開、刪除、右上角的愛心。網址不能改。 */
 @Composable
 fun EditScreen(id: String, onBack: () -> Unit, onOpenBrowser: (String) -> Unit) {
     val container = LocalContext.current.container
@@ -74,6 +74,8 @@ private fun EditLink(link: Link, onBack: () -> Unit, onOpenBrowser: (String) -> 
     var refetching by remember { mutableStateOf(false) }
     var confirmDelete by rememberSaveable { mutableStateOf(false) }
     var saving by remember { mutableStateOf(false) }
+    // 愛心按了就存（跟清單上的一樣），不用等「儲存」；存標題、縮圖也不會動到它
+    var favorite by rememberSaveable { mutableStateOf(link.favorite) }
 
     fun leave() {
         draft.discard(container.thumbsDir)
@@ -85,7 +87,22 @@ private fun EditLink(link: Link, onBack: () -> Unit, onOpenBrowser: (String) -> 
     // 原本的縮圖現在載不出來（例如離線）也能只改標題；換了別張的話，那張要載得出來
     val canSave = !saving && (draft.thumbnail == link.thumbnail || draft.ready)
 
-    Screen(title = "編輯", onBack = ::leave, snackbar = snackbar) { modifier ->
+    Screen(
+        title = "編輯",
+        onBack = ::leave,
+        actions = {
+            HeartToggle(
+                checked = favorite,
+                onCheckedChange = {
+                    favorite = it
+                    scope.launch { withContext(Dispatchers.IO) { container.links.setFavorite(link.id, it) } }
+                },
+                description = "愛心",
+                modifier = Modifier.testTag("favorite_button"),
+            )
+        },
+        snackbar = snackbar,
+    ) { modifier ->
         Column(
             modifier
                 .fillMaxSize()
