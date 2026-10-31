@@ -163,6 +163,41 @@ JSON（UTF-8、縮排兩格、中文不跳脫；用 kotlinx.serialization 的 `@
 匯入、雲端同步、帳號、分類／標籤、搜尋、手動拖曳排順序、網址正規化、匯出時把網路上的縮圖也下載進 zip。
 瀏覽器的多分頁、歷史紀錄、無痕、下載、上傳。
 
+### 之後可能會做（2026-10-31 跟使用者討論過，使用者說之後可能實作；開工前先跟使用者確認）
+
+起因：GeckoView 約每 4 週一版、帶安全修補，不升級的話會有這些問題：
+- 引擎的已知漏洞（惡意網頁、廣告就能利用）
+- 內建憑證清單變舊，新網站被當成憑證有問題
+- 新版 uBO 要求較新的引擎而更新不了，或擴充功能簽章的憑證到期被停用
+- 新網站排版跑掉
+
+升級本身只是改 `gradle/libs.versions.toml` 一行，麻煩的是發版與使用者手動下載安裝，所以想把這兩步自動化：
+
+1. **自動檢查 GeckoView 新版**：GitHub Actions 每週排程一次（`schedule` cron），讀
+   `https://maven.mozilla.org/maven2/org/mozilla/geckoview/geckoview/maven-metadata.xml` 的 `<release>`，
+   比目前的新就開一個升級的 branch 改版本號、開 PR（record.yml 會跑完全部測試），使用者看 CI 綠了按合併。
+   要注意：
+   - GitHub Actions 用預設的 `GITHUB_TOKEN` 開的 PR 不會觸發其他 workflow，要用 PAT 或 GitHub App 的 token，
+     或在同一個 workflow 裡直接呼叫 record.yml
+   - 合併後要發版，仍然是改 `release-version` 那個檔案
+2. **App 內提醒更新**：App 打開時（一天最多一次）查 GitHub 的 `releases/latest`
+   （`https://api.github.com/repos/twtrubiks/thumblinks/releases/latest`），
+   比對 versionCode（或 tag 的版本），有新版就在清單上方顯示「有新版本」＋下載按鈕
+   （打開 `releases/latest/download/thumblinks.apk`，交給系統的下載與安裝畫面）。
+   要注意：
+   - 不要自己在背景下載安裝（要 `REQUEST_INSTALL_PACKAGES` 權限，也比較危險）
+   - 查不到（沒網路、API 限流）就安靜跳過
+
+**前提**：兩件都要先有正式的發版流程，也就是使用者在自己的電腦照 `docs/release-key.md` 產生發版金鑰、設好 Secrets。
+現在手上的試用版是雲端 session 的臨時金鑰簽的，跟正式版簽章對不上：第一次換正式版要先移除試用版，清單會一起刪掉，
+所以最好先做「匯入」，或先匯出備份。
+
+同一次也討論過、還沒決定要不要做的：
+- Baseline Profile：啟動與第一次捲動更順，要加一個在模擬器上產生 profile 的測試
+- APK 的 native library 要不要壓縮：目前壓縮（`useLegacyPackaging`），下載約 96 MB，但安裝時會解壓出來，
+  手機上約佔 260 MB（推算）；不壓縮的話下載與佔用都約 198 MB
+- 瀏覽器：捲動時收起工具列＋下拉重新整理；選單加網頁內搜尋、分享、桌面版網站、文字大小；多分頁
+
 ## 程式的分層
 
 - 規則都在純 Kotlin、有 JVM 測試：`LinkStore`（已有）、`WebUrls`、`PageMeta`、`MetaFetcher`、`Export`、`BrowserInput`（含錯誤頁）。
