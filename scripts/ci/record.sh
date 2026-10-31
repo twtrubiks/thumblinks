@@ -200,23 +200,28 @@ if [ -f "$RELEASE_APK" ]; then
   adb exec-out screencap -p > "$OUT/screenshots/release-3-added.png"
 
   # 點那一筆：用內建瀏覽器打開 github.com。壓過的 GeckoView 要真的載入網頁、從 AMO 裝好 uBO。
-  # 網頁一直在動，uiautomator dump 等不到畫面靜止，改看 App 寫進 logcat 的兩行（BrowserTab、Ublock）
+  # 網頁一直在動，uiautomator dump 等不到畫面靜止，改看 App 寫進 logcat 的兩行（BrowserTab、Ublock）。
+  # 開著 GeckoView 時 adb 曾經整個卡住（screencap 卡了 30 分鐘，整個 job 逾時），每個 adb 指令都限時，進度寫進 release-smoke.txt
   browsed=0
-  if [ "$added" -eq 1 ] && row=$(center "$list" 'text="github.com"') && adb shell input tap $row; then
-    for _ in $(seq 1 60); do
+  if [ "$added" -eq 1 ] && row=$(center "$list" 'text="github.com"') && timeout 30 adb shell input tap $row; then
+    echo "$(date +%T) 用內建瀏覽器打開 github.com" | tee -a "$OUT/release-smoke.txt"
+    end=$((SECONDS + 150))
+    while [ $SECONDS -lt $end ]; do
       sleep 2
-      log=$(adb logcat -d -s ThumbLinks:I)
+      log=$(timeout 20 adb logcat -d -s ThumbLinks:I)
       if printf '%s' "$log" | grep -q '網頁載入完成 success=true https://github.com/' \
         && printf '%s' "$log" | grep -q 'uBlock Origin .* 可以用了'; then
         browsed=1
         break
       fi
     done
+    echo "$(date +%T) 瀏覽器等完了 browsed=$browsed" | tee -a "$OUT/release-smoke.txt"
     sleep 3
   fi
-  adb exec-out screencap -p > "$OUT/screenshots/release-4-browser.png"
+  timeout 60 adb exec-out screencap -p > "$OUT/screenshots/release-4-browser.png" \
+    || echo "$(date +%T) screencap 逾時" | tee -a "$OUT/release-smoke.txt"
 
-  adb logcat -d > "$OUT/logcat-release.txt" || true
+  timeout 60 adb logcat -d > "$OUT/logcat-release.txt" || echo "$(date +%T) logcat 逾時" | tee -a "$OUT/release-smoke.txt"
   if grep -q 'FATAL EXCEPTION' "$OUT/logcat-release.txt"; then
     echo "release 版閃退，詳見 $OUT/logcat-release.txt"
     status=1

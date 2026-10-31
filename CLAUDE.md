@@ -216,7 +216,8 @@ JSON（UTF-8、縮排兩格、中文不跳脫；用 kotlinx.serialization 的 `@
     versionCode 1，憑證 SHA-256 `9adf6eb0…4ea897`）。那把金鑰已經跟著 session 消失，之後的 Release 簽章對不上，
     使用者要移除這一版才能裝正式版，清單會一起刪掉（還沒有匯入）。發第一版 Release 時提醒使用者這件事。
     同一個 session 後來又給了內建瀏覽器的試用版（`claude/browser-geckoview` 的 `534151d`，arm64，versionCode 2、
-    versionName `0.2-browser`），同一把金鑰，覆蓋安裝在上面那一版上
+    versionName `0.2-browser`），同一把金鑰，覆蓋安裝在上面那一版上；
+    再來是修了清單與瀏覽器一片白的 `97b3770`（versionCode 3、`0.3-browser`）
   - versionCode 是 2026-01-01 起算的分鐘數（workflow 算好用環境變數帶進來），不管從哪個 branch 發都只會變大
   - README 的下載連結是 `releases/latest/download/thumblinks.apk`
 
@@ -290,7 +291,7 @@ CI 錄影前也會跑 `testDebugUnitTest`，沒過就不會錄影（失敗原因
 `app/src/androidTest/java/com/twtrubiks/thumblinks/BrowserTest.kt`，不錄影。`record.sh` 在 SystemUiTest 之後先 `pm clear` 再跑
 （每次都是第一次安裝 uBO），輸出在 `browser-test.txt`、`logcat-browser.txt`，截圖是 `browser-*.png`。
 - uBO：右上角「瀏覽」→ 網址列打開 `FakeSite` 的 `/ads`（載入 `pagead2.googlesyndication.com` 的廣告 script）→
-  等 uBO 從 AMO 裝好（工具列出現 `ublock_button`，最多 2 分鐘）→ 重新整理，等 badge（`ublock_badge`）至少擋下 1 個 → 打開 popup
+  等 uBO 從 AMO 裝好（工具列出現 `ublock_button`，最多 2 分鐘）→ 重新整理，等 badge（`ublock_badge`）至少擋下 1 個（剛裝好、還在讀過濾清單時 badge 是「!」，要一直重新整理到變成數字）→ 打開 popup
 - 新視窗與錯誤頁：`/opener` 上點（用座標點網頁）`window.open()` 再設 location 的按鈕 → 網址列變成 `/autumn` → 上一頁回到 `/opener`；
   點登入小視窗（`/popup` 改了開它的那頁的網址再 `window.close()`）→ 網址列變成 `/opener#done`；
   打開 `http://thumblinks.invalid/` → logcat 有 `onLoadError` 寫的「網頁載入失敗」（錯誤頁的樣子看 `browser-06-error-page.png`）
@@ -304,6 +305,7 @@ R8 壓過的 OkHttp、jsoup、Coil 只有真的抓一次才跑得到；release �
 接著點那一筆，用內建瀏覽器打開 github.com，等 logcat 出現 App 寫的兩行（`BrowserTab` 的「網頁載入完成 success=true https://github.com/」、
 `Ublock` 的「uBlock Origin … 可以用了」，`release-4-browser.png`）：壓過的 GeckoView 要真的載入網頁、從 AMO 裝好 uBO。
 網頁一直在動，`uiautomator dump` 等不到畫面靜止，所以瀏覽器這一段看 logcat 不用 dump。
+開著 GeckoView 時 `adb exec-out screencap` 曾經卡了 30 分鐘、整個 job 逾時：這一段的 adb 指令都包 `timeout`，進度（含時間）寫進 `release-smoke.txt`。
 等不到縮圖、加不進清單、瀏覽器沒載完或 uBO 沒裝好，或 `logcat-release.txt` 有 `FATAL EXCEPTION` 時 job 會失敗。
 輸入框拿到焦點後游標會閃、鍵盤會打開，dump 等不到畫面靜止，所以新增頁先在沒有人拿到焦點時 dump 一次記下座標；
 按「抓縮圖」時 App 會把焦點拿掉，之後的 dump 才等得到。
