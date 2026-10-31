@@ -131,6 +131,22 @@ abstract class UiTest {
         device.takeScreenshot(File(screenshotDir, "$name.png"), 0.5f, 90)
     }
 
+    /**
+     * 內建瀏覽器載完 [url] 幾次：[BrowserTab] 每載完一頁在 logcat 寫一行「網頁載入完成 success=true <網址>」。
+     * 網頁的內容 UiAutomator 讀不到；工具列的「重新整理」在開始載入之前也是它，不能拿來判斷。
+     */
+    protected fun pageLoads(url: String): Int = device.executeShellCommand("logcat -d -s ThumbLinks:I")
+        .lineSequence()
+        .count { it.trimEnd().endsWith("網頁載入完成 success=true $url") }
+
+    /** 做 [action]（點一筆、按「前往」、點網頁…），等內建瀏覽器載完 [url]，再停一下讓 GeckoView 畫出來。 */
+    protected fun loadPage(url: String, timeout: Long = 60_000, action: () -> Unit) {
+        val before = pageLoads(url)
+        action()
+        checkNotNull(poll(timeout) { if (pageLoads(url) > before) Unit else null }) { "內建瀏覽器沒有載完 $url" }
+        pause(1000)
+    }
+
     // 只是讓影片看得清楚的停頓
     protected fun pause(ms: Long = 800) {
         SystemClock.sleep(ms)

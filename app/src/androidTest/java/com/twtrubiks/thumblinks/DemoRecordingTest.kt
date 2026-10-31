@@ -86,21 +86,19 @@ class DemoRecordingTest : UiTest() {
         assertEquals(listOf(FakeSite.PLAIN_TITLE, "陽明山芒草"), container.links.all().map { it.title })
 
         // 點一筆：用內建瀏覽器打開，這一頁已經在清單裡
-        find(By.text("陽明山芒草")).click()
-        waitFor(By.res("in_list"), timeout = 30_000)
-        // 第一次打開瀏覽器要先把 GeckoView 開起來，等網頁載完（「停止」變回「重新整理」）
-        waitFor(By.desc("重新整理"), timeout = 30_000)
-        pause(2000)
+        // 第一次打開瀏覽器要先把 GeckoView 開起來，模擬器上要好幾秒：等網頁載完
+        loadPage(site.url("/hiking")) { find(By.text("陽明山芒草")).click() }
+        waitFor(By.res("in_list"))
+        pause(1500)
         screenshot("08-browser")
         // 網址列換一篇還沒加過的，按「加到清單」走一樣的新增流程，加完回到瀏覽器
         find(By.res("url_bar")).click()
         pause(800)
         find(By.res("url_bar")).text = site.url("/autumn")
         pause(800)
-        device.pressEnter()
-        waitFor(By.res("add_to_list"), timeout = 30_000)
-        waitFor(By.desc("重新整理"), timeout = 30_000)
-        pause(2000)
+        loadPage(site.url("/autumn")) { device.pressEnter() }
+        waitFor(By.res("add_to_list"))
+        pause(1500)
         screenshot("09-browser-not-in-list")
         find(By.res("add_to_list")).click()
         waitFor(By.res("thumb_ready"), timeout = 20_000)

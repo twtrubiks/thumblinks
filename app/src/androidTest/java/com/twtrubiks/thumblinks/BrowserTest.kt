@@ -2,6 +2,7 @@ package com.twtrubiks.thumblinks
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.uiautomator.By
+import androidx.test.uiautomator.StaleObjectException
 import org.junit.After
 import org.junit.Assert.assertTrue
 import org.junit.Assert.fail
@@ -40,9 +41,9 @@ class BrowserTest : UiTest() {
         // 重新整理，直到 badge 是這一頁擋下的數量
         val blocked = poll(90_000) {
             waitFor(By.desc("重新整理"), timeout = 30_000).click()
-            poll(10_000) { device.findObject(By.res("ublock_badge"))?.text?.toIntOrNull()?.takeIf { it >= 1 } }
+            poll(10_000) { badge()?.toIntOrNull()?.takeIf { it >= 1 } }
         }
-        assertTrue("uBO 沒有擋下任何東西，badge：${device.findObject(By.res("ublock_badge"))?.text}", (blocked ?: 0) >= 1)
+        assertTrue("uBO 沒有擋下任何東西，badge：${badge()}", (blocked ?: 0) >= 1)
         screenshot("browser-02-ublock-badge")
 
         // uBO 的 popup（電源鈕那一頁）放在 BottomSheet 裡
@@ -60,16 +61,11 @@ class BrowserTest : UiTest() {
         launchApp()
         waitFor(By.text("還沒有連結"), timeout = 30_000)
         find(By.text("瀏覽")).click()
-        go(site.url("/opener"))
-        waitForUrl(site.url("/opener"))
-        waitFor(By.desc("重新整理"), timeout = 30_000)
-        pause(1500)
+        loadPage(site.url("/opener")) { go(site.url("/opener")) }
 
         // var w = window.open(); w.location = …：疊一頁新的。以前會在同一頁打開 about:blank，一片白
-        tapPage(0.23f)
+        loadPage(site.url("/autumn")) { tapPage(0.23f) }
         waitForUrl(site.url("/autumn"))
-        waitFor(By.desc("重新整理"), timeout = 30_000)
-        pause(1500)
         screenshot("browser-04-new-window")
         // 新視窗沒有上一頁：關掉它，回到開它的那頁
         find(By.desc("上一頁")).click()
@@ -92,6 +88,13 @@ class BrowserTest : UiTest() {
         screenshot("browser-06-error-page")
     }
 
+    /** uBO 擋了幾個（badge 的字）。badge 一直在更新，拿到的元件可能馬上就舊了，舊了就當作還沒有。 */
+    private fun badge(): String? = try {
+        device.findObject(By.res("ublock_badge"))?.text
+    } catch (e: StaleObjectException) {
+        null
+    }
+
     /** 網址列打字、按「前往」。點下去會整個選起來，`text =` 會整個換掉。 */
     private fun go(url: String) {
         find(By.res("url_bar")).click()
@@ -101,9 +104,13 @@ class BrowserTest : UiTest() {
 
     private fun waitForUrl(url: String, timeout: Long = 30_000) = waitUntil(timeout) { device.findObject(By.res("url_bar"))?.text == url }
 
-    /** 點網頁上 [fraction]（由上往下）高度的地方。 */
+    /**
+     * 點網頁上 [fraction]（由上往下）高度的地方。GeckoView 外面那層的 testTag UiAutomator 讀不到，
+     * 網頁的範圍用上面的網址列與下面的「上一頁」推出來。
+     */
     private fun tapPage(fraction: Float) {
-        val web = find(By.res("web_view")).visibleBounds
-        device.click(web.centerX(), web.top + (web.height() * fraction).toInt())
+        val top = find(By.res("url_bar")).visibleBounds.bottom
+        val bottom = find(By.desc("上一頁")).visibleBounds.top
+        device.click(device.displayWidth / 2, top + ((bottom - top) * fraction).toInt())
     }
 }
