@@ -35,8 +35,9 @@ private sealed interface Route {
         override val key get() = "add-$nonce"
     }
 
-    data class Edit(val id: String) : Route {
-        override val key get() = "edit-$id"
+    /** 同一筆可以開兩頁（編輯 → 用瀏覽器開 → 已在清單 → 編輯），每一頁有自己的 [nonce]，關掉的才不會是另一頁。 */
+    data class Edit(val nonce: String, val id: String) : Route {
+        override val key get() = "edit-$nonce"
     }
 
     /** 內建瀏覽器的一個分頁。[url] 是一打開要載入的網址，null 是空白頁（網址列等著輸入）。 */
@@ -52,7 +53,7 @@ private val StackSaver = listSaver<List<Route>, String>(
             when (it) {
                 Route.Home -> "home"
                 is Route.Add -> "add|${it.nonce}|${it.shared ?: ""}"
-                is Route.Edit -> "edit|${it.id}"
+                is Route.Edit -> "edit|${it.nonce}|${it.id}"
                 is Route.Browser -> "browser|${it.nonce}|${it.url ?: ""}"
             }
         }
@@ -62,7 +63,7 @@ private val StackSaver = listSaver<List<Route>, String>(
             val parts = it.split("|", limit = 3)
             when (parts[0]) {
                 "add" -> Route.Add(parts[1], parts[2].ifEmpty { null })
-                "edit" -> Route.Edit(parts[1])
+                "edit" -> Route.Edit(parts[1], parts[2])
                 "browser" -> Route.Browser(parts[1], parts[2].ifEmpty { null })
                 else -> Route.Home
             }
@@ -96,6 +97,7 @@ fun ThumbLinksApp(sharedText: String? = null, onSharedTextTaken: () -> Unit = {}
     }
     fun browse(url: String?) = push(Route.Browser(UUID.randomUUID().toString(), url))
     fun add(shared: String?) = push(Route.Add(UUID.randomUUID().toString(), shared))
+    fun edit(id: String) = Route.Edit(UUID.randomUUID().toString(), id)
     fun replace(route: Route, with: Route) {
         stack = stack.map { if (it == route) with else it }
         holder.removeState(route.key)
@@ -129,14 +131,14 @@ fun ThumbLinksApp(sharedText: String? = null, onSharedTextTaken: () -> Unit = {}
                             links = links,
                             onAdd = { add(null) },
                             onOpen = { browse(it.url) },
-                            onEdit = { push(Route.Edit(it.id)) },
+                            onEdit = { push(edit(it.id)) },
                             onBrowse = { browse(null) },
                         )
                         is Route.Add -> AddScreen(
                             initialText = route.shared,
                             onBack = { close(route) },
                             onAdded = { close(route) },
-                            onOpenExisting = { replace(route, Route.Edit(it)) },
+                            onOpenExisting = { replace(route, edit(it)) },
                         )
                         is Route.Edit -> EditScreen(id = route.id, onBack = { close(route) }, onOpenBrowser = ::browse)
                         is Route.Browser -> BrowserScreen(
@@ -145,7 +147,7 @@ fun ThumbLinksApp(sharedText: String? = null, onSharedTextTaken: () -> Unit = {}
                             links = links,
                             onClose = { close(route) },
                             onAdd = ::add,
-                            onEdit = { push(Route.Edit(it)) },
+                            onEdit = { push(edit(it)) },
                         )
                     }
                 }
