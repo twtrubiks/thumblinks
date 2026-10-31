@@ -13,7 +13,7 @@ import org.junit.runner.RunWith
  *
  * 貼網址 → 抓到縮圖與標題 → 改標題 → 加入；分享同一個網址進來 → 已經在清單裡了 → 打開那一筆；
  * 貼沒有縮圖的網址 → 貼圖片網址 → 加入；點一筆用內建瀏覽器打開（已在清單）→ 網址列換一篇 → 加到清單；
- * 長按刪除一筆；打開匯出。uBlock Origin 要連 AMO，不放在錄影裡（[BrowserTest]）。
+ * 長按刪除一筆；打開匯出；切成深色模式再切回來。uBlock Origin 要連 AMO，不放在錄影裡（[BrowserTest]）。
  */
 @RunWith(AndroidJUnit4::class)
 class DemoRecordingTest : UiTest() {
@@ -133,5 +133,14 @@ class DemoRecordingTest : UiTest() {
         find(By.text("取消")).click()
         pause(1500)
         assertEquals(listOf(FakeSite.AUTUMN_TITLE, FakeSite.PLAIN_TITLE), container.links.all().map { it.title })
+
+        // 深色模式：右上角的按鈕選「深色」，整個 App 換成深色；再換回跟系統（設定會記住，不換回來會留給下一個測試）
+        find(By.res("theme_button")).click()
+        find(By.text("深色")).click()
+        pause(2500)
+        screenshot("13-dark")
+        find(By.res("theme_button")).click()
+        find(By.text("跟系統")).click()
+        pause(1500)
     }
 }

@@ -18,6 +18,8 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -36,6 +38,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -135,13 +138,25 @@ fun AddScreen(initialText: String?, onBack: () -> Unit, onAdded: () -> Unit, onO
                 OutlinedTextField(
                     value = input,
                     onValueChange = {
-                        input = it
                         if (phase == AddPhase.NO_URL) phase = AddPhase.IDLE
+                        // Enter、貼上多行的文字：當作按了「前往」
+                        if (it.hasNewline()) submit(it) else input = it
                     },
                     modifier = Modifier.weight(1f).testTag("url_input"),
                     label = { Text("網址") },
                     placeholder = { Text("https://…") },
-                    singleLine = true,
+                    trailingIcon = if (input.isEmpty()) {
+                        null
+                    } else {
+                        {
+                            IconButton(onClick = {
+                                input = ""
+                                if (phase == AddPhase.NO_URL) phase = AddPhase.IDLE
+                            }) { Icon(painterResource(R.drawable.ic_close), contentDescription = "清除") }
+                        }
+                    },
+                    // 長網址換行顯示，貼上之後整串看得到
+                    maxLines = 4,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri, imeAction = ImeAction.Go),
                     keyboardActions = KeyboardActions(onGo = { submit(input) }),
                 )
@@ -190,10 +205,10 @@ fun AddScreen(initialText: String?, onBack: () -> Unit, onAdded: () -> Unit, onO
                 }
                 OutlinedTextField(
                     value = title,
-                    onValueChange = { title = it },
+                    onValueChange = { title = it.oneLine() },
                     modifier = Modifier.fillMaxWidth().testTag("title_input"),
                     label = { Text("標題（選填）") },
-                    singleLine = true,
+                    maxLines = 3,
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                     keyboardActions = KeyboardActions(onDone = { focus.clearFocus() }),
                 )

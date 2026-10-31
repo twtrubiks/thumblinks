@@ -107,7 +107,7 @@ fun ThumbLinksApp(sharedText: String? = null, onSharedTextTaken: () -> Unit = {}
         }
     }
 
-    ThumbLinksTheme {
+    ThumbLinksTheme(container.theme.mode) {
         Surface(
             Modifier
                 .fillMaxSize()

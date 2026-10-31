@@ -55,10 +55,13 @@ Kotlin + Jetpack Compose 原生 App，在 claude.ai/code 雲端 session 開發�
 - **上傳的圖**（`ThumbPrep`，`Bitmap` + `ExifInterface`）：複製進 App 的 `filesDir/thumbs/<uuid>.jpg`，依 EXIF 轉正、長邊縮到 1024px 以內、
   JPEG 品質 85，HEIC 一樣轉成 JPEG。不留原圖的 URI（挑選器給的讀取權限是暫時的）。
   使用者放棄新增或又換了別的縮圖，已經寫出去的檔案要刪掉
+- 輸入框（網址、圖片網址、標題）長的會換行顯示（單行的框貼上長網址後，要拖回前面很難），內容還是一行：
+  換行換成空白（`oneLine()`）；網址欄收到換行（實體鍵盤的 Enter、貼上多行文字）當作按了「前往」。新增頁的網址欄右邊有清除鈕
 - 轉螢幕不能丟東西：輸入到一半的網址、抓到的結果、選好的縮圖、改到一半的標題都放 `rememberSaveable`
 
 ### 清單
 
+- 右上角：深色模式（跟系統／淺色／深色）、「瀏覽」、「匯出」
 - 首頁就是清單，新加的在上面。每筆顯示縮圖、標題（沒有標題就顯示網址）、網域。
   回到清單時最上面多了一筆就捲回最上面（`LazyColumn` 會跟著原本的第一筆走，新的那筆會被擠到畫面上面看不到）
 - 點一筆進編輯頁：改標題、換縮圖（重新抓、貼圖片網址、上傳）、用瀏覽器開、刪除（要確認）。
@@ -131,7 +134,7 @@ JSON（UTF-8、縮排兩格、中文不跳脫；用 kotlinx.serialization 的 `@
 - 載不出來（找不到網站、連不上、憑證有問題、一直轉址…）顯示自己的錯誤頁（`BrowserInput.errorPage`，寫原因與網址）：
   GeckoView 沒有內建錯誤頁，`onLoadError` 回 null 的話畫面就停在一片白
 - 網址列：`http(s)://` 照用、看起來像網域的補 `https://`、其他用 DuckDuckGo 搜尋（`BrowserInput.SEARCH`）。
-  點下去時整個選起來（貼上就是換掉，不會貼進原本的網址中間）
+  點下去時整個選起來（貼上就是換掉，不會貼進原本的網址中間），打字時展開成多行（長網址整串看得到）
 - 下面的工具列：上一頁、下一頁、重新整理／停止，右邊是「加到清單」（走一般的新增流程，加完回到瀏覽器）；
   正在看的網頁已經在清單裡（網址照字串比對）就顯示「已在清單」，點了進編輯頁
 - 返回鍵：全螢幕時先退出全螢幕，能回上一頁就回上一頁，不能才關掉瀏覽器
@@ -203,7 +206,10 @@ JSON（UTF-8、縮排兩格、中文不跳脫；用 kotlinx.serialization 的 `@
 - OkHttp、jsoup、Coil、kotlinx.serialization、GeckoView 都自帶 R8 規則，`app/proguard-rules.pro` 目前是空的
 - `android:allowBackup="true"`：清單只是公開網頁的連結，交給系統備份，換手機、重裝時接得回來
 - debug 版的 network security config（`app/src/debug/`）只對 127.0.0.1 放行明碼連線，給測試的假網站用；release 版不帶
-- 畫面用 Material 3，深淺跟系統，Android 12 以上用桌布取色（`Theme.kt`）
+- 畫面用 Material 3，Android 12 以上用桌布取色（`Theme.kt`）。深淺預設跟系統，清單右上角的按鈕可以改成固定淺色／深色
+  （`ThemeSetting`，存在 SharedPreferences `settings`）：系統列圖示的深淺跟著 App（`enableEdgeToEdge` 帶自己的判斷），
+  內建瀏覽器的網頁也跟著（GeckoRuntime 的 `preferredColorScheme`，切換時馬上套用）。
+  啟動那一瞬間的視窗底色（`values-night`）還是跟系統
 - release 版開 R8（minify + shrinkResources）。簽名看環境變數：有 `THUMBLINKS_KEYSTORE`、`THUMBLINKS_KEYSTORE_PASSWORD`
   就用發版金鑰（PKCS12，alias `thumblinks`）；沒有就用這台機器的 debug 金鑰（錄影的 CI、自己 build）
 - **給別人（包括使用者）裝的 APK 一律從 GitHub Release 來**，不要把 VM 裡 build 的 APK 傳給使用者：
@@ -263,7 +269,8 @@ CI 錄影前也會跑 `testDebugUnitTest`，沒過就不會錄影（失敗原因
 - **網頁由模擬器上的假網站提供**（`mockwebserver3`，debug 版允許 127.0.0.1 明碼連線），不連外：
   有 og:image 與 og:title 的網頁、沒有縮圖的網頁、圖片本身（測試裡用 `Bitmap` 畫一張 PNG），都在 `FakeSite`。
   展示流程：貼網址 → 抓到縮圖與標題 → 改標題 → 加入；從「瀏覽器」分享同一個網址進來 → 已經在清單裡了 → 打開那一筆；
-  貼沒有縮圖的網址 → 貼圖片網址 → 加入；點一筆用內建瀏覽器打開（已在清單）→ 網址列換一篇 → 加到清單；長按刪除一筆；打開匯出。
+  貼沒有縮圖的網址 → 貼圖片網址 → 加入；點一筆用內建瀏覽器打開（已在清單）→ 網址列換一篇 → 加到清單；長按刪除一筆；打開匯出；
+  右上角切成深色模式再切回跟系統（設定存在 SharedPreferences，不切回來會留給下一個測試）。
   uBO 要連 AMO，不放在錄影裡
 - 內建瀏覽器的網頁內容在 GeckoView 裡，UiAutomator 不保證讀得到；只操作我們自己畫的部分（`url_bar`、`add_to_list`、`in_list`、
   `ublock_button`、`ublock_badge`、`ublock_popup` 這些 testTag）。網址列打字：先點一下拿到焦點、`text = …`、`device.pressEnter()`

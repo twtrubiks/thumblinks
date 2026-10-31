@@ -244,13 +244,16 @@ fun ThumbnailEditor(draft: ThumbDraft, thumbsDir: File, missingReason: String?, 
             OutlinedTextField(
                 value = imageUrl,
                 onValueChange = {
-                    imageUrl = it
+                    imageUrl = it.oneLine()
                     imageUrlError = false
+                    // Enter、貼上多行的文字：當作按了「用這張圖」
+                    if (it.hasNewline()) use()
                 },
                 modifier = Modifier.fillMaxWidth().testTag("image_url_input"),
                 label = { Text("圖片網址") },
                 placeholder = { Text("https://…") },
-                singleLine = true,
+                // 長網址換行顯示，貼上之後整串看得到
+                maxLines = 4,
                 isError = imageUrlError,
                 supportingText = if (imageUrlError) ({ Text("找不到網址") }) else null,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri, imeAction = ImeAction.Done),

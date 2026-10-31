@@ -14,7 +14,7 @@ class MainActivity : ComponentActivity() {
     private var sharedText by mutableStateOf<String?>(null)
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // 系統列透明、圖示深淺跟著系統的深色模式
+        // 系統列透明；圖示的深淺之後由 ThumbLinksTheme 跟著 App 的深色模式設定
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         // 轉螢幕重建時 intent 還是同一個分享，那一頁已經開過了
