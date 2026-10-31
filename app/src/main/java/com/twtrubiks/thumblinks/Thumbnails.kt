@@ -26,6 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -165,7 +166,7 @@ fun ThumbnailEditor(draft: ThumbDraft, thumbsDir: File, missingReason: String?, 
     var urlFieldOpen by rememberSaveable { mutableStateOf(false) }
     var imageUrl by rememberSaveable { mutableStateOf("") }
     var imageUrlError by rememberSaveable { mutableStateOf(false) }
-    var preparing by rememberSaveable { mutableStateOf(false) }
+    var preparing by remember { mutableStateOf(false) }
     var uploadFailed by rememberSaveable { mutableStateOf(false) }
 
     // Android 9、10 沒有照片挑選器時，會自動退回系統的檔案畫面

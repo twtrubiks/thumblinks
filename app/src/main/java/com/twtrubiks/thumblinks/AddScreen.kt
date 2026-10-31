@@ -27,6 +27,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -59,11 +60,14 @@ fun AddScreen(initialText: String?, onBack: () -> Unit, onAdded: () -> Unit, onO
     var phase by rememberSaveable { mutableStateOf(AddPhase.IDLE) }
     // 正在抓或抓好的那個網址；之後改了輸入框，要重新抓才能加入
     var url by rememberSaveable { mutableStateOf<String?>(null) }
+    // 畫面上的結果是哪個網址抓的：重試同一個網址又沒抓到縮圖時，留著使用者自己貼的、上傳的圖與改過的標題
+    var doneUrl by rememberSaveable { mutableStateOf<String?>(null) }
     var fetchRequest by rememberSaveable { mutableIntStateOf(0) }
     var duplicateId by rememberSaveable { mutableStateOf<String?>(null) }
     var unreachable by rememberSaveable { mutableStateOf(false) }
     var title by rememberSaveable { mutableStateOf("") }
-    var saving by rememberSaveable { mutableStateOf(false) }
+    // 進行中的旗標不跨轉螢幕：協程會跟著舊畫面取消，留著 true 的話按鈕就永遠按不下去
+    var saving by remember { mutableStateOf(false) }
     var sharedTaken by rememberSaveable { mutableStateOf(false) }
     val draft = rememberThumbDraft(null)
 
@@ -98,18 +102,14 @@ fun AddScreen(initialText: String?, onBack: () -> Unit, onAdded: () -> Unit, onO
             phase = AddPhase.DUPLICATE
             return@LaunchedEffect
         }
-        when (val result = container.fetcher.fetch(target)) {
-            Fetched.Unreachable -> {
-                unreachable = true
-                title = ""
-                draft.set(null, container.thumbsDir)
-            }
-            is Fetched.Page -> {
-                unreachable = false
-                title = result.meta.title.orEmpty()
-                draft.set(result.meta.imageUrl?.let(Thumbnail::Remote), container.thumbsDir)
-            }
-        }
+        val result = container.fetcher.fetch(target)
+        val retry = doneUrl == target
+        val meta = (result as? Fetched.Page)?.meta
+        unreachable = result == Fetched.Unreachable
+        if (!retry || title.isBlank()) title = meta?.title.orEmpty()
+        val image = meta?.imageUrl
+        if (image != null || !retry) draft.set(image?.let(Thumbnail::Remote), container.thumbsDir)
+        doneUrl = target
         phase = AddPhase.DONE
     }
 
