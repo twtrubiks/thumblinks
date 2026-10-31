@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconToggleButton
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -15,6 +17,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.key
@@ -74,3 +77,21 @@ fun Screen(
         content(Modifier.padding(padding).consumeWindowInsets(padding))
     }
 }
+
+/**
+ * 愛心：清單每一筆的右邊、編輯頁右上角、清單右上角的「只看愛心」都是它。
+ * 按了是實心的紅色，沒按是空心的；無障礙服務（TalkBack、UiAutomator）讀得到勾選狀態。
+ */
+@Composable
+fun HeartToggle(checked: Boolean, onCheckedChange: (Boolean) -> Unit, description: String, modifier: Modifier = Modifier) {
+    IconToggleButton(checked = checked, onCheckedChange = onCheckedChange, modifier = modifier) {
+        Icon(
+            painterResource(if (checked) R.drawable.ic_favorite else R.drawable.ic_favorite_border),
+            contentDescription = description,
+            tint = if (checked) HeartRed else LocalContentColor.current,
+        )
+    }
+}
+
+// 淺色、深色底都看得清楚的紅
+private val HeartRed = Color(0xFFE91E63)

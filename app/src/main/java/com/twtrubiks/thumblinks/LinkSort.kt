@@ -25,3 +25,7 @@ fun sortLinks(links: List<Link>, order: SortOrder): List<Link> {
         SortOrder.DOMAIN -> links.sortedWith(compareBy(collator) { WebUrls.domain(it.url) })
     }
 }
+
+/** 清單上看得到的：[favoritesOnly]（右上角的「只看愛心」）時只留按了愛心的，再照 [order] 排。 */
+fun visibleLinks(links: List<Link>, order: SortOrder, favoritesOnly: Boolean): List<Link> =
+    sortLinks(if (favoritesOnly) links.filter(Link::favorite) else links, order)

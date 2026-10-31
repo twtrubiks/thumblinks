@@ -2,11 +2,15 @@ package com.twtrubiks.thumblinks
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.uiautomator.By
+import androidx.test.uiautomator.BySelector
 import androidx.test.uiautomator.StaleObjectException
+import androidx.test.uiautomator.UiObject2
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Test
 import org.junit.runner.RunWith
+import kotlin.math.abs
 
 /**
  * 錄影用的展示流程，CI 只錄這個 class，`scripts/ci/record.sh` 會在執行期間錄下整個螢幕。
@@ -154,6 +158,47 @@ class DemoRecordingTest : UiTest() {
         find(By.text("新的在上")).click()
         waitUntil { above(FakeSite.AUTUMN_TITLE, FakeSite.PLAIN_TITLE) }
         pause(1500)
+
+        // 愛心：點一筆右邊的愛心，右上角「只看愛心」就只剩那一筆；長按進編輯頁，右上角的愛心也是實心的（存進資料庫了）
+        heart(FakeSite.PLAIN_TITLE).click()
+        waitUntil { heartChecked(FakeSite.PLAIN_TITLE) }
+        pause(1500)
+        find(By.res("favorites_only")).click()
+        waitGone(By.text(FakeSite.AUTUMN_TITLE))
+        waitFor(By.text(FakeSite.PLAIN_TITLE))
+        pause(2000)
+        screenshot("15-favorites")
+        find(By.text(FakeSite.PLAIN_TITLE)).longClick()
+        waitUntil { checked(By.res("favorite_button")) }
+        pause(1500)
+        find(By.desc("返回")).click()
+        backOnList()
+        // 回到清單還是只看愛心；再按一次看全部（只看愛心不存起來，不會留給下一個測試）
+        waitFor(By.text(FakeSite.PLAIN_TITLE))
+        assertNull(device.findObject(By.text(FakeSite.AUTUMN_TITLE)))
+        find(By.res("favorites_only")).click()
+        waitFor(By.text(FakeSite.AUTUMN_TITLE))
+        pause(1500)
+        assertEquals(listOf(false, true), container.links.all().map { it.favorite })
+    }
+
+    /** 清單上 [title] 那一筆右邊的愛心：每一筆都有一個，挑跟標題同一列（上下最近）的。 */
+    private fun heart(title: String): UiObject2 {
+        val y = find(By.text(title)).visibleCenter.y
+        return device.findObjects(By.res("favorite_button")).minBy { abs(it.visibleCenter.y - y) }
+    }
+
+    /** 按了愛心清單會重組，拿到的元件可能馬上就舊了，舊了就當作還沒變。 */
+    private fun heartChecked(title: String): Boolean = try {
+        heart(title).isChecked
+    } catch (e: StaleObjectException) {
+        false
+    }
+
+    private fun checked(selector: BySelector): Boolean = try {
+        device.findObject(selector)?.isChecked == true
+    } catch (e: StaleObjectException) {
+        false
     }
 
     /** 清單上 [upper] 在 [lower] 上面。清單重排時拿到的元件可能馬上就舊了，舊了就當作還沒排好。 */

@@ -6,13 +6,14 @@ import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import java.util.UUID
 
-/** 清單上的一筆。縮圖一定有，標題可以沒有。 */
+/** 清單上的一筆。縮圖一定有，標題可以沒有。[favorite] 是使用者按了愛心的。 */
 data class Link(
     val id: String,
     val url: String,
     val title: String?,
     val thumbnail: Thumbnail,
     val createdAt: OffsetDateTime,
+    val favorite: Boolean = false,
 )
 
 sealed interface Thumbnail {
@@ -49,6 +50,9 @@ class LinkStore(
             )
             """.trimIndent(),
         )
+        // 後來加的欄位：手機上已經有的表用 ALTER TABLE 補上（舊的每一筆都不是愛心），新裝的也走這裡，只有一條路
+        val columns = sql.query("PRAGMA table_info(links)").map { it.string("name") }
+        if ("favorite" !in columns) sql.execute("ALTER TABLE links ADD COLUMN favorite INTEGER NOT NULL DEFAULT 0")
     }
 
     /** 新加的在上面，匯出也照這個順序。 */
@@ -100,6 +104,11 @@ class LinkStore(
         return link
     }
 
+    /** 按愛心、取消愛心。只改這一個欄位，不會蓋掉同時在編輯頁改的標題、縮圖。 */
+    fun setFavorite(id: String, favorite: Boolean) {
+        sql.execute("UPDATE links SET favorite = ? WHERE id = ?", if (favorite) 1 else 0, id)
+    }
+
     fun delete(id: String) {
         val link = find(id) ?: return
         sql.execute("DELETE FROM links WHERE id = ?", id)
@@ -113,5 +122,6 @@ class LinkStore(
         thumbnail = row.stringOrNull("thumbnail_url")?.let { Thumbnail.Remote(it) }
             ?: Thumbnail.Uploaded(row.string("thumbnail_file")),
         createdAt = OffsetDateTime.parse(row.string("created_at")),
+        favorite = row.long("favorite") != 0L,
     )
 }

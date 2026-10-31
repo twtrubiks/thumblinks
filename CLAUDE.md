@@ -63,7 +63,12 @@ Kotlin + Jetpack Compose 原生 App，在 claude.ai/code 雲端 session 開發�
 
 ### 清單
 
-- 右上角：深色模式（跟系統／淺色／深色）、排序、「瀏覽」、「匯出」
+- 右上角：深色模式（跟系統／淺色／深色）、排序、只看愛心、「瀏覽」、「匯出」
+- **愛心**（2026-10-31 加的，標記比較喜歡的）：每一筆右邊有愛心（`HeartToggle`，自己的 48dp 點擊範圍，點了不會打開網頁），
+  編輯頁右上角也有，按了就存（不用按「儲存」）。清單上按的時候畫面先換、資料庫在背景寫（`ThumbLinksApp.setFavorite`）。
+  右上角的愛心是「只看愛心」（`visibleLinks`，純 Kotlin、JVM 測），排序照用；一筆都沒有時說明怎麼按。
+  「只看愛心」不存起來（`rememberSaveable`）：下次打開 App 看到的是全部，不會以為清單少了東西。
+  匯出還沒帶愛心（使用者說先不做；要做的話 JSON 加 `"favorite": true`，或加「只匯出愛心的」）
 - 首頁就是清單，預設新加的在上面。**排序**（右上角，`SortOrder`，`sortLinks` 純 Kotlin、JVM 測）：新的在上／舊的在上／標題／網域，
   記在 SharedPreferences `settings`；標題、網域一樣的照新的在上，標題不分大小寫、中文照語系（Collator），沒有標題的用網址。
   匯出的順序跟畫面一樣（`export()` 也照目前的排序）。換排序時捲回最上面每筆顯示縮圖、標題（沒有標題就顯示網址）、網域。
@@ -225,6 +230,7 @@ JSON（UTF-8、縮排兩格、中文不跳脫；用 kotlinx.serialization 的 `@
   JVM 測試擋不下來，要靠 `DeviceTest` 在模擬器上跑
 - 資料表 `links`：主鍵是 UUID（也拿來當上傳圖的檔名與 zip 裡的檔名）、`url` UNIQUE、
   `thumbnail_url` 與 `thumbnail_file` 二選一（CHECK 擋在資料庫層）。排序用 `rowid`（加入的順序）。
+  `favorite`（0／1）是後來加的：`LinkStore` 的 init 用 `PRAGMA table_info` 看有沒有，沒有就 `ALTER TABLE ADD COLUMN`（新裝的也走這條路）。
   改 schema 時用 `ALTER TABLE ... ADD COLUMN` 或在 `LinkStore` 的 init 裡判斷，手機上已經有的資料不能丟
 - 要碰 Android 的放在薄薄一層：`AndroidSql`、`ThumbPrep`（DeviceTest 測）、畫面 `*Screen.kt`、
   整個 App 的導覽在 `ThumbLinksApp`（照 treesay 的 `TreeSayApp`：sealed interface 的 Route ＋ `rememberSaveable` 的 stack，
@@ -334,7 +340,9 @@ CI 錄影前也會跑 `testDebugUnitTest`，沒過就不會錄影（失敗原因
   有 og:image 與 og:title 的網頁、沒有縮圖的網頁、圖片本身（測試裡用 `Bitmap` 畫一張 PNG），都在 `FakeSite`。
   展示流程：貼網址 → 抓到縮圖與標題 → 改標題 → 加入；從「瀏覽器」分享同一個網址進來 → 已經在清單裡了 → 打開那一筆；
   貼沒有縮圖的網址 → 貼圖片網址 → 加入；點一筆用內建瀏覽器打開（已在清單）→ 網址列換一篇 → 加到清單；長按刪除一筆；打開匯出；
-  右上角切成深色模式再切回跟系統、排序換成舊的在上再換回來（設定存在 SharedPreferences，不切回來會留給下一個測試）。
+  右上角切成深色模式再切回跟系統、排序換成舊的在上再換回來（設定存在 SharedPreferences，不切回來會留給下一個測試）；
+  按一筆的愛心 → 只看愛心 → 長按進編輯頁看愛心是實心的 → 回清單再看全部。每一筆都有一個 `favorite_button`，
+  測試挑跟標題同一列（上下最近）的那個
   uBO 要連 AMO，不放在錄影裡
 - 內建瀏覽器的網頁內容在 GeckoView 裡，UiAutomator 不保證讀得到；只操作我們自己畫的部分（`url_bar`、`add_to_list`、`in_list`、
   `ublock_button`、`ublock_badge`、`ublock_popup` 這些 testTag）。網址列打字：先點一下拿到焦點、`text = …`、`device.pressEnter()`
@@ -351,7 +359,7 @@ CI 錄影前也會跑 `testDebugUnitTest`，沒過就不會錄影（失敗原因
 ## 模擬器上的測試：DeviceTest
 
 `app/src/androidTest/java/com/twtrubiks/thumblinks/DeviceTest.kt`，`record.sh` 在錄影前先跑、不錄影，輸出在 `device-test.txt`。
-只放模擬器才測得到的事：`LinkStore` 在 Android 9 的 SQLite 上跑一輪；做了上傳之後，`ThumbPrep` 用真的 Bitmap 與 ExifInterface 縮圖轉正
+只放模擬器才測得到的事：`LinkStore` 在 Android 9 的 SQLite 上跑一輪（含舊的表補上 `favorite` 欄位）；做了上傳之後，`ThumbPrep` 用真的 Bitmap 與 ExifInterface 縮圖轉正
 （直拍的 JPEG、手機拍的 HEIC；只看長寬的話轉錯方向也會過，要用上下兩色的圖核對轉正後顏色的位置，做法見 treesay 的 `DeviceTest`）。
 
 ## 系統畫面的測試：SystemUiTest

@@ -57,12 +57,19 @@ import java.time.LocalDate
 import java.time.OffsetDateTime
 
 /**
- * 首頁就是清單，預設新加的在上面。點一筆用內建瀏覽器打開、長按進編輯頁。
- * 右上角是深色模式、排序、空白的瀏覽器與匯出，右下角新增。
+ * 首頁就是清單，預設新加的在上面。點一筆用內建瀏覽器打開、長按進編輯頁、右邊的愛心切換喜歡的。
+ * 右上角是深色模式、排序、只看愛心、空白的瀏覽器與匯出，右下角新增。
  * [links] 是 [LinkStore.all] 的順序（新的在上），null 表示還在讀；畫面上照使用者選的排序。
  */
 @Composable
-fun ListScreen(links: List<Link>?, onAdd: () -> Unit, onOpen: (Link) -> Unit, onEdit: (Link) -> Unit, onBrowse: () -> Unit) {
+fun ListScreen(
+    links: List<Link>?,
+    onAdd: () -> Unit,
+    onOpen: (Link) -> Unit,
+    onEdit: (Link) -> Unit,
+    onFavorite: (Link, Boolean) -> Unit,
+    onBrowse: () -> Unit,
+) {
     val context = LocalContext.current
     val container = context.container
     val scope = rememberCoroutineScope()
@@ -71,7 +78,9 @@ fun ListScreen(links: List<Link>?, onAdd: () -> Unit, onOpen: (Link) -> Unit, on
     // 存檔畫面回來之前 Activity 可能被重建，選的格式要留著
     var pendingFormat by rememberSaveable { mutableStateOf<ExportFormat?>(null) }
     val order = container.sort.value
-    val shown = remember(links, order) { links?.let { sortLinks(it, order) } }
+    // 只看愛心不存起來：下次打開 App 一樣看到全部，不會以為清單少了東西
+    var favoritesOnly by rememberSaveable { mutableStateOf(false) }
+    val shown = remember(links, order, favoritesOnly) { links?.let { visibleLinks(it, order, favoritesOnly) } }
     val listState = rememberLazyListState()
     // 回到清單時先畫的是舊的那份，新的讀進來時 LazyColumn 會跟著原本的第一筆走，新加的那筆可能被擠到畫面外、
     // 看起來像沒加進來：多了新的一筆（links 的第一筆換了、原本的還在）就捲到它
@@ -82,7 +91,7 @@ fun ListScreen(links: List<Link>?, onAdd: () -> Unit, onOpen: (Link) -> Unit, on
         val added = links.first().id
         newest = added
         if (previous != null && previous != added && links.any { it.id == previous }) {
-            val index = sortLinks(links, order).indexOfFirst { it.id == added }
+            val index = visibleLinks(links, order, favoritesOnly).indexOfFirst { it.id == added }
             if (index >= 0) listState.scrollToItem(index)
         }
     }
@@ -129,6 +138,15 @@ fun ListScreen(links: List<Link>?, onAdd: () -> Unit, onOpen: (Link) -> Unit, on
                     scope.launch { listState.scrollToItem(0) }
                 },
             )
+            HeartToggle(
+                checked = favoritesOnly,
+                onCheckedChange = {
+                    favoritesOnly = it
+                    scope.launch { listState.scrollToItem(0) }
+                },
+                description = "只看愛心",
+                modifier = Modifier.testTag("favorites_only"),
+            )
             TextButton(onClick = onBrowse) { Text("瀏覽") }
             TextButton(onClick = { choosingFormat = true }, enabled = !links.isNullOrEmpty()) { Text("匯出") }
         },
@@ -146,7 +164,8 @@ fun ListScreen(links: List<Link>?, onAdd: () -> Unit, onOpen: (Link) -> Unit, on
     ) { modifier ->
         when {
             shown == null -> Unit
-            shown.isEmpty() -> EmptyList(modifier)
+            links.isNullOrEmpty() -> EmptyList(modifier)
+            shown.isEmpty() -> NoFavorites(modifier)
             else -> LazyColumn(
                 modifier.fillMaxSize().testTag("link_list"),
                 state = listState,
@@ -154,7 +173,15 @@ fun ListScreen(links: List<Link>?, onAdd: () -> Unit, onOpen: (Link) -> Unit, on
                 contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 96.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp),
             ) {
-                items(shown, key = Link::id) { LinkRow(it, container.thumbsDir, onClick = { onOpen(it) }, onLongClick = { onEdit(it) }) }
+                items(shown, key = Link::id) {
+                    LinkRow(
+                        it,
+                        container.thumbsDir,
+                        onClick = { onOpen(it) },
+                        onLongClick = { onEdit(it) },
+                        onFavorite = { favorite -> onFavorite(it, favorite) },
+                    )
+                }
             }
         }
     }
@@ -218,7 +245,7 @@ private class CreateFile : ActivityResultContract<CreateFile.Input, Uri?>() {
 }
 
 @Composable
-private fun LinkRow(link: Link, thumbsDir: java.io.File, onClick: () -> Unit, onLongClick: () -> Unit) {
+private fun LinkRow(link: Link, thumbsDir: java.io.File, onClick: () -> Unit, onLongClick: () -> Unit, onFavorite: (Boolean) -> Unit) {
     Row(
         Modifier
             .fillMaxWidth()
@@ -243,6 +270,8 @@ private fun LinkRow(link: Link, thumbsDir: java.io.File, onClick: () -> Unit, on
                 overflow = TextOverflow.Ellipsis,
             )
         }
+        // 自己的點擊範圍（48dp），點愛心不會打開網頁
+        HeartToggle(link.favorite, onFavorite, description = "愛心", modifier = Modifier.testTag("favorite_button"))
     }
 }
 
@@ -293,6 +322,21 @@ private fun EmptyList(modifier: Modifier) {
             Text("還沒有連結", style = MaterialTheme.typography.titleLarge)
             Text(
                 "按右下角的「新增」貼上網址，會幫你抓縮圖和標題。\n也可以在瀏覽器按「分享」，選 ThumbLinks，\n或按右上角的「瀏覽」，看到喜歡的網頁就「加到清單」。",
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+    }
+}
+
+/** 開了「只看愛心」但一筆都還沒按。 */
+@Composable
+private fun NoFavorites(modifier: Modifier) {
+    Box(modifier.fillMaxSize().padding(32.dp), contentAlignment = Alignment.Center) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            Text("還沒有愛心", style = MaterialTheme.typography.titleLarge)
+            Text(
+                "點清單上每一筆右邊的愛心，就會出現在這裡。\n再按一次右上角的愛心，看全部的清單。",
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
