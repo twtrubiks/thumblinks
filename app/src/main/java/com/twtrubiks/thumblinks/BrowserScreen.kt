@@ -44,8 +44,10 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -71,7 +73,9 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -120,13 +124,23 @@ fun BrowserScreen(
             snackbar.showSnackbar(it)
         }
     }
+    // 網頁自己要打開別的 App（沒有經過使用者點擊）：問一聲
+    LaunchedEffect(tab.externalRequest) {
+        val uri = tab.externalRequest ?: return@LaunchedEffect
+        tab.externalRequest = null
+        val result = snackbar.showSnackbar("這個網頁要用其他 App 打開", actionLabel = "打開", duration = SnackbarDuration.Long)
+        if (result == SnackbarResult.ActionPerformed) tab.openExternally(uri)
+    }
 
-    // 看得到這一頁時才算「正在用」：GeckoView 在背景會降低耗電，uBO 的 popup 也靠這個知道是哪一頁
+    // 看得到的那頁才算「正在用」：GeckoView 在背景會降低耗電，uBO 的 popup 也靠這個知道是哪一頁。
+    // 網頁開了新視窗（疊上一頁）或關掉它時，換成那一頁
     val lifecycleOwner = LocalLifecycleOwner.current
-    DisposableEffect(tab, lifecycleOwner) {
+    val session = tab.session
+    DisposableEffect(session, lifecycleOwner) {
         fun active(on: Boolean) {
-            tab.session.setActive(on)
-            ublock.setActive(tab, on)
+            if (!session.isOpen) return
+            session.setActive(on)
+            ublock.setActive(session, on)
         }
         val observer = LifecycleEventObserver { _, event ->
             when (event) {
@@ -148,7 +162,7 @@ fun BrowserScreen(
     BackHandler {
         when {
             tab.fullscreen -> tab.session.exitFullScreen()
-            tab.canGoBack -> tab.session.goBack()
+            tab.canGoBack -> tab.goBack()
             else -> onClose()
         }
     }
@@ -167,8 +181,10 @@ fun BrowserScreen(
         }
         Box(Modifier.weight(1f).fillMaxWidth()) {
             AndroidView(
-                factory = { GeckoView(it).apply { setSession(tab.session) } },
-                onRelease = { it.releaseSession() },
+                factory = ::GeckoView,
+                // 讀了 tab.session：換頁之後會再呼叫一次，換成那一頁的 session
+                update = tab::attach,
+                onRelease = tab::detach,
                 modifier = Modifier.fillMaxSize().testTag("web_view"),
             )
             SnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter))
@@ -176,7 +192,7 @@ fun BrowserScreen(
         if (!tab.fullscreen) {
             HorizontalDivider()
             Row(Modifier.fillMaxWidth().padding(horizontal = 4.dp, vertical = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-                IconButton(onClick = { tab.session.goBack() }, enabled = tab.canGoBack) {
+                IconButton(onClick = tab::goBack, enabled = tab.canGoBack) {
                     Icon(painterResource(R.drawable.ic_arrow_back), contentDescription = "上一頁")
                 }
                 IconButton(onClick = { tab.session.goForward() }, enabled = tab.canGoForward) {
@@ -240,23 +256,34 @@ private fun UrlBar(tab: BrowserTab, autoFocus: Boolean, modifier: Modifier) {
     val focus = LocalFocusManager.current
     val requester = remember { FocusRequester() }
     var focused by remember { mutableStateOf(false) }
-    var text by remember { mutableStateOf(tab.url) }
-    LaunchedEffect(tab.url, focused) { if (!focused) text = tab.url }
+    var text by remember { mutableStateOf(TextFieldValue(tab.url)) }
+    // 點網址列時整個選起來，貼上就是換掉（不然會貼進原本的網址中間）。點下去的那一下還會把游標移到點的位置，那一次不理
+    var keepSelectAll by remember { mutableStateOf(false) }
+    LaunchedEffect(tab.url, focused) { if (!focused) text = TextFieldValue(tab.url) }
     LaunchedEffect(Unit) { if (autoFocus) requester.requestFocus() }
 
     BasicTextField(
         value = text,
-        onValueChange = { text = it },
+        onValueChange = {
+            if (!(keepSelectAll && it.text == text.text)) text = it
+            keepSelectAll = false
+        },
         modifier = modifier
             .focusRequester(requester)
-            .onFocusChanged { focused = it.isFocused }
+            .onFocusChanged {
+                if (it.isFocused && !focused) {
+                    text = text.copy(selection = TextRange(0, text.text.length))
+                    keepSelectAll = text.text.isNotEmpty()
+                }
+                focused = it.isFocused
+            }
             .testTag("url_bar"),
         singleLine = true,
         textStyle = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onSurface),
         cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri, imeAction = ImeAction.Go, autoCorrectEnabled = false),
         keyboardActions = KeyboardActions(onGo = {
-            BrowserInput.resolve(text)?.let(tab::load)
+            BrowserInput.resolve(text.text)?.let(tab::load)
             focus.clearFocus()
         }),
         decorationBox = { inner ->
@@ -267,13 +294,13 @@ private fun UrlBar(tab: BrowserTab, autoFocus: Boolean, modifier: Modifier) {
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Box(Modifier.weight(1f).padding(vertical = 12.dp)) {
-                    if (text.isEmpty()) {
+                    if (text.text.isEmpty()) {
                         Text("搜尋或輸入網址", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
                     inner()
                 }
-                if (focused && text.isNotEmpty()) {
-                    IconButton(onClick = { text = "" }, modifier = Modifier.size(36.dp)) {
+                if (focused && text.text.isNotEmpty()) {
+                    IconButton(onClick = { text = TextFieldValue() }, modifier = Modifier.size(36.dp)) {
                         Icon(painterResource(R.drawable.ic_close), contentDescription = "清除", Modifier.size(18.dp))
                     }
                 }

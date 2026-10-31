@@ -33,7 +33,7 @@ jobs:
   record:
     name: Pixel 7 Pro (API ${{ inputs.api-level || '28' }})
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v7
 

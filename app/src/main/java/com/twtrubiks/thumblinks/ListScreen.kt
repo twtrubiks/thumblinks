@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
@@ -29,6 +30,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -64,6 +66,16 @@ fun ListScreen(links: List<Link>?, onAdd: () -> Unit, onOpen: (Link) -> Unit, on
     var choosingFormat by rememberSaveable { mutableStateOf(false) }
     // 存檔畫面回來之前 Activity 可能被重建，選的格式要留著
     var pendingFormat by rememberSaveable { mutableStateOf<ExportFormat?>(null) }
+    val listState = rememberLazyListState()
+    // 新加的在最上面。回到清單時先畫的是舊的那份，新的讀進來時 LazyColumn 會跟著原本的第一筆走，
+    // 新的那筆就被擠到畫面上面、看起來像沒加進來：最上面多了一筆就捲回最上面
+    var top by rememberSaveable { mutableStateOf<String?>(null) }
+    LaunchedEffect(links) {
+        if (links.isNullOrEmpty()) return@LaunchedEffect
+        val previous = top
+        top = links.first().id
+        if (previous != null && previous != top && links.any { it.id == previous }) listState.scrollToItem(0)
+    }
 
     val createFile = rememberLauncherForActivityResult(CreateFile()) { uri ->
         val format = pendingFormat
@@ -105,6 +117,7 @@ fun ListScreen(links: List<Link>?, onAdd: () -> Unit, onOpen: (Link) -> Unit, on
             links.isEmpty() -> EmptyList(modifier)
             else -> LazyColumn(
                 modifier.fillMaxSize().testTag("link_list"),
+                state = listState,
                 // 最後一筆不要被右下角的「新增」蓋住
                 contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 96.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp),

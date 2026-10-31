@@ -62,13 +62,9 @@ class AppContainer(private val context: Context) {
     /** 開著的分頁，key 是那一頁瀏覽器在導覽 stack 裡的 key；關掉那一頁時 [closeTab]。 */
     private val tabs = mutableMapOf<String, BrowserTab>()
 
-    fun tab(key: String, initialUrl: () -> String?): BrowserTab = tabs.getOrPut(key) {
-        BrowserTab(context, gecko, initialUrl()).also(ublock::register)
-    }
+    fun tab(key: String, initialUrl: () -> String?): BrowserTab = tabs.getOrPut(key) { BrowserTab(context, gecko, ublock, initialUrl()) }
 
     fun closeTab(key: String) {
-        val tab = tabs.remove(key) ?: return
-        ublock.unregister(tab)
-        tab.close()
+        tabs.remove(key)?.close()
     }
 }

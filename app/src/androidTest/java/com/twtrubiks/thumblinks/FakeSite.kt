@@ -21,6 +21,8 @@ import java.net.InetAddress
  * - `/autumn`：另一篇，在瀏覽器裡用網址列打開、按「加到清單」
  * - `/plain`：只有 `<title>`、沒有縮圖的網頁
  * - `/ads`：載入 Google 廣告 script 的網頁，uBlock Origin（EasyList）會擋掉它
+ * - `/opener`：開新視窗的兩個大按鈕（上半：`window.open()` 之後再設 location；下半：登入用的小視窗 `/popup`）
+ * - `/popup`：載完 1.5 秒後把開它的那頁的網址加上 `#done`，再 `window.close()`
  * - `/og.png`、`/photo.png`：圖片本身（用 Bitmap 畫的 PNG）
  */
 class FakeSite : AutoCloseable {
@@ -54,6 +56,18 @@ class FakeSite : AutoCloseable {
                     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
                     """,
                     article("有廣告的網頁", "/og.png", "這一頁載入了 Google 的廣告 script，uBlock Origin 會把它擋掉。"),
+                )
+                "/opener" -> html(
+                    "<title>開新視窗</title>",
+                    """<button style="$BIG_BUTTON; margin-top: 4vh" onclick="var w = window.open(); w.location = '/autumn';">開新視窗</button>
+                    |<button style="$BIG_BUTTON; margin-top: 8vh" onclick="window.open('/popup', 'login', 'popup,width=400,height=600');">登入小視窗</button>
+                    """.trimMargin(),
+                )
+                "/popup" -> html(
+                    """<title>登入</title>
+                    |<script>setTimeout(function () { opener.location.hash = 'done'; window.close(); }, 1500);</script>
+                    """.trimMargin(),
+                    "<h1>登入中…</h1>",
                 )
                 "/og.png" -> image(ogImage)
                 "/photo.png" -> image(photo)
@@ -107,5 +121,8 @@ class FakeSite : AutoCloseable {
         const val HIKING_TITLE = "週末去陽明山看芒草｜山行筆記"
         const val PLAIN_TITLE = "沒有縮圖的網頁"
         const val AUTUMN_TITLE = "秋天的步道"
+
+        /** `/opener` 的按鈕：上面那顆在畫面高度的 4%～42%，下面那顆在 50%～88%，測試點 23% 與 69% 的地方。 */
+        private const val BIG_BUTTON = "display: block; width: 100%; height: 38vh; font-size: 28px"
     }
 }

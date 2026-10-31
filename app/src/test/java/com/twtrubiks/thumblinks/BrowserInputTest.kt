@@ -5,6 +5,7 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import java.util.Base64
 
 class BrowserInputTest {
     @Test
@@ -58,5 +59,17 @@ class BrowserInputTest {
         assertFalse(BrowserInput.canAdd("about:blank"))
         assertFalse(BrowserInput.canAdd("moz-extension://x/popup.html"))
         assertFalse(BrowserInput.canAdd(""))
+    }
+
+    @Test
+    fun errorPageShowsTheReasonAndTheEscapedUrl() {
+        val uri = BrowserInput.errorPage("https://a.example/?q=<script>&x=\"1\"", "找不到這個網站")
+        val prefix = "data:text/html;charset=utf-8;base64,"
+        assertTrue(uri.startsWith(prefix))
+        val html = String(Base64.getDecoder().decode(uri.removePrefix(prefix)))
+        assertTrue(html, "<h1>打不開這個網頁</h1><p>找不到這個網站</p>" in html)
+        assertTrue(html, "https://a.example/?q=&lt;script&gt;&amp;x=&quot;1&quot;" in html)
+        assertFalse(html, "<script>" in html)
+        assertTrue(BrowserInput.isWeb(uri))
     }
 }
