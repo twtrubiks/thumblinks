@@ -132,7 +132,8 @@ JSON（UTF-8、縮排兩格、中文不跳脫；用 kotlinx.serialization 的 `@
   疊在同一個分頁上（`BrowserTab.pages`，新的 GeckoSession，`window.opener` 接得上，登入用的小視窗才能用）：
   返回鍵／上一頁在新視窗沒有上一頁時關掉它、回到開它的那頁，網頁 `window.close()` 也是。
   不能用「拒絕新視窗、在原本的 session 載入那個網址」：`window.open()` 之後再設 location 的網頁會變成 `about:blank` 一片白。
-  沒有使用者點擊的彈出視窗不理
+  沒有使用者點擊就跳出來的彈出視窗交給 Gecko 自己擋（`PromptDelegate.onPopupPrompt` 預設拒絕）。
+  `LoadRequest.hasUserGesture` 不可靠（點了之後非同步才 `window.open` 的登入小視窗是 false），不要拿它擋新視窗
 - `mailto:`、`tel:`、`intent:`、`line:` 這類交給手機上別的 App：使用者點的、或點了之後伺服器轉址過去的（例如 `line.me`）直接開；
   網頁自己跳的跳一個提示（「這個網頁要用其他 App 打開」＋「打開」），不自動開
 - 載不出來（找不到網站、連不上、憑證有問題、一直轉址…）顯示自己的錯誤頁（`BrowserInput.errorPage`，寫原因與網址）：

@@ -219,6 +219,7 @@ class BrowserTab(private val context: Context, private val runtime: GeckoRuntime
         }
 
         override fun onLoadRequest(session: GeckoSession, request: LoadRequest): GeckoResult<AllowOrDeny>? {
+            Log.d(TAG, "onLoadRequest target=${request.target} gesture=${request.hasUserGesture} redirect=${request.isRedirect} ${request.uri}")
             if (!BrowserInput.isWeb(request.uri)) {
                 // 使用者點的，或點了之後伺服器轉址過去的（例如 line.me 轉到 LINE）直接開；
                 // 網頁自己跳的先問一聲，不然畫面停在一片白也不知道為什麼
@@ -227,15 +228,14 @@ class BrowserTab(private val context: Context, private val runtime: GeckoRuntime
                 }
                 return GeckoResult.fromValue(AllowOrDeny.DENY)
             }
-            // 沒有使用者點擊的彈出視窗（廣告）不理；點了的交給 onNewSession 疊一頁
-            if (request.target == GeckoSession.NavigationDelegate.TARGET_WINDOW_NEW && !request.hasUserGesture) {
-                return GeckoResult.fromValue(AllowOrDeny.DENY)
-            }
+            // 新視窗交給 onNewSession 疊一頁。沒有使用者點擊就跳出來的（廣告）Gecko 自己會擋（PromptDelegate.onPopupPrompt 預設拒絕），
+            // 這裡不看 hasUserGesture：點了之後先做非同步的事才 window.open 的（登入的小視窗常這樣）會是 false
             return null
         }
 
         // 新視窗疊在這個分頁上，GeckoView 會自己 open 它、載入網址（window.open() 之後再設 location 的也接得上）
         override fun onNewSession(session: GeckoSession, uri: String): GeckoResult<GeckoSession> {
+            Log.d(TAG, "onNewSession $uri")
             if (pages.size >= MAX_PAGES) pages.removeAt(0).session.close()
             leaveCurrentPage()
             val opened = newPage(open = false)
