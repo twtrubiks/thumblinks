@@ -19,7 +19,7 @@ Kotlin + Jetpack Compose 原生 App，在 claude.ai/code 雲端 session 開發�
 - 內建瀏覽器（`claude/browser-geckoview` 分支，2026-10-31 開始）：`BrowserScreen`、`BrowserTab`（一個 GeckoSession 與它的 delegate）、
   `Ublock`（從 AMO 安裝、更新、badge、popup）、`BrowserInput`（網址列的規則，JVM 測試）。還沒做：多分頁
 - 模擬器：`DeviceTest`（SQLite、`ThumbPrep` 轉正）、`DemoRecordingTest`（錄影）、`SystemUiTest`（挑選器、存檔畫面）、
-  `BrowserTest`（uBO 從 AMO 安裝、擋廣告、popup）、release 冒煙測試（真的抓 `https://github.com/`、用內建瀏覽器打開）。假網站在 `FakeSite`
+  `BrowserTest`（uBO 從 AMO 安裝、擋廣告、popup）、release 冒煙測試（真的抓 `https://github.com/git/git`、用內建瀏覽器打開）。假網站在 `FakeSite`
 
 改東西之前先跑「在 VM 內驗證」，改完看 CI 的錄影。
 
@@ -378,16 +378,17 @@ logcat 邊跑邊存、測完先回桌面（`@After`）讓 GeckoView 停下來；
 ## release 冒煙測試
 
 `record.sh` 在 SystemUiTest 之後覆蓋安裝 release 版（同一把 debug 金鑰，可以直接覆蓋），打開 App 截圖（`screenshots/release-1-launch.png`），
-再用 `uiautomator dump` 找元件：按「新增」、輸入 `https://github.com/`、按「抓縮圖」，等到預覽的 testTag 變成 `thumb_ready`
+再用 `uiautomator dump` 找元件：按「新增」、輸入 `https://github.com/git/git`、按「抓縮圖」，等到預覽的 testTag 變成 `thumb_ready`
 （Coil 真的把縮圖載出來了，`release-2-fetched.png`），按「加入」，清單上出現 `github.com`（`release-3-added.png`）。
 R8 壓過的 OkHttp、jsoup、Coil 只有真的抓一次才跑得到；release 版不認 127.0.0.1 的明碼連線，不能用假網站。
-接著點那一筆，用內建瀏覽器打開 github.com，等 logcat 出現 App 寫的兩行（`BrowserTab` 的「網頁載入完成 success=true https://github.com/」、
+接著點那一筆，用內建瀏覽器打開它，等 logcat 出現 App 寫的兩行（`BrowserTab` 的「網頁載入完成 success=true https://github.com/git/git」、
 `Ublock` 的「uBlock Origin … 可以用了」）：壓過的 GeckoView 要真的載入網頁、從 AMO 裝好 uBO。
 網頁一直在動，`uiautomator dump` 等不到畫面靜止，所以瀏覽器這一段看 logcat 不用 dump。
-**這一段不截圖**：GeckoView 畫出網頁之後 adb 的 screencap 會卡住（`exec-out` 曾經卡了 30 分鐘、整個 job 逾時；
-存在模擬器上的 `adb shell screencap` 也一樣），卡住的 screencap 留在模擬器上，接著關掉 App 時 system_server 整個停住
-（watchdog 把它殺掉、`DeadSystemException`），後面的 BrowserTest 一個都沒跑。以前截得到，只是因為截的時候網頁還沒畫出來。
-瀏覽器的截圖看 BrowserTest 的（UiAutomation 截圖沒事）。這一段的 adb 指令都包 `timeout`，等完先回桌面再往下走，進度（含時間）寫進 `release-smoke.txt`。
+**不用 github.com 首頁**：首頁有自動播放的靜音影片，模擬器（軟體解碼、軟體繪圖）在影片播放時離開 App，SurfaceFlinger 卡死，
+system_server 被 watchdog 殺掉（`WATCHDOG KILLING SYSTEM PROCESS`、`DeadSystemException`），後面的 BrowserTest 一個都沒跑。
+以前沒事只是因為「網頁載入完成」太早出現（`about:blank` 那次），影片還沒開始播就離開了。repo 頁面沒有影片，一樣有 og:image 與標題。
+**這一段不截圖**：開著 GeckoView 時 adb 的 screencap 曾經卡住（`exec-out` 卡了 30 分鐘、整個 job 逾時；存在模擬器上的也逾時過），
+瀏覽器的樣子看 BrowserTest 的截圖（UiAutomation 截圖沒事）。這一段的 adb 指令都包 `timeout`，等完先回桌面再往下走，進度（含時間）寫進 `release-smoke.txt`。
 等不到縮圖、加不進清單、瀏覽器沒載完或 uBO 沒裝好，或 `logcat-release.txt` 有 `FATAL EXCEPTION` 時 job 會失敗。
 輸入框拿到焦點後游標會閃、鍵盤會打開，dump 等不到畫面靜止，所以新增頁先在沒有人拿到焦點時 dump 一次記下座標；
 按「抓縮圖」時 App 會把焦點拿掉，之後的 dump 才等得到。

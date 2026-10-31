@@ -153,7 +153,9 @@ fi
 # 並且真的抓一次網頁：壓過的 OkHttp、jsoup、Coil 只有真的抓一次才跑得到。
 # release 版不認 127.0.0.1 的明碼連線，不能用假網站，抓一個真的 https 網址。
 # 兩個版本都用 debug 金鑰簽，可以直接覆蓋。先清掉 App 資料，從第一次打開的樣子開始。
-SMOKE_URL=https://github.com/
+# 不用 github.com 首頁：首頁有自動播放的影片，模擬器（軟體解碼、軟體繪圖）在影片播放時離開 App，
+# SurfaceFlinger 會卡死、system_server 被 watchdog 殺掉，後面的 BrowserTest 都跑不了。repo 頁面沒有影片，一樣有 og:image
+SMOKE_URL=https://github.com/git/git
 RELEASE_APK=app/build/outputs/apk/release/app-x86_64-release.apk
 if [ -f "$RELEASE_APK" ]; then
   mkdir -p "$OUT/screenshots"
@@ -202,17 +204,17 @@ if [ -f "$RELEASE_APK" ]; then
   fi
   adb exec-out screencap -p > "$OUT/screenshots/release-3-added.png"
 
-  # 點那一筆：用內建瀏覽器打開 github.com。壓過的 GeckoView 要真的載入網頁、從 AMO 裝好 uBO。
+  # 點那一筆：用內建瀏覽器打開 $SMOKE_URL。壓過的 GeckoView 要真的載入網頁、從 AMO 裝好 uBO。
   # 網頁一直在動，uiautomator dump 等不到畫面靜止，改看 App 寫進 logcat 的兩行（BrowserTab、Ublock）。
   # 開著 GeckoView 時 adb 曾經整個卡住（screencap 卡了 30 分鐘，整個 job 逾時），每個 adb 指令都限時，進度寫進 release-smoke.txt
   browsed=0
   if [ "$added" -eq 1 ] && row=$(center "$list" 'text="github.com"') && timeout 30 adb shell input tap $row; then
-    echo "$(date +%T) 用內建瀏覽器打開 github.com" | tee -a "$OUT/release-smoke.txt"
+    echo "$(date +%T) 用內建瀏覽器打開 $SMOKE_URL" | tee -a "$OUT/release-smoke.txt"
     end=$((SECONDS + 150))
     while [ $SECONDS -lt $end ]; do
       sleep 2
       log=$(timeout 20 adb logcat -d -s ThumbLinks:I)
-      if printf '%s' "$log" | grep -q '網頁載入完成 success=true https://github.com/' \
+      if printf '%s' "$log" | grep -qF "網頁載入完成 success=true $SMOKE_URL" \
         && printf '%s' "$log" | grep -q 'uBlock Origin .* 可以用了'; then
         browsed=1
         break
@@ -220,9 +222,8 @@ if [ -f "$RELEASE_APK" ]; then
     done
     echo "$(date +%T) 瀏覽器等完了 browsed=$browsed" | tee -a "$OUT/release-smoke.txt"
   fi
-  # 這一段不截圖：GeckoView 畫出網頁之後 adb 的 screencap 會卡住（debug 版測試用 UiAutomation 截圖沒事），
-  # 卡住的 screencap 留在模擬器上，接著關掉 App 時 system_server 整個停住、模擬器重開，BrowserTest 就跑不了。
-  # 也先回桌面讓 GeckoView 停下來，再讓下一段關掉 App
+  # 這一段不截圖：開著 GeckoView 時 adb 的 screencap 曾經卡住（exec-out 卡了 30 分鐘；存在模擬器上的也逾時過），
+  # 瀏覽器的樣子看 BrowserTest 的截圖（UiAutomation 截圖沒事）。先回桌面讓 GeckoView 停下來，再讓下一段關掉 App
   timeout 30 adb shell input keyevent KEYCODE_HOME || true
   sleep 3
 
@@ -238,7 +239,7 @@ if [ -f "$RELEASE_APK" ]; then
     echo "release 版按「加入」之後清單上沒看到 github.com，詳見 $OUT/screenshots/release-3-added.png"
     status=1
   elif [ "$browsed" -ne 1 ]; then
-    echo "release 版的內建瀏覽器沒等到 github.com 載完或 uBO 裝好，詳見 $OUT/release-smoke.txt 與 $OUT/logcat-release.txt"
+    echo "release 版的內建瀏覽器沒等到 $SMOKE_URL 載完或 uBO 裝好，詳見 $OUT/release-smoke.txt 與 $OUT/logcat-release.txt"
     status=1
   fi
 fi
