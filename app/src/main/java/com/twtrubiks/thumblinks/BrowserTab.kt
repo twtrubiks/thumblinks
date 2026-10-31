@@ -3,9 +3,12 @@ package com.twtrubiks.thumblinks
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.core.net.toUri
@@ -20,7 +23,9 @@ import org.mozilla.geckoview.GeckoSession.PermissionDelegate.ContentPermission
 import org.mozilla.geckoview.GeckoSession.PromptDelegate
 import org.mozilla.geckoview.GeckoSession.PromptDelegate.BasePrompt
 import org.mozilla.geckoview.GeckoSession.PromptDelegate.PromptResponse
+import org.mozilla.geckoview.GeckoView
 import org.mozilla.geckoview.WebExtension
+import org.mozilla.geckoview.WebRequestError
 import org.mozilla.geckoview.WebResponse
 
 const val TAG = "ThumbLinks"
@@ -33,25 +38,41 @@ class PendingPrompt(val prompt: BasePrompt, private val result: GeckoResult<Prom
 }
 
 /**
- * 內建瀏覽器的一個分頁：一個 GeckoSession 與畫面要用的狀態。放在 [AppContainer]，轉螢幕、
+ * 內建瀏覽器的一個分頁：一個或幾個疊起來的 [Page] 與畫面要用的狀態。放在 [AppContainer]，轉螢幕、
  * 進出新增頁都不會重新載入。delegate 都在主執行緒被呼叫，直接改 Compose 的狀態。
  * 下載、上傳檔案不做；定位、相機等權限一律拒絕。
  */
-class BrowserTab(private val context: Context, private val runtime: GeckoRuntime, initialUrl: String?) {
-    val session = GeckoSession()
+class BrowserTab(private val context: Context, private val runtime: GeckoRuntime, private val ublock: Ublock, initialUrl: String?) {
+    /** 一個 GeckoSession 與它自己的狀態。 */
+    inner class Page(val session: GeckoSession) {
+        var url by mutableStateOf("")
+        var title by mutableStateOf("")
+        var progress by mutableIntStateOf(0)
+        var loading by mutableStateOf(false)
+        var canGoBack by mutableStateOf(false)
+        var canGoForward by mutableStateOf(false)
 
-    var url by mutableStateOf(initialUrl.orEmpty())
-        private set
-    var title by mutableStateOf("")
-        private set
-    var progress by mutableIntStateOf(0)
-        private set
-    var loading by mutableStateOf(false)
-        private set
-    var canGoBack by mutableStateOf(false)
-        private set
-    var canGoForward by mutableStateOf(false)
-        private set
+        /** uBO 在這一頁自己的按鈕狀態（擋了幾個的 badge），畫面用 [Ublock.actionFor] 跟預設值合起來。 */
+        var ublockAction by mutableStateOf<WebExtension.Action?>(null)
+
+        val isCurrent get() = pages.lastOrNull() === this
+    }
+
+    /**
+     * 最後一個是看得到的那頁。網頁開新視窗（`target=_blank`、`window.open`）時疊一頁上去，原本的留著：
+     * 回上一頁回得去，新視窗的 `window.opener` 也接得上（例如用 Google 帳號登入的小視窗，登入完會 `window.close()`）。
+     */
+    val pages = mutableStateListOf<Page>()
+    val page get() = pages.last()
+    val session get() = page.session
+    val url get() = page.url
+    val title get() = page.title
+    val progress get() = page.progress
+    val loading get() = page.loading
+    val canGoBack get() = page.canGoBack || pages.size > 1
+    val canGoForward get() = page.canGoForward
+    val ublockAction get() = page.ublockAction
+
     var fullscreen by mutableStateOf(false)
         private set
     var prompt by mutableStateOf<PendingPrompt?>(null)
@@ -61,43 +82,100 @@ class BrowserTab(private val context: Context, private val runtime: GeckoRuntime
     /** 給使用者看的一句話（例如「不支援下載」），顯示完設回 null。 */
     var message by mutableStateOf<String?>(null)
 
-    /** uBO 在這個分頁自己的按鈕狀態（擋了幾個的 badge），畫面用 [Ublock.actionFor] 跟預設值合起來。 */
-    var ublockAction by mutableStateOf<WebExtension.Action?>(null)
+    /** 網頁自己（不是使用者點的）要用別的 App 打開的網址：先問使用者，顯示完設回 null。 */
+    var externalRequest by mutableStateOf<String?>(null)
+
+    /** 顯示這個分頁的 GeckoView（畫面上的 `AndroidView`），換頁時跟著換 session。 */
+    private var view: GeckoView? = null
+    private val main = Handler(Looper.getMainLooper())
 
     init {
-        session.navigationDelegate = Navigation()
-        session.progressDelegate = Progress()
-        session.contentDelegate = Content()
-        session.promptDelegate = Prompts()
-        session.permissionDelegate = Permissions()
-        session.open(runtime)
-        if (url.isNotEmpty()) session.loadUri(url)
+        ublock.register(this)
+        pages += newPage(open = true)
+        if (!initialUrl.isNullOrEmpty()) load(initialUrl)
+    }
+
+    /** [open]：網頁開的新視窗由 GeckoView 自己 open（`onNewSession` 要回傳還沒 open 的）。 */
+    private fun newPage(open: Boolean): Page {
+        val page = Page(GeckoSession())
+        page.session.navigationDelegate = Navigation(page)
+        page.session.progressDelegate = Progress(page)
+        page.session.contentDelegate = Content(page)
+        page.session.promptDelegate = Prompts(page)
+        page.session.permissionDelegate = Permissions()
+        if (open) page.session.open(runtime)
+        ublock.attach(page)
+        return page
     }
 
     fun load(uri: String) {
-        url = uri
+        page.url = uri
         session.loadUri(uri)
+    }
+
+    /** 這一頁能回上一頁就回；不能的話，這頁是網頁開的新視窗就關掉它，回到開它的那頁。 */
+    fun goBack() {
+        if (page.canGoBack) session.goBack() else if (pages.size > 1) closePage(page)
+    }
+
+    /** 畫面上的 GeckoView 接上目前的 session；換頁之後再呼叫一次就會換過去。 */
+    fun attach(view: GeckoView) {
+        this.view = view
+        if (view.session !== session) {
+            view.releaseSession()
+            view.setSession(session)
+        }
+    }
+
+    fun detach(view: GeckoView) {
+        if (this.view === view) this.view = null
+        view.releaseSession()
     }
 
     fun close() {
         prompt?.dismiss()
-        session.close()
+        ublock.unregister(this)
+        view?.releaseSession()
+        view = null
+        pages.forEach { it.session.close() }
     }
 
-    /** 網頁內容的行程掛掉或被系統收掉：重開一個再載入一次。 */
-    private fun recover() {
-        loading = false
+    /** 換到另一頁時，上一頁的對話框、選單、全螢幕都不留。 */
+    private fun leaveCurrentPage() {
+        prompt?.dismiss()
+        contextMenu = null
         fullscreen = false
-        if (session.isOpen) session.close()
-        session.open(runtime)
-        if (url.isNotEmpty()) session.loadUri(url)
+    }
+
+    private fun closePage(page: Page) {
+        if (pages.size <= 1 || page !in pages) return
+        if (page.isCurrent) leaveCurrentPage()
+        pages.remove(page)
+        // GeckoView 先換到開它的那頁，再關掉這頁的 session
+        view?.let(::attach)
+        page.session.close()
     }
 
     /**
-     * 交給手機上別的 App（`mailto:`、`tel:`、`intent:`…）。只在使用者點了之後才開，網頁不能自己叫出別的 App。
+     * 網頁內容的行程掛掉或被系統收掉（切到背景久了常發生）：session 重開、再載入一次。
+     * 畫面上的 GeckoView 也要重新接上，不然重新載入了畫面還是一片白。
+     */
+    private fun recover(page: Page) {
+        page.loading = false
+        if (page.isCurrent) fullscreen = false
+        val shown = view?.takeIf { it.session === page.session }
+        shown?.releaseSession()
+        if (page.session.isOpen) page.session.close()
+        page.session.open(runtime)
+        shown?.setSession(page.session)
+        if (page.url.isNotEmpty()) page.session.loadUri(page.url)
+    }
+
+    /**
+     * 交給手機上別的 App（`mailto:`、`tel:`、`intent:`…）。
      * `intent:` 照 Chrome 的做法：拿掉指定的元件，找不到 App 時改開 `browser_fallback_url`。
      */
-    private fun openExternally(uri: String) {
+    fun openExternally(uri: String) {
         try {
             val intent = if (uri.startsWith("intent:", ignoreCase = true)) {
                 Intent.parseUri(uri, Intent.URI_INTENT_SCHEME).apply {
@@ -120,86 +198,108 @@ class BrowserTab(private val context: Context, private val runtime: GeckoRuntime
         }
     }
 
-    private inner class Navigation : GeckoSession.NavigationDelegate {
+    private inner class Navigation(private val page: Page) : GeckoSession.NavigationDelegate {
         override fun onLocationChange(session: GeckoSession, url: String?, perms: MutableList<ContentPermission>, hasUserGesture: Boolean) {
-            if (url != null) this@BrowserTab.url = url
+            if (url != null) page.url = url
         }
 
         override fun onCanGoBack(session: GeckoSession, canGoBack: Boolean) {
-            this@BrowserTab.canGoBack = canGoBack
+            page.canGoBack = canGoBack
         }
 
         override fun onCanGoForward(session: GeckoSession, canGoForward: Boolean) {
-            this@BrowserTab.canGoForward = canGoForward
+            page.canGoForward = canGoForward
         }
 
         override fun onLoadRequest(session: GeckoSession, request: LoadRequest): GeckoResult<AllowOrDeny>? {
             if (!BrowserInput.isWeb(request.uri)) {
-                if (request.hasUserGesture) openExternally(request.uri)
+                // 使用者點的，或點了之後伺服器轉址過去的（例如 line.me 轉到 LINE）直接開；
+                // 網頁自己跳的先問一聲，不然畫面停在一片白也不知道為什麼
+                if (page.isCurrent) {
+                    if (request.hasUserGesture || request.isRedirect) openExternally(request.uri) else externalRequest = request.uri
+                }
                 return GeckoResult.fromValue(AllowOrDeny.DENY)
             }
-            // 只有一個分頁：target=_blank 在同一個分頁開。沒有使用者點擊的彈出視窗（廣告）不理
-            if (request.target == GeckoSession.NavigationDelegate.TARGET_WINDOW_NEW) {
-                if (request.hasUserGesture) load(request.uri)
+            // 沒有使用者點擊的彈出視窗（廣告）不理；點了的交給 onNewSession 疊一頁
+            if (request.target == GeckoSession.NavigationDelegate.TARGET_WINDOW_NEW && !request.hasUserGesture) {
                 return GeckoResult.fromValue(AllowOrDeny.DENY)
             }
             return null
         }
 
-        override fun onNewSession(session: GeckoSession, uri: String): GeckoResult<GeckoSession>? {
-            load(uri)
-            return null
+        // 新視窗疊在這個分頁上，GeckoView 會自己 open 它、載入網址（window.open() 之後再設 location 的也接得上）
+        override fun onNewSession(session: GeckoSession, uri: String): GeckoResult<GeckoSession> {
+            if (pages.size >= MAX_PAGES) pages.removeAt(0).session.close()
+            leaveCurrentPage()
+            val opened = newPage(open = false)
+            if (BrowserInput.canAdd(uri)) opened.url = uri
+            pages += opened
+            return GeckoResult.fromValue(opened.session)
+        }
+
+        // GeckoView 沒有內建的錯誤頁，不給的話畫面停在一片白
+        override fun onLoadError(session: GeckoSession, uri: String?, error: WebRequestError): GeckoResult<String> {
+            Log.w(TAG, "網頁載入失敗 code=${error.code} $uri")
+            return GeckoResult.fromValue(BrowserInput.errorPage(uri.orEmpty(), reason(error)))
         }
     }
 
-    private inner class Progress : GeckoSession.ProgressDelegate {
+    private inner class Progress(private val page: Page) : GeckoSession.ProgressDelegate {
         override fun onPageStart(session: GeckoSession, url: String) {
-            loading = true
-            progress = 0
+            page.loading = true
+            page.progress = 0
         }
 
         override fun onProgressChange(session: GeckoSession, progress: Int) {
-            this@BrowserTab.progress = progress
+            page.progress = progress
         }
 
         override fun onPageStop(session: GeckoSession, success: Boolean) {
-            loading = false
+            page.loading = false
             // release 冒煙測試看 logcat 的這一行，確認壓過的 GeckoView 真的載入了網頁
-            Log.i(TAG, "網頁載入完成 success=$success $url")
+            Log.i(TAG, "網頁載入完成 success=$success ${page.url}")
         }
     }
 
-    private inner class Content : GeckoSession.ContentDelegate {
+    private inner class Content(private val page: Page) : GeckoSession.ContentDelegate {
         override fun onTitleChange(session: GeckoSession, title: String?) {
-            this@BrowserTab.title = title.orEmpty()
+            page.title = title.orEmpty()
         }
 
         override fun onFullScreen(session: GeckoSession, fullScreen: Boolean) {
-            fullscreen = fullScreen
+            if (page.isCurrent) fullscreen = fullScreen
         }
 
         override fun onContextMenu(session: GeckoSession, screenX: Int, screenY: Int, element: ContextElement) {
-            if (element.linkUri != null || element.srcUri != null) contextMenu = element
+            if (page.isCurrent && (element.linkUri != null || element.srcUri != null)) contextMenu = element
         }
 
         override fun onExternalResponse(session: GeckoSession, response: WebResponse) {
-            message = "不支援下載檔案"
+            if (page.isCurrent) message = "不支援下載檔案"
+        }
+
+        // 網頁自己 window.close()：疊上來的那頁關掉，回到開它的那頁（最底下那頁不關）。
+        // 等這個 callback 回去之後再關，不在 GeckoView 通知我們的途中關掉它的 session
+        override fun onCloseRequest(session: GeckoSession) {
+            main.post { closePage(page) }
         }
 
         override fun onCrash(session: GeckoSession) {
-            Log.w(TAG, "網頁的行程掛了，重新載入 $url")
-            recover()
+            Log.w(TAG, "網頁的行程掛了，重新載入 ${page.url}")
+            recover(page)
         }
 
         override fun onKill(session: GeckoSession) {
-            Log.w(TAG, "網頁的行程被系統收掉了，重新載入 $url")
-            recover()
+            Log.w(TAG, "網頁的行程被系統收掉了，重新載入 ${page.url}")
+            recover(page)
         }
     }
 
     /** alert、confirm、prompt、`<select>`、離開頁面與重新送出表單的確認。其他（上傳檔案、選日期…）交給預設：直接取消。 */
-    private inner class Prompts : PromptDelegate {
+    private inner class Prompts(private val page: Page) : PromptDelegate {
         private fun ask(p: BasePrompt): GeckoResult<PromptResponse> {
+            // 看不到的那頁跳出來的不理
+            if (!page.isCurrent) return GeckoResult.fromValue(p.dismiss())
             this@BrowserTab.prompt?.dismiss()
             val result = GeckoResult<PromptResponse>()
             val pending = PendingPrompt(p, result)
@@ -229,7 +329,7 @@ class BrowserTab(private val context: Context, private val runtime: GeckoRuntime
         override fun onRepostConfirmPrompt(session: GeckoSession, prompt: PromptDelegate.RepostConfirmPrompt) = ask(prompt)
     }
 
-    private inner class Permissions : PermissionDelegate {
+    private class Permissions : PermissionDelegate {
         override fun onAndroidPermissionsRequest(session: GeckoSession, permissions: Array<out String>?, callback: PermissionDelegate.Callback) {
             callback.reject()
         }
@@ -248,6 +348,41 @@ class BrowserTab(private val context: Context, private val runtime: GeckoRuntime
             callback: PermissionDelegate.MediaCallback,
         ) {
             callback.reject()
+        }
+    }
+
+    private companion object {
+        /** 一個分頁最多疊幾頁新視窗，超過就關掉最底下的。 */
+        const val MAX_PAGES = 6
+
+        /** 錯誤頁上給使用者看的原因。 */
+        fun reason(error: WebRequestError): String = when (error.code) {
+            WebRequestError.ERROR_UNKNOWN_HOST -> "找不到這個網站：網址可能打錯了，或是手機沒有連上網路。"
+            WebRequestError.ERROR_OFFLINE -> "手機沒有連上網路。"
+            WebRequestError.ERROR_CONNECTION_REFUSED,
+            WebRequestError.ERROR_NET_RESET,
+            WebRequestError.ERROR_NET_INTERRUPT,
+            WebRequestError.ERROR_NET_TIMEOUT,
+            WebRequestError.ERROR_PORT_BLOCKED,
+            WebRequestError.ERROR_UNKNOWN_SOCKET_TYPE,
+            -> "連不上這個網站：可能是網站暫時有問題，或是網路不穩。"
+            WebRequestError.ERROR_REDIRECT_LOOP -> "這個網頁一直轉址，停不下來。"
+            WebRequestError.ERROR_SECURITY_SSL,
+            WebRequestError.ERROR_SECURITY_BAD_CERT,
+            WebRequestError.ERROR_BAD_HSTS_CERT,
+            -> "這個網站的安全憑證有問題，為了安全不打開。"
+            WebRequestError.ERROR_MALFORMED_URI, WebRequestError.ERROR_UNKNOWN_PROTOCOL -> "網址的格式不對，或是瀏覽器不支援這種網址。"
+            WebRequestError.ERROR_CONTENT_CRASHED -> "網頁當掉了。"
+            WebRequestError.ERROR_CORRUPTED_CONTENT,
+            WebRequestError.ERROR_INVALID_CONTENT_ENCODING,
+            WebRequestError.ERROR_UNSAFE_CONTENT_TYPE,
+            -> "網站送來的內容有問題。"
+            WebRequestError.ERROR_SAFEBROWSING_MALWARE_URI,
+            WebRequestError.ERROR_SAFEBROWSING_UNWANTED_URI,
+            WebRequestError.ERROR_SAFEBROWSING_HARMFUL_URI,
+            WebRequestError.ERROR_SAFEBROWSING_PHISHING_URI,
+            -> "這個網站被標為不安全的網站。"
+            else -> "網頁載入失敗（錯誤代碼 ${error.code}）。"
         }
     }
 }

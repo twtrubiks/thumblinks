@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # 在模擬器上先跑 DeviceTest（Android 9 的 SQLite、Bitmap 縮圖轉正，不錄影），再一邊錄影一邊跑 DemoRecordingTest，
-# 錄完清掉 App 資料跑 SystemUiTest（系統的照片挑選器、存檔的檔案畫面，不錄影），再清掉跑 BrowserTest（uBO 從 AMO 安裝、擋廣告），
+# 錄完清掉 App 資料跑 SystemUiTest（系統的照片挑選器、存檔的檔案畫面，不錄影），再清掉跑 BrowserTest（uBO 從 AMO 安裝、擋廣告；新視窗、錯誤頁），
 # 最後覆蓋安裝 release 版做冒煙測試（真的抓一次 https 網頁的縮圖、用內建瀏覽器打開它）。
 # APK 按 CPU 拆開（GeckoView），模擬器裝 x86_64 那一份。
 # 輸出到 $1（預設 out/）：device-test.txt、demo.raw.mp4、instrument.txt、logcat.txt、system-ui-test.txt、
@@ -87,7 +87,7 @@ adb logcat -d > "$OUT/logcat-system-ui.txt" || true
 # 先清掉 App 資料，每次都從第一次安裝 uBO 開始（截圖已經 pull 回來了）
 adb shell pm clear "$APP_ID" || true
 adb logcat -c || true
-timeout 400 adb shell am instrument -w -e class "$BROWSER_TEST_CLASS" \
+timeout 600 adb shell am instrument -w -e class "$BROWSER_TEST_CLASS" \
   "$APP_ID.test/androidx.test.runner.AndroidJUnitRunner" | tee "$OUT/browser-test.txt"
 adb pull "/sdcard/Android/data/$APP_ID/files/screenshots" "$OUT/" || true
 adb logcat -d > "$OUT/logcat-browser.txt" || true

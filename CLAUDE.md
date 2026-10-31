@@ -59,7 +59,8 @@ Kotlin + Jetpack Compose 原生 App，在 claude.ai/code 雲端 session 開發�
 
 ### 清單
 
-- 首頁就是清單，新加的在上面。每筆顯示縮圖、標題（沒有標題就顯示網址）、網域
+- 首頁就是清單，新加的在上面。每筆顯示縮圖、標題（沒有標題就顯示網址）、網域。
+  回到清單時最上面多了一筆就捲回最上面（`LazyColumn` 會跟著原本的第一筆走，新的那筆會被擠到畫面上面看不到）
 - 點一筆進編輯頁：改標題、換縮圖（重新抓、貼圖片網址、上傳）、用瀏覽器開、刪除（要確認）。
   換掉或刪掉上傳的縮圖時，舊的檔案要刪（`LinkStore.update`、`LinkStore.delete` 會刪）。
   在這一頁上傳、還沒存的圖由 `ThumbDraft` 記著，放棄這一頁（返回鍵）或又換一張時刪掉
@@ -120,9 +121,17 @@ JSON（UTF-8、縮排兩格、中文不跳脫；用 kotlinx.serialization 的 `@
 
 - 入口在清單：**點一筆用內建瀏覽器打開**（長按進編輯頁）、右上角「瀏覽」開空白頁（網址列等著輸入）、編輯頁的「用瀏覽器開」。
   「用其他 App 開」放在瀏覽器右上角的選單
-- 一頁瀏覽器就是一個分頁（`Route.Browser`），先不做分頁列：`target=_blank`、`window.open` 在同一個分頁開；
-  沒有使用者點擊的彈出視窗不理。`mailto:`、`tel:`、`intent:` 這類交給手機上別的 App，而且要使用者點了才開
-- 網址列：`http(s)://` 照用、看起來像網域的補 `https://`、其他用 DuckDuckGo 搜尋（`BrowserInput.SEARCH`）
+- 一頁瀏覽器就是一個分頁（`Route.Browser`），先不做分頁列。網頁開的新視窗（`target=_blank`、`window.open`）
+  疊在同一個分頁上（`BrowserTab.pages`，新的 GeckoSession，`window.opener` 接得上，登入用的小視窗才能用）：
+  返回鍵／上一頁在新視窗沒有上一頁時關掉它、回到開它的那頁，網頁 `window.close()` 也是。
+  不能用「拒絕新視窗、在原本的 session 載入那個網址」：`window.open()` 之後再設 location 的網頁會變成 `about:blank` 一片白。
+  沒有使用者點擊的彈出視窗不理
+- `mailto:`、`tel:`、`intent:`、`line:` 這類交給手機上別的 App：使用者點的、或點了之後伺服器轉址過去的（例如 `line.me`）直接開；
+  網頁自己跳的跳一個提示（「這個網頁要用其他 App 打開」＋「打開」），不自動開
+- 載不出來（找不到網站、連不上、憑證有問題、一直轉址…）顯示自己的錯誤頁（`BrowserInput.errorPage`，寫原因與網址）：
+  GeckoView 沒有內建錯誤頁，`onLoadError` 回 null 的話畫面就停在一片白
+- 網址列：`http(s)://` 照用、看起來像網域的補 `https://`、其他用 DuckDuckGo 搜尋（`BrowserInput.SEARCH`）。
+  點下去時整個選起來（貼上就是換掉，不會貼進原本的網址中間）
 - 下面的工具列：上一頁、下一頁、重新整理／停止，右邊是「加到清單」（走一般的新增流程，加完回到瀏覽器）；
   正在看的網頁已經在清單裡（網址照字串比對）就顯示「已在清單」，點了進編輯頁
 - 返回鍵：全螢幕時先退出全螢幕，能回上一頁就回上一頁，不能才關掉瀏覽器
@@ -145,7 +154,7 @@ JSON（UTF-8、縮排兩格、中文不跳脫；用 kotlinx.serialization 的 `@
 
 ## 程式的分層
 
-- 規則都在純 Kotlin、有 JVM 測試：`LinkStore`（已有）、`WebUrls`、`PageMeta`、`MetaFetcher`、`Export`、`BrowserInput`。
+- 規則都在純 Kotlin、有 JVM 測試：`LinkStore`（已有）、`WebUrls`、`PageMeta`、`MetaFetcher`、`Export`、`BrowserInput`（含錯誤頁）。
   `MetaFetcher` 的測試用 `mockwebserver3`（轉址、`image/*`、逾時、超過 1 MB、Big5）
 - `LinkStore` 透過 `Sql` 介面存取資料庫：手機上是 `AndroidSql`（`databases/thumblinks.db`），
   JVM 測試是 `JdbcSql`（sqlite-jdbc 的記憶體資料庫，SQL 跑在真的 SQLite 上）。
@@ -280,8 +289,11 @@ CI 錄影前也會跑 `testDebugUnitTest`，沒過就不會錄影（失敗原因
 
 `app/src/androidTest/java/com/twtrubiks/thumblinks/BrowserTest.kt`，不錄影。`record.sh` 在 SystemUiTest 之後先 `pm clear` 再跑
 （每次都是第一次安裝 uBO），輸出在 `browser-test.txt`、`logcat-browser.txt`，截圖是 `browser-*.png`。
-右上角「瀏覽」→ 網址列打開 `FakeSite` 的 `/ads`（載入 `pagead2.googlesyndication.com` 的廣告 script）→
-等 uBO 從 AMO 裝好（工具列出現 `ublock_button`，最多 2 分鐘）→ 重新整理，等 badge（`ublock_badge`）至少擋下 1 個 → 打開 popup。
+- uBO：右上角「瀏覽」→ 網址列打開 `FakeSite` 的 `/ads`（載入 `pagead2.googlesyndication.com` 的廣告 script）→
+  等 uBO 從 AMO 裝好（工具列出現 `ublock_button`，最多 2 分鐘）→ 重新整理，等 badge（`ublock_badge`）至少擋下 1 個 → 打開 popup
+- 新視窗與錯誤頁：`/opener` 上點（用座標點網頁）`window.open()` 再設 location 的按鈕 → 網址列變成 `/autumn` → 上一頁回到 `/opener`；
+  點登入小視窗（`/popup` 改了開它的那頁的網址再 `window.close()`）→ 網址列變成 `/opener#done`；
+  打開 `http://thumblinks.invalid/` → logcat 有 `onLoadError` 寫的「網頁載入失敗」（錯誤頁的樣子看 `browser-06-error-page.png`）
 
 ## release 冒煙測試
 
