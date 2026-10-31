@@ -22,8 +22,13 @@ import org.junit.runner.RunWith
 class BrowserTest : UiTest() {
     private val site = FakeSite().start()
 
+    // 瀏覽器開在畫面上時 App 被砍掉，模擬器（軟體繪圖）曾經整個當掉：測完先回桌面，讓 GeckoView 停下來
     @After
-    fun stopSite() = site.close()
+    fun leaveBrowser() {
+        device.pressHome()
+        pause(2000)
+        site.close()
+    }
 
     @Test
     fun ublockFromAmoBlocksAds() {
@@ -57,7 +62,8 @@ class BrowserTest : UiTest() {
         waitFor(By.text("關閉"), timeout = 20_000)
         // popup 的內容讀不到，看截圖：BottomSheet 裡 GeckoView 那一塊要畫出東西，不能整片同一個顏色
         // （用 TextureView 時整片黑；模擬器上要好幾秒才畫出來，還沒畫之前是整片灰）
-        val painted = poll(30_000) { if (popupPainted()) Unit else null }
+        // 截圖不要太密（每次截圖都要等 GeckoView 畫完一張，模擬器很吃力）
+        val painted = (1..8).firstNotNullOfOrNull { if (popupPainted()) Unit else null.also { pause(3000) } }
         pause(1000)
         screenshot("browser-03-ublock-popup")
         assertTrue("uBO 的 popup 沒有畫出東西", painted != null)

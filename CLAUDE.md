@@ -346,7 +346,9 @@ CI 錄影前也會跑 `testDebugUnitTest`，沒過就不會錄影（失敗原因
 
 ## 內建瀏覽器的測試：BrowserTest
 
-`app/src/androidTest/java/com/twtrubiks/thumblinks/BrowserTest.kt`，不錄影。`record.sh` 在 SystemUiTest 之後先 `pm clear` 再跑
+`app/src/androidTest/java/com/twtrubiks/thumblinks/BrowserTest.kt`，不錄影。`record.sh` 最後才跑（release 冒煙測試之後，換回 debug 版、`pm clear`）。
+模擬器（軟體繪圖）曾經在測完瀏覽器、關掉 App 時整個當掉（`device offline`，之後的 adb 全部失敗），所以放最後、
+logcat 邊跑邊存、測完先回桌面（`@After`）讓 GeckoView 停下來；uBO popup 的截圖也不要太密
 （每次都是第一次安裝 uBO），輸出在 `browser-test.txt`、`logcat-browser.txt`，截圖是 `browser-*.png`。
 - uBO：右上角「瀏覽」→ 網址列打開 `FakeSite` 的 `/ads`（載入 `pagead2.googlesyndication.com` 的廣告 script）→
   等 uBO 從 AMO 裝好（工具列出現 `ublock_button`，最多 2 分鐘；裝的時候 App 會卡一下，另一個測試也要先等它裝好才點網頁）→ 重新整理，等 badge（`ublock_badge`）至少擋下 1 個（剛裝好、還在讀過濾清單時 badge 是「!」，要一直重新整理到變成數字）→ 打開 popup
@@ -356,7 +358,7 @@ CI 錄影前也會跑 `testDebugUnitTest`，沒過就不會錄影（失敗原因
 
 ## release 冒煙測試
 
-`record.sh` 最後覆蓋安裝 release 版（同一把 debug 金鑰，可以直接覆蓋），打開 App 截圖（`screenshots/release-1-launch.png`），
+`record.sh` 在 SystemUiTest 之後覆蓋安裝 release 版（同一把 debug 金鑰，可以直接覆蓋），打開 App 截圖（`screenshots/release-1-launch.png`），
 再用 `uiautomator dump` 找元件：按「新增」、輸入 `https://github.com/`、按「抓縮圖」，等到預覽的 testTag 變成 `thumb_ready`
 （Coil 真的把縮圖載出來了，`release-2-fetched.png`），按「加入」，清單上出現 `github.com`（`release-3-added.png`）。
 R8 壓過的 OkHttp、jsoup、Coil 只有真的抓一次才跑得到；release 版不認 127.0.0.1 的明碼連線，不能用假網站。
