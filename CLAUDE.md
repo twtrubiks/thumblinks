@@ -205,7 +205,9 @@ JSON（UTF-8、縮排兩格、中文不跳脫；用 kotlinx.serialization 的 `@
     把憑證 SHA-256 填進 `release.yml` 的 `EXPECTED_CERT`，再新增 `release-version`。不要在 VM 裡產生金鑰
   - **2026-10-31 使用者要求先直接給一個 APK 試用**：給的是那個 session 的 VM debug 金鑰簽的 release 版（commit `884bc36`，
     versionCode 1，憑證 SHA-256 `9adf6eb0…4ea897`）。那把金鑰已經跟著 session 消失，之後的 Release 簽章對不上，
-    使用者要移除這一版才能裝正式版，清單會一起刪掉（還沒有匯入）。發第一版 Release 時提醒使用者這件事
+    使用者要移除這一版才能裝正式版，清單會一起刪掉（還沒有匯入）。發第一版 Release 時提醒使用者這件事。
+    同一個 session 後來又給了內建瀏覽器的試用版（`claude/browser-geckoview` 的 `534151d`，arm64，versionCode 2、
+    versionName `0.2-browser`），同一把金鑰，覆蓋安裝在上面那一版上
   - versionCode 是 2026-01-01 起算的分鐘數（workflow 算好用環境變數帶進來），不管從哪個 branch 發都只會變大
   - README 的下載連結是 `releases/latest/download/thumblinks.apk`
 
