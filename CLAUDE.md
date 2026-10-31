@@ -145,7 +145,7 @@ JSON（UTF-8、縮排兩格、中文不跳脫；用 kotlinx.serialization 的 `@
   不用 `ensureBuiltIn` 載入自己打包的 uBO：有人回報 `menus` 權限不被接受、最後 "Extension is invalid"
 - uBO 的按鈕在網址列右邊：它自己的圖示（關掉過濾時變灰）＋這一頁擋了幾個（每個分頁一份 badge）。
   按下去的 popup（`ActionDelegate.onTogglePopup` 回傳的 GeckoSession）放在 BottomSheet 裡的 GeckoView（預設的 SurfaceView；
-  TextureView 在模擬器上整塊是黑的，BrowserTest 會看截圖的顏色擋下來）。
+  TextureView 在模擬器上整塊是黑的）。BrowserTest 一直截圖到 popup 那一塊畫出東西（不是整片同一個顏色，模擬器上要好幾秒）。
   看得到的那一頁要 `setTabActive(session, true)`，popup 才知道要顯示哪一頁的統計
 
 ### 先不做（要做之前先問使用者）
