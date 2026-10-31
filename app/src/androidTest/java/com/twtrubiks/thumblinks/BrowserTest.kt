@@ -1,10 +1,11 @@
 package com.twtrubiks.thumblinks
 
-import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.uiautomator.By
 import android.graphics.Color
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.uiautomator.By
 import androidx.test.uiautomator.StaleObjectException
+import kotlin.math.abs
 import org.junit.After
 import org.junit.Assert.assertTrue
 import org.junit.Assert.fail
@@ -54,12 +55,12 @@ class BrowserTest : UiTest() {
         // BottomSheet 是另一個視窗：看它的「關閉」（popup 的內容在 GeckoView 裡讀不到）
         find(By.res("ublock_button")).click()
         waitFor(By.text("關閉"), timeout = 20_000)
-        pause(4000)
+        // popup 的內容讀不到，看截圖：BottomSheet 裡 GeckoView 那一塊要畫出東西，不能整片同一個顏色
+        // （用 TextureView 時整片黑；模擬器上要好幾秒才畫出來，還沒畫之前是整片灰）
+        val painted = poll(30_000) { if (popupPainted()) Unit else null }
+        pause(1000)
         screenshot("browser-03-ublock-popup")
-        // popup 的內容讀不到，看顏色：BottomSheet 中間那一塊不能整片黑（TextureView 時就是整片黑）
-        val shot = requireNotNull(InstrumentationRegistry.getInstrumentation().uiAutomation.takeScreenshot())
-        val samples = (1..9).flatMap { x -> listOf(0.45f, 0.55f, 0.65f).map { y -> shot.getPixel(shot.width * x / 10, (shot.height * y).toInt()) } }
-        assertTrue("uBO 的 popup 一片黑", samples.any { Color.red(it) + Color.green(it) + Color.blue(it) > 30 })
+        assertTrue("uBO 的 popup 沒有畫出東西", painted != null)
         find(By.text("關閉")).click()
         waitGone(By.text("關閉"))
     }
@@ -98,6 +99,16 @@ class BrowserTest : UiTest() {
         } ?: fail("沒有呼叫 onLoadError")
         pause(2000)
         screenshot("browser-06-error-page")
+    }
+
+    /** 螢幕高度 30%～80%（BottomSheet 裡 GeckoView 那一塊）有沒有明顯不同的顏色。 */
+    private fun popupPainted(): Boolean {
+        val shot = InstrumentationRegistry.getInstrumentation().uiAutomation.takeScreenshot() ?: return false
+        val colors = (30..80 step 5).flatMap { y -> (5..95 step 10).map { x -> shot.getPixel(shot.width * x / 100, shot.height * y / 100) } }
+        shot.recycle()
+        fun differ(a: Int, b: Int) =
+            abs(Color.red(a) - Color.red(b)) + abs(Color.green(a) - Color.green(b)) + abs(Color.blue(a) - Color.blue(b)) > 60
+        return colors.any { a -> colors.any { b -> differ(a, b) } }
     }
 
     /** uBO 擋了幾個（badge 的字）。badge 一直在更新，拿到的元件可能馬上就舊了，舊了就當作還沒有。 */
