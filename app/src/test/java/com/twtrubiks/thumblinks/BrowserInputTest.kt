@@ -44,7 +44,8 @@ class BrowserInputTest {
 
     @Test
     fun webSchemesStayInTheBrowser() {
-        for (uri in listOf("https://a.example/", "http://a.example/", "about:blank", "data:text/html,hi", "blob:https://a/1", "moz-extension://x/popup.html")) {
+        // 空的：window.open() 不帶網址
+        for (uri in listOf("", "https://a.example/", "http://a.example/", "about:blank", "data:text/html,hi", "blob:https://a/1", "moz-extension://x/popup.html")) {
             assertTrue(uri, BrowserInput.isWeb(uri))
         }
         for (uri in listOf("mailto:a@b.c", "tel:0912345678", "intent://scan/#Intent;scheme=zxing;end", "market://details?id=x", "line://msg")) {

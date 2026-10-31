@@ -267,6 +267,8 @@ CI 錄影前也會跑 `testDebugUnitTest`，沒過就不會錄影（失敗原因
 - 網頁載完了沒用 `UiTest.loadPage(url) { 動作 }`：看 `BrowserTab` 寫進 logcat 的「網頁載入完成」。
   工具列的「重新整理」在開始載入之前也是它，拿來等會在網頁還一片白的時候就截圖（模擬器第一次開 GeckoView 要好幾秒）
 - 包著 GeckoView 的 `AndroidView` 加 testTag UiAutomator 也讀不到；要點網頁時用座標（網址列下緣到「上一頁」上緣之間）
+- BottomSheet、Dialog 是另一個視窗，App 根部開的 `testTagsAsResourceId` 管不到：要在裡面再開一次（uBO 的 popup 有開），或用 `By.text` 找
+- uBO 的 badge 一直在更新（換頁時先清掉再重算），讀字時元件可能已經舊了（`StaleObjectException`）
 - 開始前清空清單（`container.links`），要用到的資料都在測試裡建
 - 鍵盤開著才按返回鍵收起（`hideKeyboard()`）——沒開的時候按返回鍵會離開那一頁
 

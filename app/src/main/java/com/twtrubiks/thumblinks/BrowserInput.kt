@@ -30,8 +30,9 @@ object BrowserInput {
 
     /**
      * 瀏覽器自己載得了的網址。其他的（`mailto:`、`tel:`、`intent:`、`market:`…）交給手機上別的 App 開。
+     * 空的是 `about:blank`：`window.open()` 不帶網址（之後再設 location）時 GeckoView 給的就是空字串。
      */
-    fun isWeb(uri: String): Boolean = uri.substringBefore(':').lowercase() in WEB_SCHEMES
+    fun isWeb(uri: String): Boolean = uri.isEmpty() || uri.substringBefore(':').lowercase() in WEB_SCHEMES
 
     /** 可以加到清單的網址（`about:blank`、`moz-extension:` 之類的不行）。 */
     fun canAdd(uri: String): Boolean = uri.startsWith("http://", ignoreCase = true) || uri.startsWith("https://", ignoreCase = true)

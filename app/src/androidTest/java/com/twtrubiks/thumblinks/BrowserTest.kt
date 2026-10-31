@@ -44,15 +44,18 @@ class BrowserTest : UiTest() {
             poll(10_000) { badge()?.toIntOrNull()?.takeIf { it >= 1 } }
         }
         assertTrue("uBO 沒有擋下任何東西，badge：${badge()}", (blocked ?: 0) >= 1)
+        // uBO 換頁時會先清掉 badge 再重算，截圖前再等它出現一次
+        poll(10_000) { badge()?.toIntOrNull() }
         screenshot("browser-02-ublock-badge")
 
         // uBO 的 popup（電源鈕那一頁）放在 BottomSheet 裡
+        // BottomSheet 是另一個視窗：看它的「關閉」（popup 的內容在 GeckoView 裡讀不到）
         find(By.res("ublock_button")).click()
-        waitFor(By.res("ublock_popup"), timeout = 20_000)
+        waitFor(By.text("關閉"), timeout = 20_000)
         pause(4000)
         screenshot("browser-03-ublock-popup")
         find(By.text("關閉")).click()
-        waitGone(By.res("ublock_popup"))
+        waitGone(By.text("關閉"))
     }
 
     @Test
