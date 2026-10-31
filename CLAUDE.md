@@ -1,0 +1,263 @@
+# ThumbLinks
+
+收集網址的 Android App：貼上網址 → 抓縮圖（必填）與標題（選填）→ 整份清單一次匯出成 Markdown 或 JSON。
+Kotlin + Jetpack Compose 原生 App，在 claude.ai/code 雲端 session 開發。
+雲端 VM 沒有模擬器，模擬器操作與錄影交給 GitHub Actions（`.github/workflows/record.yml`）。
+
+架構（Gradle 設定、`Sql` 分層、CI 錄影、發版）沿用 treesay 的 Android 版（`twtrubiks/treesay` 的 `android/`）。
+那邊踩過的坑都寫在它的 `android/CLAUDE.md`，這裡遇到同樣的問題（UiAutomator、模擬器、R8、系統畫面的測試）可以去翻。
+
+## 第一次 session 先做的事
+
+**這個骨架是在沒有 Android SDK 的電腦上寫的**，第一次 push 時的 CI 錄影是它唯一的一次 build。
+開工前先在 VM 跑一次完整驗證（見「在 VM 內驗證」），版本或 API 有問題以錯誤訊息為準修好，並更新「專案約定」的版本段落。
+
+目前做好的：Gradle 專案、`Sql` / `AndroidSql` / `JdbcSql`、`LinkStore`（資料表、新增、列出、刪除，有 JVM 測試與 DeviceTest）、
+只會列出清單的首頁、CI 錄影與發版的 workflow。其餘照下面的規格做，建議順序：
+
+1. `WebUrls`、`PageMeta`、`MetaFetcher`（先寫 JVM 測試）
+2. 新增頁：貼上 → 抓 → 預覽縮圖、預填標題 → 存；清單顯示縮圖（Coil）
+3. 抓不到縮圖時的兩個補救：貼圖片網址、從手機上傳（`ThumbPrep`，DeviceTest 測轉正）
+4. 編輯頁：改標題、換縮圖、刪除、用瀏覽器開
+5. 匯出（`Export` 先寫 JVM 測試，再接系統的存檔畫面）
+6. 從別的 App 分享網址進來
+7. 補齊 `DemoRecordingTest` 的流程、加 `SystemUiTest`、release 冒煙測試走一次真的抓網頁
+
+## 規格
+
+### 加入連結
+
+- 首頁右下角「新增」→ 新增頁：一個網址輸入框，旁邊有「貼上」按鈕（讀剪貼簿）
+- 也接受別的 App「分享」過來的文字（`ACTION_SEND`、`text/plain`）：直接打開新增頁、帶入網址、開始抓。
+  要在 `AndroidManifest.xml` 加 intent-filter，`MainActivity` 用 `onNewIntent` 接住 App 已經開著時分享進來的
+- **取網址**（`WebUrls`）：從輸入或分享的文字裡取出第一個 `http://` 或 `https://` 開頭的網址（分享過來常是「標題＋網址」）。
+  找不到就提示「找不到網址」，不自動補 `https://`
+- **先查重複**：網址已經在清單裡就不抓，提示「已經在清單裡了」並可以跳到那一筆（`DuplicateLinkException.existing`）。
+  網址照字串比對，不做正規化（去追蹤參數之類的先不做）
+- **抓網頁**（`MetaFetcher`，OkHttp，在 `Dispatchers.IO`）：GET、跟著轉址、整體逾時 15 秒、最多讀 1 MB（`<meta>` 都在 `<head>`），
+  帶一般手機瀏覽器的 User-Agent 與 `Accept-Language: zh-TW,zh;q=0.9,en;q=0.8`
+  - 回應的 `Content-Type` 是 `image/*`：網址本身就是縮圖，標題留空
+  - 是 HTML：交給 `PageMeta` 解析
+  - 連不上、逾時、HTTP 4xx/5xx：當作抓不到縮圖，原因寫「連不上這個網頁」，可以重試
+- **解析**（`PageMeta`，純 Kotlin＋jsoup）：
+  - 縮圖依序找 `og:image:secure_url`、`og:image`、`og:image:url`、`twitter:image`、`twitter:image:src`、`<link rel="image_src">`，
+    `<meta>` 的 `property` 和 `name` 屬性都認
+  - 相對網址以「轉址後的最終網址」為基準解析（也要認 `<base href>`）；只收 `http`／`https`
+  - 標題依序找 `og:title`、`twitter:title`、`<title>`；去頭尾空白、連續空白壓成一個
+  - 編碼交給 jsoup 從 bytes 判斷（`Content-Type` 的 charset → `<meta charset>`），Big5 的網頁也要讀得出中文標題
+- **預覽**：抓到之後顯示縮圖（Coil）＋標題欄。標題欄預填抓到的標題，可以改、可以清空（清空就是沒有標題）。
+  縮圖載入失敗（404、不是圖）視同沒抓到
+- **抓不到縮圖**（網頁沒提供、連不上、圖載不出來）：寫出原因（「這個網頁沒有提供縮圖」／「連不上這個網頁」），給兩個補救：
+  1. 貼圖片網址：一樣用 Coil 預覽，載得出來才算
+  2. 從手機選一張圖：Photo Picker（`ActivityResultContracts.PickVisualMedia`，Android 9、10 沒有挑選器時會自動退回系統的檔案畫面）
+
+  抓到了也可以用這兩個方法換掉。**沒有縮圖就不能存**（「加入」按鈕停用）
+- **上傳的圖**（`ThumbPrep`，`Bitmap` + `ExifInterface`）：複製進 App 的 `filesDir/thumbs/<uuid>.jpg`，依 EXIF 轉正、長邊縮到 1024px 以內、
+  JPEG 品質 85，HEIC 一樣轉成 JPEG。不留原圖的 URI（挑選器給的讀取權限是暫時的）。
+  使用者放棄新增或又換了別的縮圖，已經寫出去的檔案要刪掉
+- 轉螢幕不能丟東西：輸入到一半的網址、抓到的結果、選好的縮圖、改到一半的標題都放 `rememberSaveable`
+
+### 清單
+
+- 首頁就是清單，新加的在上面。每筆顯示縮圖、標題（沒有標題就顯示網址）、網域
+- 點一筆進編輯頁：改標題、換縮圖（重新抓、貼圖片網址、上傳）、用瀏覽器開、刪除（要確認）。
+  換掉或刪掉上傳的縮圖時，舊的檔案要刪（`LinkStore.delete` 已經會刪；`update` 還沒寫）
+- 空清單時說明怎麼加：貼網址，或從瀏覽器「分享」過來
+- 右上角「匯出」，清單是空的時候停用
+
+### 匯出
+
+- 一次匯出清單上全部，順序跟畫面一樣（新的在上面）；匯出完清單留著，不清空
+- 先選格式：Markdown 或 JSON
+- 存到哪裡讓使用者選（`ActivityResultContracts.CreateDocument`），預設檔名 `thumblinks-<YYYY-MM-DD>.<md|json|zip>`
+- **都是網路上的縮圖 → 單一檔案**（`.md` / `.json`）
+- **有任何一筆是上傳的縮圖 → 一個 zip**：`links.md` 或 `links.json` ＋ `images/<id>.jpg`，上傳的圖用相對路徑 `images/<id>.jpg` 引用；
+  網路上的縮圖照樣寫網址，不下載
+- 組字與打包（`Export`）是純 Kotlin，zip 用 `java.util.zip.ZipOutputStream`，都在 JVM 測
+
+Markdown（UTF-8，一筆一行，筆與筆之間空一行）：
+
+```markdown
+[![標題](https://example.com/og.jpg)](https://example.com/article)
+
+[![https://example.org/page](images/0b6c1c1e-4f1a-4b1e-9a0e-3f0f2d7c9a11.jpg)](https://example.org/page)
+```
+
+- 沒有標題時，替代文字用網址
+- 標題裡的 `\`、`[`、`]` 前面加 `\`；換行換成空白
+- 網址裡的空白、`(`、`)`、`<`、`>` 用百分比編碼，其餘照原樣
+
+JSON（UTF-8、縮排兩格、中文不跳脫；用 kotlinx.serialization 的 `@Serializable` data class）：
+
+```json
+{
+  "exported_at": "2026-10-31T21:05:00+08:00",
+  "links": [
+    {
+      "url": "https://example.com/article",
+      "title": "標題",
+      "thumbnail": "https://example.com/og.jpg",
+      "created_at": "2026-10-31T20:00:00+08:00"
+    },
+    {
+      "url": "https://example.org/page",
+      "title": null,
+      "thumbnail": "images/0b6c1c1e-4f1a-4b1e-9a0e-3f0f2d7c9a11.jpg",
+      "created_at": "2026-10-30T09:12:00+08:00"
+    }
+  ]
+}
+```
+
+- 沒有標題寫 `null`，不省略欄位
+- `thumbnail` 是字串：`http(s)://` 開頭是網路上的圖，其餘是 zip 裡的相對路徑
+- 時間是當地時間＋時差，到秒（`LinkStore` 存的就是這個格式）
+
+### 先不做（要做之前先問使用者）
+
+匯入、雲端同步、帳號、分類／標籤、搜尋、排序、網址正規化、匯出時把網路上的縮圖也下載進 zip。
+
+## 程式的分層
+
+- 規則都在純 Kotlin、有 JVM 測試：`LinkStore`（已有）、`WebUrls`、`PageMeta`、`MetaFetcher`、`Export`。
+  `MetaFetcher` 的測試用 `mockwebserver3`（轉址、`image/*`、逾時、超過 1 MB、Big5）
+- `LinkStore` 透過 `Sql` 介面存取資料庫：手機上是 `AndroidSql`（`databases/thumblinks.db`），
+  JVM 測試是 `JdbcSql`（sqlite-jdbc 的記憶體資料庫，SQL 跑在真的 SQLite 上）。
+  **Android 9 的 SQLite 是 3.22**：不要用 UPSERT、window function、`VACUUM INTO`、`RETURNING` 這些新語法，
+  JVM 測試擋不下來，要靠 `DeviceTest` 在模擬器上跑
+- 資料表 `links`：主鍵是 UUID（也拿來當上傳圖的檔名與 zip 裡的檔名）、`url` UNIQUE、
+  `thumbnail_url` 與 `thumbnail_file` 二選一（CHECK 擋在資料庫層）。排序用 `rowid`（加入的順序）。
+  改 schema 時用 `ALTER TABLE ... ADD COLUMN` 或在 `LinkStore` 的 init 裡判斷，手機上已經有的資料不能丟
+- 要碰 Android 的放在薄薄一層：`AndroidSql`、`ThumbPrep`（DeviceTest 測）、畫面 `*Screen.kt`、
+  整個 App 的導覽在 `ThumbLinksApp`（照 treesay 的 `TreeSayApp`：sealed interface 的 Route ＋ `rememberSaveable` 的 stack，
+  不另外引入 Navigation 套件），共用的東西在 `AppContainer`（`ThumbLinksApplication.container`）
+- 資料庫與網路一律在 `Dispatchers.IO`，不要在組畫面時讀資料庫
+- 整個 App 共用一個 `OkHttpClient`（放在 `AppContainer`）；Coil 也用它：
+  `ThumbLinksApplication` 實作 `SingletonImageLoader.Factory`，網路層用 `OkHttpNetworkFetcherFactory` 接同一個 client
+
+## 專案約定
+
+- Gradle 專案根目錄就是 repo 根目錄，`./gradlew` 在這裡跑
+- applicationId / namespace：`com.twtrubiks.thumblinks`（`scripts/ci/record.sh` 依賴這個值，改了要一起改）。
+  不要改：applicationId 一變，手機會當成另一個 App，原本的清單就接不回來
+- 單一 module `app`，主畫面 `MainActivity`
+- **minSdk 28（Android 9）**，compileSdk 37，targetSdk 36，Java / Kotlin target 17
+  （`java.time` 在 API 26 就內建，不需要 core library desugaring；新增 API 29+ 的 API 前先跑 `./gradlew lintDebug` 看 NewApi）
+- 依賴版本集中在 `gradle/libs.versions.toml`
+- AGP 9.x 使用 built-in Kotlin：**不要**套 `org.jetbrains.kotlin.android`；Compose 套 `org.jetbrains.kotlin.plugin.compose`，
+  JSON 套 `org.jetbrains.kotlin.plugin.serialization`，版本都跟 Kotlin 一樣
+- 版本起點（2026-10 查的最新穩定版；Android 相關的照 treesay，**還沒在這個專案 build 過**）：
+  AGP 9.4.1、Kotlin 2.4.21、Gradle wrapper 9.8.2、Compose BOM 2026.09.00、activity-compose 1.13.0、core-ktx 1.19.1、
+  lifecycle-runtime-ktx 2.11.0、OkHttp / mockwebserver3 5.5.1、jsoup 1.23.2、Coil 3.6.3、kotlinx-serialization-json 1.12.0、
+  exifinterface 1.4.2、sqlite-jdbc 3.53.4.0（只給 JVM 測試）、androidx.test runner 1.7.0、core 1.7.0、ext:junit 1.3.0、uiautomator 2.4.0。
+  若 build 報版本相容問題，以錯誤訊息為準調整，並更新這段
+- OkHttp、jsoup、Coil、kotlinx.serialization 都自帶 R8 規則，`app/proguard-rules.pro` 目前是空的
+- `android:allowBackup="true"`：清單只是公開網頁的連結，交給系統備份，換手機、重裝時接得回來
+- debug 版的 network security config（`app/src/debug/`）只對 127.0.0.1 放行明碼連線，給測試的假網站用；release 版不帶
+- 畫面用 Material 3，深淺跟系統，Android 12 以上用桌布取色（`Theme.kt`）
+- release 版開 R8（minify + shrinkResources）。簽名看環境變數：有 `THUMBLINKS_KEYSTORE`、`THUMBLINKS_KEYSTORE_PASSWORD`
+  就用發版金鑰（PKCS12，alias `thumblinks`）；沒有就用這台機器的 debug 金鑰（錄影的 CI、自己 build）
+- **給別人（包括使用者）裝的 APK 一律從 GitHub Release 來**，不要把 VM 裡 build 的 APK 傳給使用者：
+  VM 的 debug 金鑰每個 session 都不一樣，簽章對不上的 APK 不能直接更新，只能移除重裝——**移除就會刪掉手機上的清單和上傳的圖**
+  - 發版：`.github/workflows/release.yml`。把 `release-version` 改成新版本（例如 `2026.11.01`，同一天第二版寫 `2026.11.01.2`）推上去，
+    就會 build、簽名、建 `v<版本>` 的 tag 並發 Release；那個版本已經發過的話跳過。
+    雲端 session 的 git 只能推自己的 branch，推 tag 會斷線，所以用版本檔
+  - **還沒有發版金鑰**：第一次發版前，使用者要在自己的電腦照 `docs/release-key.md` 產生金鑰、設 Secrets、
+    把憑證 SHA-256 填進 `release.yml` 的 `EXPECTED_CERT`，再新增 `release-version`。不要在 VM 裡產生金鑰
+  - versionCode 是 2026-01-01 起算的分鐘數（workflow 算好用環境變數帶進來），不管從哪個 branch 發都只會變大
+  - README 的下載連結是 `releases/latest/download/thumblinks.apk`
+
+## 雲端 VM 環境
+
+- Android SDK 由環境的 setup script（`scripts/cloud-setup.sh`）裝在 `/opt/android-sdk`，`ANDROID_HOME` 由環境變數提供。
+  跟 treesay 用同一個環境就可以
+- SDK 不存在時先看 `/var/log/android-sdk-setup.log`
+- 新 session 第一次 build 可能遇到 Maven Central 回 `429 Too Many Requests`（共用出口 IP 被限流），
+  隔 20 秒左右重跑 `./gradlew` 即可，依賴進快取後就不會再遇到；不要為此改 repository 設定（CI 不受影響）。
+  錯誤訊息通常不會直接寫 429，而是 `Plugin [id: '...'] was not found in any of the following sources`、
+  `Could not resolve <group>:<artifact>:<version>` 或 `Configuration cache state could not be cached`，
+  加 `--info` 才看得到底下的 `HTTP 429`。新 session 第一次 build 看到這幾種，先重跑，不要去改版本
+- VM 的網路只放行套件庫，抓不到一般網頁：抓縮圖的邏輯靠 JVM 測試的 MockWebServer，真的連外交給 CI 的模擬器
+
+## 在 VM 內驗證（每次 push 前）
+
+```bash
+./gradlew assembleDebug assembleRelease testDebugUnitTest assembleDebugAndroidTest
+```
+
+`assembleRelease` 會跑 R8，可以先抓到缺 class 之類的錯誤；執行時才會出現的問題要看 CI 的 release 冒煙測試。
+和 Android 無關的邏輯（取網址、解析 meta、匯出格式）寫成純 Kotlin，放在 JVM 單元測試裡測，幾秒就有結果。
+CI 錄影前也會跑 `testDebugUnitTest`，沒過就不會錄影（失敗原因在 `gradle-build.txt`）。
+
+## 錄影測試：DemoRecordingTest
+
+`app/src/androidTest/java/com/twtrubiks/thumblinks/DemoRecordingTest.kt`，CI 只錄這個 class，
+`record.sh` 在它執行期間用 `screenrecord` 錄整個螢幕。找元件、輪詢、截圖這些放在 `UiTest`，之後的 `SystemUiTest` 共用。
+
+- 用 UiAutomator 操作（真實時間驅動，動畫會正常播放），不要用 Compose test rule
+- 不要用 `ActivityScenario` 開 App，用 `UiTest.launchApp()`（`context.startActivity`）；找元件用 `waitFor` 每 0.1 秒輪詢，
+  不要用 `device.wait(Until...)` 或 `device.waitForIdle()`。元件找到之後畫面又重組了，按之前要重新找一次，否則會拿到 `StaleObjectException`
+- 一個 `@Test` 跑完整的展示流程，每個操作之間停 1～1.5 秒讓影片看得清楚；全長控制在 150 秒內（`screenrecord` 上限 180 秒）
+- 用 `By.text(...)` 找元件；要用 testTag 時用 `By.res(...)`（`ThumbLinksApp` 的 root 已經開了 `testTagsAsResourceId`）
+- 要確認細節的畫面用 `screenshot("名稱")` 另存截圖
+- **網頁由模擬器上的假網站提供**（`mockwebserver3`，debug 版允許 127.0.0.1 明碼連線），不連外：
+  有 og:image 與 og:title 的網頁、沒有縮圖的網頁、圖片本身（測試裡用 `Bitmap` 畫一張 PNG）。
+  展示流程：貼網址 → 抓到縮圖與標題 → 改標題 → 加入；貼沒有縮圖的網址 → 貼圖片網址 → 加入；刪除一筆；打開匯出
+- 開始前清空清單（`container.links`），要用到的資料都在測試裡建
+- 鍵盤開著才按返回鍵收起（`hideKeyboard()`）——沒開的時候按返回鍵會離開那一頁
+
+## 模擬器上的測試：DeviceTest
+
+`app/src/androidTest/java/com/twtrubiks/thumblinks/DeviceTest.kt`，`record.sh` 在錄影前先跑、不錄影，輸出在 `device-test.txt`。
+只放模擬器才測得到的事：`LinkStore` 在 Android 9 的 SQLite 上跑一輪；做了上傳之後，`ThumbPrep` 用真的 Bitmap 與 ExifInterface 縮圖轉正
+（直拍的 JPEG、手機拍的 HEIC；只看長寬的話轉錯方向也會過，要用上下兩色的圖核對轉正後顏色的位置，做法見 treesay 的 `DeviceTest`）。
+
+## 系統畫面的測試：SystemUiTest（還沒做）
+
+做到上傳與匯出時加上，不錄影。只放不是 App 畫的畫面，每個 Android 版本長得不一樣，只能點一次才知道接不接得上：
+- 系統的照片挑選器：Android 9、10 是檔案畫面（找得到檔名），Android 11 以後是照片挑選器（只有縮圖，挑第一張）
+- 存檔的檔案畫面：匯出到 Download，用 shell 讀出檔案內容核對（zip 要解開看 `links.md` 與 `images/`）
+
+寫法、照片怎麼先放進相簿、`record.sh` 要在錄影後先 `pm clear` 再跑，都照 treesay 的 `SystemUiTest` 與 `android/scripts/ci/record.sh`。
+
+## release 冒煙測試
+
+`record.sh` 最後覆蓋安裝 release 版（同一把 debug 金鑰，可以直接覆蓋），打開 App 截圖（`screenshots/release-1-launch.png`），
+`logcat-release.txt` 有 `FATAL EXCEPTION` 時 job 會失敗。
+做了加入連結之後要補：用 `uiautomator dump` 找元件、貼一個真的 https 網址（例如 `https://github.com/`）抓縮圖，
+等到預覽出現——R8 壓過的 OkHttp 與 jsoup 只有真的抓一次才跑得到，release 版不認 127.0.0.1 的明碼連線，不能用假網站。
+dump 等不到畫面靜止時（游標在閃、鍵盤開著）的處理見 treesay 的 `record.sh`。
+
+## 錄影流程（GitHub Actions）
+
+1. push 到目前的 branch；改到 `app/**`、`gradle/**`、`*.gradle.kts`、`gradle.properties`、`scripts/ci/**`、`record.yml` 會自動觸發。
+   只改文件（`CLAUDE.md`、`README.md`、`docs/**`）不會觸發。要手動觸發：
+   `gh api -X POST 'repos/{owner}/{repo}/actions/workflows/record.yml/dispatches' -f ref=<branch>`
+   錄影一律用 API 28（最低支援的 Android 9）的模擬器；使用者明確要求其他版本時才加 `-f "inputs[api-level]=<level>"`（例如 Android 14 是 34），
+   不同 API level 都寫到同一個 `media` branch，用 `info.txt` 的 `api level` 分辨
+2. 查進度：`gh api "repos/{owner}/{repo}/actions/runs?branch=<branch>&per_page=1" --jq '.workflow_runs[0] | {id, status, conclusion, head_sha}'`
+   （雲端 session 的 GitHub proxy 擋 GraphQL，`gh pr` / `gh issue` 不能用，一律用 `gh api` 打 REST）
+3. 看哪一步失敗：`gh api 'repos/{owner}/{repo}/actions/runs/<id>/jobs' --jq '.jobs[] | {name, conclusion, steps: [.steps[] | select(.conclusion=="failure") | .name]}'`
+4. 不論成功或失敗，run 結束後都讀 `media` branch（每次會被覆蓋，先核對 `info.txt` 的 commit 是不是自己這次的）：
+
+   ```bash
+   git fetch origin media
+   rm -rf /tmp/media && mkdir -p /tmp/media
+   git archive origin/media | tar -x -C /tmp/media
+   ```
+
+   - `/tmp/media/frames/*.png`：每 2 秒一張影格，用 Read 看圖確認畫面
+   - `/tmp/media/screenshots/*.png`：測試在關鍵畫面存的截圖（半解析度），`release-*.png` 是 release 冒煙測試的截圖
+   - `/tmp/media/info.txt`：branch、commit、api level、run 網址、job status
+   - `/tmp/media/gradle-build.txt`：CI 的 Gradle build 輸出
+   - `/tmp/media/device-test.txt`：DeviceTest 的輸出
+   - `/tmp/media/instrument.txt`、`logcat.txt`：DemoRecordingTest 的輸出與 log
+   - `/tmp/media/release-smoke.txt`、`logcat-release.txt`：release 冒煙測試的啟動時間與 log
+   - `/tmp/media/demo.mp4`：壓縮後的影片（給使用者看）
+
+看完 frames 確認畫面正常後，把 `/tmp/media/demo.mp4` 複製到 session 的 scratchpad 目錄，
+用 SendUserFile（`display: render`）直接傳給使用者，讓使用者不用 pull 就能播放。傳之前先核對 `info.txt` 的 commit 是這次的。
+
+## 環境設定
+
+claude.ai/code 的環境設定步驟寫在 `docs/cloud-setup.md`，改了 `scripts/cloud-setup.sh` 或網路設定要一起更新。

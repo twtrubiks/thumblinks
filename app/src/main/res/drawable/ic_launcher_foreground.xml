@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 一張縮圖：白色相框裡有太陽和山，放在 adaptive icon 中間 66dp 的安全區內 -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:fillColor="@color/ic_frame"
+        android:pathData="M34,36L74,36A4,4 0,0 1,78 40L78,68A4,4 0,0 1,74 72L34,72A4,4 0,0 1,30 68L30,40A4,4 0,0 1,34 36Z" />
+    <path
+        android:fillColor="@color/ic_sun"
+        android:pathData="M64,42a5,5 0,1 1,0 10a5,5 0,1 1,0 -10z" />
+    <path
+        android:fillColor="@color/ic_mountain"
+        android:pathData="M34,68L48,50L58,62L63,56L74,68Z" />
+</vector>

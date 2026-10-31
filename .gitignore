@@ -1,0 +1,15 @@
+.gradle/
+.kotlin/
+build/
+local.properties
+captures/
+.idea/
+*.iml
+.DS_Store
+/out/
+/media/
+/dist/
+# 發版金鑰絕對不能進 repo（放在 GitHub Secrets，備份在自己手上）
+*.p12
+*.jks
+*.keystore
