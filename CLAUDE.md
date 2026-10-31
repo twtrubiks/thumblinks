@@ -382,10 +382,12 @@ logcat 邊跑邊存、測完先回桌面（`@After`）讓 GeckoView 停下來；
 （Coil 真的把縮圖載出來了，`release-2-fetched.png`），按「加入」，清單上出現 `github.com`（`release-3-added.png`）。
 R8 壓過的 OkHttp、jsoup、Coil 只有真的抓一次才跑得到；release 版不認 127.0.0.1 的明碼連線，不能用假網站。
 接著點那一筆，用內建瀏覽器打開 github.com，等 logcat 出現 App 寫的兩行（`BrowserTab` 的「網頁載入完成 success=true https://github.com/」、
-`Ublock` 的「uBlock Origin … 可以用了」，`release-4-browser.png`）：壓過的 GeckoView 要真的載入網頁、從 AMO 裝好 uBO。
+`Ublock` 的「uBlock Origin … 可以用了」）：壓過的 GeckoView 要真的載入網頁、從 AMO 裝好 uBO。
 網頁一直在動，`uiautomator dump` 等不到畫面靜止，所以瀏覽器這一段看 logcat 不用 dump。
-開著 GeckoView 時 `adb exec-out screencap` 會卡住（曾經卡了 30 分鐘、整個 job 逾時）：這一段的 adb 指令都包 `timeout`，
-截圖改成先存在模擬器上再 pull，截不到就算了（`release-4-browser.png` 可能沒有），進度（含時間）寫進 `release-smoke.txt`。
+**這一段不截圖**：GeckoView 畫出網頁之後 adb 的 screencap 會卡住（`exec-out` 曾經卡了 30 分鐘、整個 job 逾時；
+存在模擬器上的 `adb shell screencap` 也一樣），卡住的 screencap 留在模擬器上，接著關掉 App 時 system_server 整個停住
+（watchdog 把它殺掉、`DeadSystemException`），後面的 BrowserTest 一個都沒跑。以前截得到，只是因為截的時候網頁還沒畫出來。
+瀏覽器的截圖看 BrowserTest 的（UiAutomation 截圖沒事）。這一段的 adb 指令都包 `timeout`，等完先回桌面再往下走，進度（含時間）寫進 `release-smoke.txt`。
 等不到縮圖、加不進清單、瀏覽器沒載完或 uBO 沒裝好，或 `logcat-release.txt` 有 `FATAL EXCEPTION` 時 job 會失敗。
 輸入框拿到焦點後游標會閃、鍵盤會打開，dump 等不到畫面靜止，所以新增頁先在沒有人拿到焦點時 dump 一次記下座標；
 按「抓縮圖」時 App 會把焦點拿掉，之後的 dump 才等得到。
