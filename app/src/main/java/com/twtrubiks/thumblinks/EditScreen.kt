@@ -1,7 +1,5 @@
 package com.twtrubiks.thumblinks
 
-import android.content.ActivityNotFoundException
-import android.content.Intent
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -41,14 +39,13 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.core.net.toUri
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 /** 編輯一筆：改標題、換縮圖（重新抓、貼圖片網址、上傳）、用瀏覽器開、刪除。網址不能改。 */
 @Composable
-fun EditScreen(id: String, onBack: () -> Unit) {
+fun EditScreen(id: String, onBack: () -> Unit, onOpenBrowser: (String) -> Unit) {
     val container = LocalContext.current.container
     // 資料庫在 IO 讀。外層的 null 是還沒讀到；讀到的是 null 表示那一筆不在了（例如已經刪掉），回上一頁
     val loaded by produceState<Lookup?>(null, id) {
@@ -58,14 +55,14 @@ fun EditScreen(id: String, onBack: () -> Unit) {
     when {
         loaded == null -> Screen(title = "編輯", onBack = onBack) {}
         link == null -> LaunchedEffect(Unit) { onBack() }
-        else -> EditLink(link, onBack)
+        else -> EditLink(link, onBack, onOpenBrowser)
     }
 }
 
 private class Lookup(val link: Link?)
 
 @Composable
-private fun EditLink(link: Link, onBack: () -> Unit) {
+private fun EditLink(link: Link, onBack: () -> Unit, onOpenBrowser: (String) -> Unit) {
     val context = LocalContext.current
     val container = context.container
     val focus = LocalFocusManager.current
@@ -100,13 +97,7 @@ private fun EditLink(link: Link, onBack: () -> Unit) {
                 Text(WebUrls.domain(link.url), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary)
                 Text(link.url, style = MaterialTheme.typography.bodySmall, maxLines = 3, overflow = TextOverflow.Ellipsis)
             }
-            OutlinedButton(onClick = {
-                try {
-                    context.startActivity(Intent(Intent.ACTION_VIEW, link.url.toUri()))
-                } catch (e: ActivityNotFoundException) {
-                    scope.launch { snackbar.showSnackbar("沒有可以打開網址的 App") }
-                }
-            }) { Text("用瀏覽器開") }
+            OutlinedButton(onClick = { onOpenBrowser(link.url) }) { Text("用瀏覽器開") }
 
             OutlinedTextField(
                 value = title,

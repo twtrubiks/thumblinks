@@ -7,6 +7,7 @@ import coil3.PlatformContext
 import coil3.SingletonImageLoader
 import coil3.network.okhttp.OkHttpNetworkFetcherFactory
 import okhttp3.OkHttpClient
+import org.mozilla.geckoview.GeckoRuntime
 import java.io.File
 
 /** Coil 載入縮圖也走 [AppContainer.http]，跟抓網頁共用連線池與瀏覽器的 User-Agent。 */
@@ -20,8 +21,8 @@ class ThumbLinksApplication : Application(), SingletonImageLoader.Factory {
 
 val Context.container: AppContainer get() = (applicationContext as ThumbLinksApplication).container
 
-/** 整個 App 共用的東西：連結清單、上傳縮圖的資料夾、網路。 */
-class AppContainer(context: Context) {
+/** 整個 App 共用的東西：連結清單、上傳縮圖的資料夾、網路、內建瀏覽器。 */
+class AppContainer(private val context: Context) {
     val thumbsDir = File(context.filesDir, "thumbs")
 
     val links: LinkStore by lazy { LinkStore(AndroidSql(context), thumbsDir) }
@@ -49,4 +50,25 @@ class AppContainer(context: Context) {
     }
 
     val fetcher: MetaFetcher by lazy { MetaFetcher(http) }
+
+    /**
+     * 內建瀏覽器的引擎，一個行程只能有一個，第一次打開瀏覽器時才建立（要在主執行緒）。
+     * GeckoView 另外開的網頁行程也會跑 [ThumbLinksApplication]，所以不能在 `onCreate` 就建立。
+     */
+    val gecko: GeckoRuntime by lazy { GeckoRuntime.create(context) }
+
+    val ublock: Ublock by lazy { Ublock(gecko, context.getSharedPreferences("browser", Context.MODE_PRIVATE)) }
+
+    /** 開著的分頁，key 是那一頁瀏覽器在導覽 stack 裡的 key；關掉那一頁時 [closeTab]。 */
+    private val tabs = mutableMapOf<String, BrowserTab>()
+
+    fun tab(key: String, initialUrl: () -> String?): BrowserTab = tabs.getOrPut(key) {
+        BrowserTab(context, gecko, initialUrl()).also(ublock::register)
+    }
+
+    fun closeTab(key: String) {
+        val tab = tabs.remove(key) ?: return
+        ublock.unregister(tab)
+        tab.close()
+    }
 }

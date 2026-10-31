@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 # 在模擬器上先跑 DeviceTest（Android 9 的 SQLite、Bitmap 縮圖轉正，不錄影），再一邊錄影一邊跑 DemoRecordingTest，
-# 錄完清掉 App 資料跑 SystemUiTest（系統的照片挑選器、存檔的檔案畫面，不錄影），
-# 最後覆蓋安裝 release 版做冒煙測試（真的抓一次 https 網頁的縮圖）。
+# 錄完清掉 App 資料跑 SystemUiTest（系統的照片挑選器、存檔的檔案畫面，不錄影），再清掉跑 BrowserTest（uBO 從 AMO 安裝、擋廣告），
+# 最後覆蓋安裝 release 版做冒煙測試（真的抓一次 https 網頁的縮圖、用內建瀏覽器打開它）。
+# APK 按 CPU 拆開（GeckoView），模擬器裝 x86_64 那一份。
 # 輸出到 $1（預設 out/）：device-test.txt、demo.raw.mp4、instrument.txt、logcat.txt、system-ui-test.txt、
-# logcat-system-ui.txt、screenshots/，以及 release 版冒煙測試的 release-smoke.txt、logcat-release.txt、screenshots/release-*.png
+# logcat-system-ui.txt、browser-test.txt、logcat-browser.txt、screenshots/，以及 release 版冒煙測試的 release-smoke.txt、logcat-release.txt、screenshots/release-*.png
 # 由 .github/workflows/record.yml 在 android-emulator-runner 裡呼叫，工作目錄是 repo 根目錄。
 # 寫法照 treesay 的 android/scripts/ci/record.sh
 set -uo pipefail
@@ -13,9 +14,11 @@ APP_ID=com.twtrubiks.thumblinks
 TEST_CLASS=$APP_ID.DemoRecordingTest
 DEVICE_TEST_CLASS=$APP_ID.DeviceTest
 SYSTEM_UI_TEST_CLASS=$APP_ID.SystemUiTest
+BROWSER_TEST_CLASS=$APP_ID.BrowserTest
 mkdir -p "$OUT"
 
-adb install -r -t app/build/outputs/apk/debug/app-debug.apk || exit 1
+# GeckoView 的 APK 按 CPU 拆開，模擬器是 x86_64
+adb install -r -t app/build/outputs/apk/debug/app-x86_64-debug.apk || exit 1
 adb install -r -t app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk || exit 1
 
 # 喚醒並解鎖螢幕、在影片裡顯示點擊位置
@@ -80,6 +83,15 @@ timeout 300 adb shell am instrument -w -e class "$SYSTEM_UI_TEST_CLASS" \
 adb pull "/sdcard/Android/data/$APP_ID/files/screenshots" "$OUT/" || true
 adb logcat -d > "$OUT/logcat-system-ui.txt" || true
 
+# 內建瀏覽器的 uBlock Origin：從 AMO 安裝（要連外）、擋廣告、popup。不錄影。
+# 先清掉 App 資料，每次都從第一次安裝 uBO 開始（截圖已經 pull 回來了）
+adb shell pm clear "$APP_ID" || true
+adb logcat -c || true
+timeout 400 adb shell am instrument -w -e class "$BROWSER_TEST_CLASS" \
+  "$APP_ID.test/androidx.test.runner.AndroidJUnitRunner" | tee "$OUT/browser-test.txt"
+adb pull "/sdcard/Android/data/$APP_ID/files/screenshots" "$OUT/" || true
+adb logcat -d > "$OUT/logcat-browser.txt" || true
+
 # 給 release 版冒煙測試用：沒有 UiAutomator 測試 APK 可用，靠 uiautomator dump 找元件
 # 剛跑完 UiAutomator 測試時，前一個 UiAutomation 連線可能還沒放掉，dump 會回 null root node：隔兩秒再試
 ui_dump() {
@@ -130,13 +142,17 @@ if ! grep -q '^OK (' "$OUT/system-ui-test.txt"; then
   echo "SystemUiTest 沒有通過，詳見 $OUT/system-ui-test.txt、$OUT/logcat-system-ui.txt 與 screenshots/system-*.png"
   status=1
 fi
+if ! grep -q '^OK (' "$OUT/browser-test.txt"; then
+  echo "BrowserTest 沒有通過，詳見 $OUT/browser-test.txt、$OUT/logcat-browser.txt 與 screenshots/browser-*.png"
+  status=1
+fi
 
 # release 版冒煙測試：R8 壓縮過的程式在 debug 版測不到，覆蓋安裝後打開 App，確認沒有閃退，
 # 並且真的抓一次網頁：壓過的 OkHttp、jsoup、Coil 只有真的抓一次才跑得到。
 # release 版不認 127.0.0.1 的明碼連線，不能用假網站，抓一個真的 https 網址。
 # 兩個版本都用 debug 金鑰簽，可以直接覆蓋。先清掉 App 資料，從第一次打開的樣子開始。
 SMOKE_URL=https://github.com/
-RELEASE_APK=app/build/outputs/apk/release/app-release.apk
+RELEASE_APK=app/build/outputs/apk/release/app-x86_64-release.apk
 if [ -f "$RELEASE_APK" ]; then
   mkdir -p "$OUT/screenshots"
   adb shell pm clear "$APP_ID" || true
@@ -175,13 +191,30 @@ if [ -f "$RELEASE_APK" ]; then
   if [ "$fetched" -eq 1 ] && save=$(center "$preview" 'text="加入"') && adb shell input tap $save; then
     for _ in $(seq 1 10); do
       sleep 1
-      if ui_dump | grep -q 'text="github.com"'; then
+      if list=$(ui_dump) && printf '%s' "$list" | grep -q 'text="github.com"'; then
         added=1
         break
       fi
     done
   fi
   adb exec-out screencap -p > "$OUT/screenshots/release-3-added.png"
+
+  # 點那一筆：用內建瀏覽器打開 github.com。壓過的 GeckoView 要真的載入網頁、從 AMO 裝好 uBO。
+  # 網頁一直在動，uiautomator dump 等不到畫面靜止，改看 App 寫進 logcat 的兩行（BrowserTab、Ublock）
+  browsed=0
+  if [ "$added" -eq 1 ] && row=$(center "$list" 'text="github.com"') && adb shell input tap $row; then
+    for _ in $(seq 1 60); do
+      sleep 2
+      log=$(adb logcat -d -s ThumbLinks:I)
+      if printf '%s' "$log" | grep -q '網頁載入完成 success=true https://github.com/' \
+        && printf '%s' "$log" | grep -q 'uBlock Origin .* 可以用了'; then
+        browsed=1
+        break
+      fi
+    done
+    sleep 3
+  fi
+  adb exec-out screencap -p > "$OUT/screenshots/release-4-browser.png"
 
   adb logcat -d > "$OUT/logcat-release.txt" || true
   if grep -q 'FATAL EXCEPTION' "$OUT/logcat-release.txt"; then
@@ -193,6 +226,9 @@ if [ -f "$RELEASE_APK" ]; then
     status=1
   elif [ "$added" -ne 1 ]; then
     echo "release 版按「加入」之後清單上沒看到 github.com，詳見 $OUT/screenshots/release-3-added.png"
+    status=1
+  elif [ "$browsed" -ne 1 ]; then
+    echo "release 版的內建瀏覽器沒等到 github.com 載完或 uBO 裝好，詳見 $OUT/screenshots/release-4-browser.png 與 $OUT/logcat-release.txt"
     status=1
   fi
 fi

@@ -9,7 +9,8 @@
 
 - 縮圖抓網頁的 `og:image` / `twitter:image`；抓不到時可以自己貼圖片網址，或從手機上傳一張
 - 有上傳的圖時，匯出成 zip（`links.md` 或 `links.json` ＋ `images/`）
-- Android 9 以上，Kotlin + Jetpack Compose
+- 內建會擋廣告的瀏覽器（GeckoView ＋ 從 Mozilla 附加元件網站安裝的 uBlock Origin），看到喜歡的網頁直接「加到清單」
+- Android 9 以上（arm64 手機），Kotlin + Jetpack Compose
 
 ## 下載
 

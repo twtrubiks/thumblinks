@@ -13,9 +13,11 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.ThumbLinks">
-        <!-- singleTask：App 已經開著時從別的 App 分享進來，交給同一個 MainActivity 的 onNewIntent，不會開出第二份 -->
+        <!-- singleTask：App 已經開著時從別的 App 分享進來，交給同一個 MainActivity 的 onNewIntent，不會開出第二份。
+             configChanges：轉螢幕、接實體鍵盤時不重建 Activity，內建瀏覽器的 GeckoView 不用重接畫面（Compose 自己會重排） -->
         <activity
             android:name=".MainActivity"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboard|keyboardHidden|navigation"
             android:exported="true"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize">

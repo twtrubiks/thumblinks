@@ -21,7 +21,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.UUID
 
-/** 畫面。首頁是清單，新增與編輯從它往裡走。[key] 用來分開每一頁的 rememberSaveable。 */
+/** 畫面。首頁是清單，新增、編輯、內建瀏覽器從它往裡走。[key] 用來分開每一頁的 rememberSaveable（瀏覽器的分頁也用它）。 */
 private sealed interface Route {
     val key: String
 
@@ -37,6 +37,11 @@ private sealed interface Route {
     data class Edit(val id: String) : Route {
         override val key get() = "edit-$id"
     }
+
+    /** 內建瀏覽器的一個分頁。[url] 是一打開要載入的網址，null 是空白頁（網址列等著輸入）。 */
+    data class Browser(val nonce: String, val url: String?) : Route {
+        override val key get() = "browser-$nonce"
+    }
 }
 
 /** 轉螢幕、切到背景再回來時，走到哪一頁要留著。 */
@@ -47,6 +52,7 @@ private val StackSaver = listSaver<List<Route>, String>(
                 Route.Home -> "home"
                 is Route.Add -> "add|${it.nonce}|${it.shared ?: ""}"
                 is Route.Edit -> "edit|${it.id}"
+                is Route.Browser -> "browser|${it.nonce}|${it.url ?: ""}"
             }
         }
     },
@@ -56,6 +62,7 @@ private val StackSaver = listSaver<List<Route>, String>(
             when (parts[0]) {
                 "add" -> Route.Add(parts[1], parts[2].ifEmpty { null })
                 "edit" -> Route.Edit(parts[1])
+                "browser" -> Route.Browser(parts[1], parts[2].ifEmpty { null })
                 else -> Route.Home
             }
         }
@@ -84,7 +91,10 @@ fun ThumbLinksApp(sharedText: String? = null, onSharedTextTaken: () -> Unit = {}
     fun close(route: Route) {
         stack = (stack - route).ifEmpty { listOf(Route.Home) }
         holder.removeState(route.key)
+        if (route is Route.Browser) container.closeTab(route.key)
     }
+    fun browse(url: String?) = push(Route.Browser(UUID.randomUUID().toString(), url))
+    fun add(shared: String?) = push(Route.Add(UUID.randomUUID().toString(), shared))
     fun replace(route: Route, with: Route) {
         stack = stack.map { if (it == route) with else it }
         holder.removeState(route.key)
@@ -92,7 +102,7 @@ fun ThumbLinksApp(sharedText: String? = null, onSharedTextTaken: () -> Unit = {}
 
     LaunchedEffect(sharedText) {
         if (sharedText != null) {
-            push(Route.Add(UUID.randomUUID().toString(), sharedText))
+            add(sharedText)
             onSharedTextTaken()
         }
     }
@@ -106,13 +116,15 @@ fun ThumbLinksApp(sharedText: String? = null, onSharedTextTaken: () -> Unit = {}
                 .semantics { testTagsAsResourceId = true },
         ) {
             val route = stack.last()
-            // 新增、編輯頁自己接返回鍵：要先刪掉在那一頁上傳、還沒存的圖
+            // 新增、編輯頁自己接返回鍵：要先刪掉在那一頁上傳、還沒存的圖；瀏覽器的返回鍵先回上一頁
             holder.SaveableStateProvider(route.key) {
                 when (route) {
                     Route.Home -> ListScreen(
                         links = links,
-                        onAdd = { push(Route.Add(UUID.randomUUID().toString(), null)) },
-                        onOpen = { push(Route.Edit(it.id)) },
+                        onAdd = { add(null) },
+                        onOpen = { browse(it.url) },
+                        onEdit = { push(Route.Edit(it.id)) },
+                        onBrowse = { browse(null) },
                     )
                     is Route.Add -> AddScreen(
                         initialText = route.shared,
@@ -120,7 +132,15 @@ fun ThumbLinksApp(sharedText: String? = null, onSharedTextTaken: () -> Unit = {}
                         onAdded = { close(route) },
                         onOpenExisting = { replace(route, Route.Edit(it)) },
                     )
-                    is Route.Edit -> EditScreen(id = route.id, onBack = { close(route) })
+                    is Route.Edit -> EditScreen(id = route.id, onBack = { close(route) }, onOpenBrowser = ::browse)
+                    is Route.Browser -> BrowserScreen(
+                        tabKey = route.key,
+                        initialUrl = route.url,
+                        links = links,
+                        onClose = { close(route) },
+                        onAdd = ::add,
+                        onEdit = { push(Route.Edit(it)) },
+                    )
                 }
             }
         }

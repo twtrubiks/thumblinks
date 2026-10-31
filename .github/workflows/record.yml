@@ -78,7 +78,8 @@ jobs:
           target: default
           arch: x86_64
           profile: pixel_7_pro
-          ram-size: 2048M
+          # GeckoView 會另外開網頁內容的行程，2 GB 不太夠
+          ram-size: 3072M
           # 錄 demo 影片要保留動畫
           disable-animations: false
           emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none
