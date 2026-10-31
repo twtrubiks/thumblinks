@@ -61,6 +61,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.focus.FocusRequester
@@ -73,6 +74,8 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
@@ -538,7 +541,7 @@ private fun ChoiceDialog(pending: PendingPrompt, p: ChoicePrompt) {
  * uBO 的 popup（那顆大電源鈕：這個網站要不要過濾）。uBO 回傳的是一個 GeckoSession，放進 BottomSheet 裡的 GeckoView。
  * BottomSheet 的拖曳關掉：popup 裡可以捲，拖曳會跟它搶；點外面或按返回鍵關。
  */
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 private fun UblockPopup(session: org.mozilla.geckoview.GeckoSession, onDismiss: () -> Unit) {
     ModalBottomSheet(
@@ -546,13 +549,16 @@ private fun UblockPopup(session: org.mozilla.geckoview.GeckoSession, onDismiss: 
         sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
         sheetGesturesEnabled = false,
     ) {
-        AndroidView(
-            // 放在會滑動的 BottomSheet 裡，用 TextureView 才會跟著動
-            factory = { GeckoView(it).apply { setViewBackend(GeckoView.BACKEND_TEXTURE_VIEW) } },
-            update = { if (it.session !== session) it.setSession(session) },
-            onRelease = { it.releaseSession() },
-            modifier = Modifier.fillMaxWidth().height(560.dp).testTag("ublock_popup"),
-        )
-        TextButton(onClick = onDismiss, modifier = Modifier.align(Alignment.End).padding(end = 12.dp, bottom = 8.dp)) { Text("關閉") }
+        // BottomSheet 是另一個視窗，App 根部開的 testTagsAsResourceId 管不到這裡；包著 GeckoView 的 AndroidView 上的 testTag 也讀不到
+        Column(Modifier.semantics { testTagsAsResourceId = true }.testTag("ublock_popup")) {
+            AndroidView(
+                // 放在會滑動的 BottomSheet 裡，用 TextureView 才會跟著動
+                factory = { GeckoView(it).apply { setViewBackend(GeckoView.BACKEND_TEXTURE_VIEW) } },
+                update = { if (it.session !== session) it.setSession(session) },
+                onRelease = { it.releaseSession() },
+                modifier = Modifier.fillMaxWidth().height(560.dp),
+            )
+            TextButton(onClick = onDismiss, modifier = Modifier.align(Alignment.End).padding(end = 12.dp, bottom = 8.dp)) { Text("關閉") }
+        }
     }
 }
