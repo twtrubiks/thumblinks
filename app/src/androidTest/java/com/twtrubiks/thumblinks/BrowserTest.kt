@@ -36,13 +36,13 @@ class BrowserTest : UiTest() {
         // 第一次打開瀏覽器時從 AMO 下載安裝，裝好之後工具列才出現 uBO 的按鈕
         waitFor(By.res("ublock_button"), timeout = 120_000)
         screenshot("browser-01-ublock-installed")
-        // 網頁可能在 uBO 裝好之前就載完了：重新整理，讓 uBO 過濾這一次的請求
-        poll(30_000) {
-            find(By.desc("重新整理")).click()
-            poll(10_000) { device.findObject(By.res("ublock_badge")) }
+        // 網頁可能在 uBO 準備好之前就載完了，uBO 剛裝好、還在讀過濾清單時 badge 是「!」：
+        // 重新整理，直到 badge 是這一頁擋下的數量
+        val blocked = poll(90_000) {
+            waitFor(By.desc("重新整理"), timeout = 30_000).click()
+            poll(10_000) { device.findObject(By.res("ublock_badge"))?.text?.toIntOrNull()?.takeIf { it >= 1 } }
         }
-        val badge = requireNotNull(device.findObject(By.res("ublock_badge"))) { "uBO 沒有擋下任何東西" }.text
-        assertTrue("uBO 擋下的數量：$badge", (badge.toIntOrNull() ?: 0) >= 1)
+        assertTrue("uBO 沒有擋下任何東西，badge：${device.findObject(By.res("ublock_badge"))?.text}", (blocked ?: 0) >= 1)
         screenshot("browser-02-ublock-badge")
 
         // uBO 的 popup（電源鈕那一頁）放在 BottomSheet 裡
