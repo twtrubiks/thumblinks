@@ -80,14 +80,14 @@ fun ThumbLinksApp(sharedText: String? = null, onSharedTextTaken: () -> Unit = {}
     fun push(route: Route) {
         stack = stack + route
     }
-    fun pop() {
-        val top = stack.last()
-        stack = if (stack.size > 1) stack.dropLast(1) else listOf(Route.Home)
-        holder.removeState(top.key)
+    // 關掉「那一頁」而不是最上面那一頁：存檔的時候剛好又分享進來一個網址，關掉的不能是新開的那頁
+    fun close(route: Route) {
+        stack = (stack - route).ifEmpty { listOf(Route.Home) }
+        holder.removeState(route.key)
     }
-    fun replaceTop(route: Route) {
-        holder.removeState(stack.last().key)
-        stack = stack.dropLast(1) + route
+    fun replace(route: Route, with: Route) {
+        stack = stack.map { if (it == route) with else it }
+        holder.removeState(route.key)
     }
 
     LaunchedEffect(sharedText) {
@@ -116,11 +116,11 @@ fun ThumbLinksApp(sharedText: String? = null, onSharedTextTaken: () -> Unit = {}
                     )
                     is Route.Add -> AddScreen(
                         initialText = route.shared,
-                        onBack = ::pop,
-                        onAdded = ::pop,
-                        onOpenExisting = { replaceTop(Route.Edit(it)) },
+                        onBack = { close(route) },
+                        onAdded = { close(route) },
+                        onOpenExisting = { replace(route, Route.Edit(it)) },
                     )
-                    is Route.Edit -> EditScreen(id = route.id, onBack = ::pop)
+                    is Route.Edit -> EditScreen(id = route.id, onBack = { close(route) })
                 }
             }
         }

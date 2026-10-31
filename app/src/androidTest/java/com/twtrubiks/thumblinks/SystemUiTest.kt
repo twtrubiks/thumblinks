@@ -62,7 +62,7 @@ class SystemUiTest : UiTest() {
         pause(1000)
         screenshot("system-02-photo-picked")
         find(By.text("加入")).click()
-        waitFor(By.text(FakeSite.PLAIN_TITLE))
+        backOnList()
 
         val link = container.links.all().single()
         val thumb = File(container.thumbsDir, (link.thumbnail as Thumbnail.Uploaded).fileName)

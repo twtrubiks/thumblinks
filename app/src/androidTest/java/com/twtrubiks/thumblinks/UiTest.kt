@@ -68,6 +68,11 @@ abstract class UiTest {
         container.links.all().forEach { container.links.delete(it.id) }
     }
 
+    /** 等回到首頁的清單（不是空的）。新增頁、編輯頁的標題欄裡也有標題，不能拿標題的字來判斷。 */
+    protected fun backOnList() {
+        waitFor(By.res("link_list"))
+    }
+
     protected fun find(selector: BySelector): UiObject2 = waitFor(selector)
 
     // device.wait(Until...) 一秒才看一次，每一步都多等快一秒；自己每 0.1 秒看一次
