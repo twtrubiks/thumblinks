@@ -44,6 +44,8 @@ class DemoRecordingTest : UiTest() {
         hideKeyboard()
         pause(1500)
         find(By.text("加入")).click()
+        // 新增頁的標題欄裡也是這幾個字，要等回到清單
+        backOnList()
         waitFor(By.text("陽明山芒草"))
         pause(2000)
         screenshot("03-added")
@@ -58,6 +60,7 @@ class DemoRecordingTest : UiTest() {
         waitFor(By.text("陽明山芒草"))
         pause(2000)
         find(By.desc("返回")).click()
+        backOnList()
 
         // 沒有縮圖的網頁 → 貼圖片網址 → 加入（標題沿用網頁的 <title>）
         setClipboard(site.url("/plain"))
@@ -75,6 +78,7 @@ class DemoRecordingTest : UiTest() {
         pause(2000)
         screenshot("06-image-url")
         find(By.text("加入")).click()
+        backOnList()
         waitFor(By.text(FakeSite.PLAIN_TITLE))
         pause(2000)
         screenshot("07-list")
@@ -88,6 +92,7 @@ class DemoRecordingTest : UiTest() {
         screenshot("08-confirm-delete")
         find(By.text("刪除")).click()
         // 回到清單，只剩另一筆
+        backOnList()
         waitFor(By.text(FakeSite.PLAIN_TITLE))
         waitGone(By.text("陽明山芒草"))
         pause(2000)
