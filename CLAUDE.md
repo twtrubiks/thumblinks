@@ -299,7 +299,8 @@ JSON（UTF-8、縮排兩格、中文不跳脫；用 kotlinx.serialization 的 `@
     再來是修了清單與瀏覽器一片白的 `97b3770`（versionCode 3、`0.3-browser`）、
     修了 `window.open()` 不帶網址的 `1662901`（versionCode 4、`0.4-browser`）、
     修了 uBO popup 整塊黑與網址列閃 `about:blank` 的 `74c64e1`（versionCode 5、`0.5-browser`）、
-    加了深色模式、排序、輸入框換行、瀏覽器預熱的 `9198703`（versionCode 6、`0.6-browser`）
+    加了深色模式、排序、輸入框換行、瀏覽器預熱的 `9198703`（versionCode 6、`0.6-browser`）、
+    加了愛心、複製網址（清單長按選單）、修了編輯頁關錯頁與備份範圍的 `2e8657f`（versionCode 7、`0.7-browser`）
   - versionCode 是 2026-01-01 起算的分鐘數（workflow 算好用環境變數帶進來），不管從哪個 branch 發都只會變大
   - README 的下載連結是 `releases/latest/download/thumblinks.apk`
 
