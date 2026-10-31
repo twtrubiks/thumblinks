@@ -32,7 +32,7 @@ class DemoRecordingTest : UiTest() {
 
         // 貼網址 → 抓到縮圖與標題 → 改標題 → 加入
         setClipboard(site.url("/hiking"))
-        find(By.text("新增")).click()
+        find(By.res("add_button")).click()
         waitFor(By.text("貼上"))
         pause(1200)
         find(By.text("貼上")).click()
@@ -64,7 +64,7 @@ class DemoRecordingTest : UiTest() {
 
         // 沒有縮圖的網頁 → 貼圖片網址 → 加入（標題沿用網頁的 <title>）
         setClipboard(site.url("/plain"))
-        find(By.text("新增")).click()
+        find(By.res("add_button")).click()
         find(By.text("貼上")).click()
         waitFor(By.text("這個網頁沒有提供縮圖"), timeout = 20_000)
         pause(2000)

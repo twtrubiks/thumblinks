@@ -156,7 +156,7 @@ if [ -f "$RELEASE_APK" ]; then
   fetched=0
   added=0
   if home=$(ui_dump) \
-    && add=$(center "$home" 'text="新增"') \
+    && add=$(center "$home" 'resource-id="add_button"') \
     && adb shell input tap $add && sleep 2 \
     && add_screen=$(ui_dump) \
     && url_input=$(center "$add_screen" 'resource-id="url_input"') \
