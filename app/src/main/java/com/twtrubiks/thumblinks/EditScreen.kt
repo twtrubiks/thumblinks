@@ -74,9 +74,9 @@ private fun EditLink(link: Link, onBack: () -> Unit) {
 
     var title by rememberSaveable { mutableStateOf(link.title.orEmpty()) }
     val draft = rememberThumbDraft(link.thumbnail)
-    var refetching by rememberSaveable { mutableStateOf(false) }
+    var refetching by remember { mutableStateOf(false) }
     var confirmDelete by rememberSaveable { mutableStateOf(false) }
-    var saving by rememberSaveable { mutableStateOf(false) }
+    var saving by remember { mutableStateOf(false) }
 
     fun leave() {
         draft.discard(container.thumbsDir)
