@@ -92,8 +92,12 @@ abstract class UiTest {
         }
     }
 
-    /** 往 [direction] 捲，直到 [selector] 整個出現在畫面上。 */
+    /**
+     * 往 [direction] 捲，直到 [selector] 整個出現在畫面上。
+     * 先等畫面出來（例如編輯頁要先從資料庫讀那一筆），一頁放得下時沒有可以捲的元件，直接回傳。
+     */
     protected fun reveal(selector: BySelector, direction: Direction = Direction.DOWN): UiObject2 {
+        poll(10_000) { device.findObject(selector) ?: device.findObject(By.scrollable(true)) }
         repeat(8) {
             device.findObject(selector)?.takeIf { it.visibleBounds.height() > 0 }?.let { return it }
             find(By.scrollable(true)).scroll(direction, 0.5f)
