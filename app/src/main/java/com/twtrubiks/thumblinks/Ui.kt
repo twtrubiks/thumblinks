@@ -1,5 +1,9 @@
 package com.twtrubiks.thumblinks
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
+import android.os.Build
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.consumeWindowInsets
@@ -24,6 +28,15 @@ import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.res.painterResource
+
+/**
+ * 把網址放進剪貼簿（清單的長按選單、編輯頁、內建瀏覽器都用這個），再用 [notify] 說「已複製網址」。
+ * Android 13 以後系統自己會在畫面下方跳複製的提示，就不再說一次。
+ */
+fun copyUrl(context: Context, url: String, notify: (String) -> Unit) {
+    context.getSystemService(ClipboardManager::class.java)?.setPrimaryClip(ClipData.newPlainText("url", url))
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) notify("已複製網址")
+}
 
 /**
  * 長的網址、標題在輸入框裡換行顯示（單行的框貼上長網址後，要拖回前面很難），但內容只有一行：

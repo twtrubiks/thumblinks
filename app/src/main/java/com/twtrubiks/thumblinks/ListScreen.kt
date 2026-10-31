@@ -57,7 +57,7 @@ import java.time.LocalDate
 import java.time.OffsetDateTime
 
 /**
- * 首頁就是清單，預設新加的在上面。點一筆用內建瀏覽器打開、長按進編輯頁、右邊的愛心切換喜歡的。
+ * 首頁就是清單，預設新加的在上面。點一筆用內建瀏覽器打開、長按跳選單（編輯、複製網址）、右邊的愛心切換喜歡的。
  * 右上角是深色模式、排序、只看愛心、空白的瀏覽器與匯出，右下角新增。
  * [links] 是 [LinkStore.all] 的順序（新的在上），null 表示還在讀；畫面上照使用者選的排序。
  */
@@ -178,7 +178,8 @@ fun ListScreen(
                         it,
                         container.thumbsDir,
                         onClick = { onOpen(it) },
-                        onLongClick = { onEdit(it) },
+                        onEdit = { onEdit(it) },
+                        onCopy = { copyUrl(context, it.url) { message -> scope.launch { snackbar.showSnackbar(message) } } },
                         onFavorite = { favorite -> onFavorite(it, favorite) },
                     )
                 }
@@ -245,12 +246,38 @@ private class CreateFile : ActivityResultContract<CreateFile.Input, Uri?>() {
 }
 
 @Composable
-private fun LinkRow(link: Link, thumbsDir: java.io.File, onClick: () -> Unit, onLongClick: () -> Unit, onFavorite: (Boolean) -> Unit) {
+private fun LinkRow(
+    link: Link,
+    thumbsDir: java.io.File,
+    onClick: () -> Unit,
+    onEdit: () -> Unit,
+    onCopy: () -> Unit,
+    onFavorite: (Boolean) -> Unit,
+) {
+    // 長按跳的選單，之後要加的動作（分享…）也放這裡
+    var menu by remember { mutableStateOf(false) }
+    Box {
+        DropdownMenu(expanded = menu, onDismissRequest = { menu = false }) {
+            DropdownMenuItem(text = { Text("編輯") }, onClick = {
+                menu = false
+                onEdit()
+            })
+            DropdownMenuItem(text = { Text("複製網址") }, onClick = {
+                menu = false
+                onCopy()
+            })
+        }
+        LinkRowContent(link, thumbsDir, onClick, onLongClick = { menu = true }, onFavorite)
+    }
+}
+
+@Composable
+private fun LinkRowContent(link: Link, thumbsDir: java.io.File, onClick: () -> Unit, onLongClick: () -> Unit, onFavorite: (Boolean) -> Unit) {
     Row(
         Modifier
             .fillMaxWidth()
             .clip(ThumbShape)
-            .combinedClickable(onClickLabel = "打開", onLongClickLabel = "編輯", onLongClick = onLongClick, onClick = onClick)
+            .combinedClickable(onClickLabel = "打開", onLongClickLabel = "選單", onLongClick = onLongClick, onClick = onClick)
             .padding(vertical = 4.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {

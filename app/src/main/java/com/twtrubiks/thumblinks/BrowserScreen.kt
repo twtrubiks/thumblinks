@@ -1,8 +1,6 @@
 package com.twtrubiks.thumblinks
 
 import android.content.ActivityNotFoundException
-import android.content.ClipData
-import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -233,6 +231,7 @@ fun BrowserScreen(
             onDismiss = { tab.contextMenu = null },
             onOpen = tab::load,
             onAdd = onAdd,
+            onCopied = { tab.message = it },
         )
     }
     ublock.popup?.let { UblockPopup(it, onDismiss = ublock::closePopup) }
@@ -391,16 +390,11 @@ private fun PageMenu(tab: BrowserTab) {
                 enabled = tab.url.isNotEmpty(),
                 onClick = {
                     open = false
-                    copy(context, tab.url)
-                    tab.message = "已複製網址"
+                    copyUrl(context, tab.url) { tab.message = it }
                 },
             )
         }
     }
-}
-
-private fun copy(context: Context, text: String) {
-    context.getSystemService(ClipboardManager::class.java)?.setPrimaryClip(ClipData.newPlainText("url", text))
 }
 
 /** 網頁長按連結或圖片時的選單。 */
@@ -410,6 +404,7 @@ private fun ContextMenuDialog(
     onDismiss: () -> Unit,
     onOpen: (String) -> Unit,
     onAdd: (String) -> Unit,
+    onCopied: (String) -> Unit,
 ) {
     val context = LocalContext.current
     val link = element.linkUri
@@ -427,11 +422,11 @@ private fun ContextMenuDialog(
         if (link != null) {
             add(item("開啟連結") { onOpen(link) })
             if (BrowserInput.canAdd(link)) add(item("加到清單") { onAdd(link) })
-            add(item("複製連結網址") { copy(context, link) })
+            add(item("複製連結網址") { copyUrl(context, link, onCopied) })
         }
         if (src != null && element.type == org.mozilla.geckoview.GeckoSession.ContentDelegate.ContextElement.TYPE_IMAGE) {
             add(item("開啟圖片") { onOpen(src) })
-            add(item("複製圖片網址") { copy(context, src) })
+            add(item("複製圖片網址") { copyUrl(context, src, onCopied) })
         }
     }
     AlertDialog(

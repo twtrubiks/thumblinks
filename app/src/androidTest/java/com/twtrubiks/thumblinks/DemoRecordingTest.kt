@@ -1,5 +1,6 @@
 package com.twtrubiks.thumblinks
 
+import android.os.Build
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.uiautomator.By
 import androidx.test.uiautomator.BySelector
@@ -18,7 +19,8 @@ import kotlin.math.abs
  *
  * 貼網址 → 抓到縮圖與標題 → 改標題 → 加入；分享同一個網址進來 → 已經在清單裡了 → 打開那一筆；
  * 貼沒有縮圖的網址 → 貼圖片網址 → 加入；點一筆用內建瀏覽器打開（已在清單）→ 網址列換一篇 → 加到清單；
- * 長按刪除一筆；打開匯出；切成深色模式再切回來；排序換成舊的在上再換回來。uBlock Origin 要連 AMO，不放在錄影裡（[BrowserTest]）。
+ * 長按 → 編輯 → 刪除一筆；打開匯出；切成深色模式再切回來；排序換成舊的在上再換回來；按愛心、只看愛心；
+ * 編輯頁與清單的長按選單複製網址。uBlock Origin 要連 AMO，不放在錄影裡（[BrowserTest]）。
  */
 @RunWith(AndroidJUnit4::class)
 class DemoRecordingTest : UiTest() {
@@ -119,8 +121,9 @@ class DemoRecordingTest : UiTest() {
         pause(2000)
         assertEquals(listOf(FakeSite.AUTUMN_TITLE, FakeSite.PLAIN_TITLE, "陽明山芒草"), container.links.all().map { it.title })
 
-        // 長按進編輯頁，刪除一筆（要確認）
+        // 長按跳選單 → 編輯 → 刪除一筆（要確認）
         find(By.text("陽明山芒草")).longClick()
+        find(By.text("編輯")).click()
         reveal(By.text("刪除這一筆")).click()
         waitFor(By.text("刪除這一筆？"))
         pause(1500)
@@ -159,7 +162,7 @@ class DemoRecordingTest : UiTest() {
         waitUntil { above(FakeSite.AUTUMN_TITLE, FakeSite.PLAIN_TITLE) }
         pause(1500)
 
-        // 愛心：點一筆右邊的愛心，右上角「只看愛心」就只剩那一筆；長按進編輯頁，右上角的愛心也是實心的（存進資料庫了）
+        // 愛心：點一筆右邊的愛心，右上角「只看愛心」就只剩那一筆；進編輯頁，右上角的愛心也是實心的（存進資料庫了）
         heart(FakeSite.PLAIN_TITLE).click()
         waitUntil { heartChecked(FakeSite.PLAIN_TITLE) }
         pause(1500)
@@ -169,7 +172,11 @@ class DemoRecordingTest : UiTest() {
         pause(2000)
         screenshot("15-favorites")
         find(By.text(FakeSite.PLAIN_TITLE)).longClick()
+        find(By.text("編輯")).click()
         waitUntil { checked(By.res("favorite_button")) }
+        pause(1500)
+        // 編輯頁的「複製網址」
+        copied(site.url("/plain")) { find(By.text("複製網址")).click() }
         pause(1500)
         find(By.desc("返回")).click()
         backOnList()
@@ -180,6 +187,22 @@ class DemoRecordingTest : UiTest() {
         waitFor(By.text(FakeSite.AUTUMN_TITLE))
         pause(1500)
         assertEquals(listOf(false, true), container.links.all().map { it.favorite })
+
+        // 清單上長按跳的選單：複製網址，不用進編輯頁
+        find(By.text(FakeSite.AUTUMN_TITLE)).longClick()
+        waitFor(By.text("複製網址"))
+        pause(1500)
+        screenshot("16-long-press-menu")
+        copied(site.url("/autumn")) { find(By.text("複製網址")).click() }
+        pause(1500)
+    }
+
+    /** 做了 [action] 之後剪貼簿裡是 [url]；Android 12 以前 App 自己跳「已複製網址」（13 以後系統自己會提示）。 */
+    private fun copied(url: String, action: () -> Unit) {
+        setClipboard("")
+        action()
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) waitFor(By.text("已複製網址"))
+        waitUntil { clipboardText() == url }
     }
 
     /** 清單上 [title] 那一筆右邊的愛心：每一筆都有一個，挑跟標題同一列（上下最近）的。 */

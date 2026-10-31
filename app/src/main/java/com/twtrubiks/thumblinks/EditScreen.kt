@@ -43,7 +43,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-/** 編輯一筆：改標題、換縮圖（重新抓、貼圖片網址、上傳）、用瀏覽器開、刪除、右上角的愛心。網址不能改。 */
+/** 編輯一筆：改標題、換縮圖（重新抓、貼圖片網址、上傳）、用瀏覽器開、複製網址、刪除、右上角的愛心。網址不能改。 */
 @Composable
 fun EditScreen(id: String, onBack: () -> Unit, onOpenBrowser: (String) -> Unit) {
     val container = LocalContext.current.container
@@ -114,7 +114,12 @@ private fun EditLink(link: Link, onBack: () -> Unit, onOpenBrowser: (String) -> 
                 Text(WebUrls.domain(link.url), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary)
                 Text(link.url, style = MaterialTheme.typography.bodySmall, maxLines = 3, overflow = TextOverflow.Ellipsis)
             }
-            OutlinedButton(onClick = { onOpenBrowser(link.url) }) { Text("用瀏覽器開") }
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                OutlinedButton(onClick = { onOpenBrowser(link.url) }) { Text("用瀏覽器開") }
+                OutlinedButton(onClick = {
+                    copyUrl(context, link.url) { scope.launch { snackbar.showSnackbar(it) } }
+                }) { Text("複製網址") }
+            }
 
             OutlinedTextField(
                 value = title,
