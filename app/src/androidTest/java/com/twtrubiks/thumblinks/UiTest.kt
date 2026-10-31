@@ -1,5 +1,7 @@
 package com.twtrubiks.thumblinks
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Intent
 import android.os.SystemClock
 import androidx.test.platform.app.InstrumentationRegistry
@@ -41,6 +43,29 @@ abstract class UiTest {
             Intent(context, MainActivity::class.java)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK),
         )
+    }
+
+    /** 放一段文字進剪貼簿，給「貼上」按鈕讀。 */
+    protected fun setClipboard(text: String) {
+        instrumentation.runOnMainSync {
+            context.getSystemService(ClipboardManager::class.java).setPrimaryClip(ClipData.newPlainText("url", text))
+        }
+    }
+
+    /** 假裝從別的 App（瀏覽器）分享一段文字進來；App 開著的話會走 onNewIntent。 */
+    protected fun share(text: String) {
+        context.startActivity(
+            Intent(Intent.ACTION_SEND)
+                .setClass(context, MainActivity::class.java)
+                .setType("text/plain")
+                .putExtra(Intent.EXTRA_TEXT, text)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+        )
+    }
+
+    /** 清單清空（上傳的圖一起刪），要用到的資料都在測試裡建。 */
+    protected fun clearLinks() {
+        container.links.all().forEach { container.links.delete(it.id) }
     }
 
     protected fun find(selector: BySelector): UiObject2 = waitFor(selector)

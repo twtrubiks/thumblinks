@@ -7,21 +7,18 @@ Kotlin + Jetpack Compose 原生 App，在 claude.ai/code 雲端 session 開發�
 架構（Gradle 設定、`Sql` 分層、CI 錄影、發版）沿用 treesay 的 Android 版（`twtrubiks/treesay` 的 `android/`）。
 那邊踩過的坑都寫在它的 `android/CLAUDE.md`，這裡遇到同樣的問題（UiAutomator、模擬器、R8、系統畫面的測試）可以去翻。
 
-## 第一次 session 先做的事
+## 目前的進度
 
-**這個骨架是在沒有 Android SDK 的電腦上寫的**，第一次 push 時的 CI 錄影是它唯一的一次 build。
-開工前先在 VM 跑一次完整驗證（見「在 VM 內驗證」），版本或 API 有問題以錯誤訊息為準修好，並更新「專案約定」的版本段落。
+骨架在 2026-10-31 的 session 第一次在 VM 上 build 過（版本都不用改），規格裡的功能都做了：
 
-目前做好的：Gradle 專案、`Sql` / `AndroidSql` / `JdbcSql`、`LinkStore`（資料表、新增、列出、刪除，有 JVM 測試與 DeviceTest）、
-只會列出清單的首頁、CI 錄影與發版的 workflow。其餘照下面的規格做，建議順序：
+- 規則（純 Kotlin、JVM 測試）：`WebUrls`（取網址、網域）、`PageMeta`（解析 meta、Big5）、`MetaFetcher`（OkHttp）、
+  `Export`（Markdown／JSON／zip）、`LinkStore`（新增、查重複、改、刪）
+- 畫面：清單（`ListScreen`，含匯出）、新增（`AddScreen`）、編輯（`EditScreen`）、縮圖預覽與兩個補救（`Thumbnails.kt` 的
+  `ThumbnailEditor`／`ThumbDraft`）、上傳的圖（`ThumbPrep`）、分享進來（`MainActivity`，`singleTask` ＋ `onNewIntent`）
+- 模擬器：`DeviceTest`（SQLite、`ThumbPrep` 轉正）、`DemoRecordingTest`（錄影）、`SystemUiTest`（挑選器、存檔畫面）、
+  release 冒煙測試（真的抓 `https://github.com/`）。假網站在 `FakeSite`
 
-1. `WebUrls`、`PageMeta`、`MetaFetcher`（先寫 JVM 測試）
-2. 新增頁：貼上 → 抓 → 預覽縮圖、預填標題 → 存；清單顯示縮圖（Coil）
-3. 抓不到縮圖時的兩個補救：貼圖片網址、從手機上傳（`ThumbPrep`，DeviceTest 測轉正）
-4. 編輯頁：改標題、換縮圖、刪除、用瀏覽器開
-5. 匯出（`Export` 先寫 JVM 測試，再接系統的存檔畫面）
-6. 從別的 App 分享網址進來
-7. 補齊 `DemoRecordingTest` 的流程、加 `SystemUiTest`、release 冒煙測試走一次真的抓網頁
+改東西之前先跑「在 VM 內驗證」，改完看 CI 的錄影。
 
 ## 規格
 
@@ -61,7 +58,8 @@ Kotlin + Jetpack Compose 原生 App，在 claude.ai/code 雲端 session 開發�
 
 - 首頁就是清單，新加的在上面。每筆顯示縮圖、標題（沒有標題就顯示網址）、網域
 - 點一筆進編輯頁：改標題、換縮圖（重新抓、貼圖片網址、上傳）、用瀏覽器開、刪除（要確認）。
-  換掉或刪掉上傳的縮圖時，舊的檔案要刪（`LinkStore.delete` 已經會刪；`update` 還沒寫）
+  換掉或刪掉上傳的縮圖時，舊的檔案要刪（`LinkStore.update`、`LinkStore.delete` 會刪）。
+  在這一頁上傳、還沒存的圖由 `ThumbDraft` 記著，放棄這一頁（返回鍵）或又換一張時刪掉
 - 空清單時說明怎麼加：貼網址，或從瀏覽器「分享」過來
 - 右上角「匯出」，清單是空的時候停用
 
@@ -146,7 +144,7 @@ JSON（UTF-8、縮排兩格、中文不跳脫；用 kotlinx.serialization 的 `@
 - 依賴版本集中在 `gradle/libs.versions.toml`
 - AGP 9.x 使用 built-in Kotlin：**不要**套 `org.jetbrains.kotlin.android`；Compose 套 `org.jetbrains.kotlin.plugin.compose`，
   JSON 套 `org.jetbrains.kotlin.plugin.serialization`，版本都跟 Kotlin 一樣
-- 版本起點（2026-10 查的最新穩定版；Android 相關的照 treesay，**還沒在這個專案 build 過**）：
+- 版本起點（2026-10 查的最新穩定版；Android 相關的照 treesay，2026-10-31 在 VM 上 build 過，都不用改）：
   AGP 9.4.1、Kotlin 2.4.21、Gradle wrapper 9.8.2、Compose BOM 2026.09.00、activity-compose 1.13.0、core-ktx 1.19.1、
   lifecycle-runtime-ktx 2.11.0、OkHttp / mockwebserver3 5.5.1、jsoup 1.23.2、Coil 3.6.3、kotlinx-serialization-json 1.12.0、
   exifinterface 1.4.2、sqlite-jdbc 3.53.4.0（只給 JVM 測試）、androidx.test runner 1.7.0、core 1.7.0、ext:junit 1.3.0、uiautomator 2.4.0。
@@ -192,7 +190,7 @@ CI 錄影前也會跑 `testDebugUnitTest`，沒過就不會錄影（失敗原因
 ## 錄影測試：DemoRecordingTest
 
 `app/src/androidTest/java/com/twtrubiks/thumblinks/DemoRecordingTest.kt`，CI 只錄這個 class，
-`record.sh` 在它執行期間用 `screenrecord` 錄整個螢幕。找元件、輪詢、截圖這些放在 `UiTest`，之後的 `SystemUiTest` 共用。
+`record.sh` 在它執行期間用 `screenrecord` 錄整個螢幕。找元件、輪詢、截圖、剪貼簿、分享這些放在 `UiTest`，跟 `SystemUiTest` 共用。
 
 - 用 UiAutomator 操作（真實時間驅動，動畫會正常播放），不要用 Compose test rule
 - 不要用 `ActivityScenario` 開 App，用 `UiTest.launchApp()`（`context.startActivity`）；找元件用 `waitFor` 每 0.1 秒輪詢，
@@ -201,8 +199,9 @@ CI 錄影前也會跑 `testDebugUnitTest`，沒過就不會錄影（失敗原因
 - 用 `By.text(...)` 找元件；要用 testTag 時用 `By.res(...)`（`ThumbLinksApp` 的 root 已經開了 `testTagsAsResourceId`）
 - 要確認細節的畫面用 `screenshot("名稱")` 另存截圖
 - **網頁由模擬器上的假網站提供**（`mockwebserver3`，debug 版允許 127.0.0.1 明碼連線），不連外：
-  有 og:image 與 og:title 的網頁、沒有縮圖的網頁、圖片本身（測試裡用 `Bitmap` 畫一張 PNG）。
-  展示流程：貼網址 → 抓到縮圖與標題 → 改標題 → 加入；貼沒有縮圖的網址 → 貼圖片網址 → 加入；刪除一筆；打開匯出
+  有 og:image 與 og:title 的網頁、沒有縮圖的網頁、圖片本身（測試裡用 `Bitmap` 畫一張 PNG），都在 `FakeSite`。
+  展示流程：貼網址 → 抓到縮圖與標題 → 改標題 → 加入；從「瀏覽器」分享同一個網址進來 → 已經在清單裡了 → 打開那一筆；
+  貼沒有縮圖的網址 → 貼圖片網址 → 加入；刪除一筆；打開匯出
 - 開始前清空清單（`container.links`），要用到的資料都在測試裡建
 - 鍵盤開著才按返回鍵收起（`hideKeyboard()`）——沒開的時候按返回鍵會離開那一頁
 
@@ -212,21 +211,28 @@ CI 錄影前也會跑 `testDebugUnitTest`，沒過就不會錄影（失敗原因
 只放模擬器才測得到的事：`LinkStore` 在 Android 9 的 SQLite 上跑一輪；做了上傳之後，`ThumbPrep` 用真的 Bitmap 與 ExifInterface 縮圖轉正
 （直拍的 JPEG、手機拍的 HEIC；只看長寬的話轉錯方向也會過，要用上下兩色的圖核對轉正後顏色的位置，做法見 treesay 的 `DeviceTest`）。
 
-## 系統畫面的測試：SystemUiTest（還沒做）
+## 系統畫面的測試：SystemUiTest
 
-做到上傳與匯出時加上，不錄影。只放不是 App 畫的畫面，每個 Android 版本長得不一樣，只能點一次才知道接不接得上：
-- 系統的照片挑選器：Android 9、10 是檔案畫面（找得到檔名），Android 11 以後是照片挑選器（只有縮圖，挑第一張）
-- 存檔的檔案畫面：匯出到 Download，用 shell 讀出檔案內容核對（zip 要解開看 `links.md` 與 `images/`）
+`app/src/androidTest/java/com/twtrubiks/thumblinks/SystemUiTest.kt`，不錄影。`record.sh` 在錄影結束、截圖 pull 回來之後先 `pm clear` 再跑，
+輸出在 `system-ui-test.txt`、`logcat-system-ui.txt`，截圖是 `system-*.png`。
+只放不是 App 畫的畫面，每個 Android 版本長得不一樣，只能點一次才知道接不接得上：
+- 系統的照片挑選器：Android 9、10 是檔案畫面（找得到檔名），Android 11 以後是照片挑選器（只有縮圖，挑第一張）。
+  照片先放進相簿：Android 10 以後 App 直接寫 MediaStore，Android 9 要權限，交給 shell 複製再廣播掃描
+- 存檔的檔案畫面：有上傳的圖，匯出 Markdown 存到 Download 是 zip（先從左上角的選單切到 Downloads，停在「最近」的話不能存），
+  用 `uiAutomation.executeShellCommand("cat …")` 讀出原始 bytes 解開，核對 `links.md` 與 `images/<id>.jpg`。
+  這個指令不經過 sh：不能用引號、萬用字元，檔名要確定（同名的會被系統存成「… (1).zip」，所以開始前先刪掉）
 
-寫法、照片怎麼先放進相簿、`record.sh` 要在錄影後先 `pm clear` 再跑，都照 treesay 的 `SystemUiTest` 與 `android/scripts/ci/record.sh`。
+寫法照 treesay 的 `SystemUiTest` 與 `android/scripts/ci/record.sh`。
 
 ## release 冒煙測試
 
 `record.sh` 最後覆蓋安裝 release 版（同一把 debug 金鑰，可以直接覆蓋），打開 App 截圖（`screenshots/release-1-launch.png`），
-`logcat-release.txt` 有 `FATAL EXCEPTION` 時 job 會失敗。
-做了加入連結之後要補：用 `uiautomator dump` 找元件、貼一個真的 https 網址（例如 `https://github.com/`）抓縮圖，
-等到預覽出現——R8 壓過的 OkHttp 與 jsoup 只有真的抓一次才跑得到，release 版不認 127.0.0.1 的明碼連線，不能用假網站。
-dump 等不到畫面靜止時（游標在閃、鍵盤開著）的處理見 treesay 的 `record.sh`。
+再用 `uiautomator dump` 找元件：按「新增」、輸入 `https://github.com/`、按「抓縮圖」，等到預覽的 testTag 變成 `thumb_ready`
+（Coil 真的把縮圖載出來了，`release-2-fetched.png`），按「加入」，清單上出現 `github.com`（`release-3-added.png`）。
+R8 壓過的 OkHttp、jsoup、Coil 只有真的抓一次才跑得到；release 版不認 127.0.0.1 的明碼連線，不能用假網站。
+等不到縮圖、加不進清單，或 `logcat-release.txt` 有 `FATAL EXCEPTION` 時 job 會失敗。
+輸入框拿到焦點後游標會閃、鍵盤會打開，dump 等不到畫面靜止，所以新增頁先在沒有人拿到焦點時 dump 一次記下座標；
+按「抓縮圖」時 App 會把焦點拿掉，之後的 dump 才等得到。
 
 ## 錄影流程（GitHub Actions）
 
