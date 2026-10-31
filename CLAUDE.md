@@ -1,6 +1,7 @@
 # ThumbLinks
 
 收集網址的 Android App：貼上網址 → 抓縮圖（必填）與標題（選填）→ 整份清單一次匯出成 Markdown 或 JSON。
+內建一個會擋廣告的瀏覽器（GeckoView ＋ uBlock Origin），看到喜歡的網頁直接「加到清單」。
 Kotlin + Jetpack Compose 原生 App，在 claude.ai/code 雲端 session 開發。
 雲端 VM 沒有模擬器，模擬器操作與錄影交給 GitHub Actions（`.github/workflows/record.yml`）。
 
@@ -15,8 +16,10 @@ Kotlin + Jetpack Compose 原生 App，在 claude.ai/code 雲端 session 開發�
   `Export`（Markdown／JSON／zip）、`LinkStore`（新增、查重複、改、刪）
 - 畫面：清單（`ListScreen`，含匯出）、新增（`AddScreen`）、編輯（`EditScreen`）、縮圖預覽與兩個補救（`Thumbnails.kt` 的
   `ThumbnailEditor`／`ThumbDraft`）、上傳的圖（`ThumbPrep`）、分享進來（`MainActivity`，`singleTask` ＋ `onNewIntent`）
+- 內建瀏覽器（`claude/browser-geckoview` 分支，2026-10-31 開始）：`BrowserScreen`、`BrowserTab`（一個 GeckoSession 與它的 delegate）、
+  `Ublock`（從 AMO 安裝、更新、badge、popup）、`BrowserInput`（網址列的規則，JVM 測試）。還沒做：多分頁
 - 模擬器：`DeviceTest`（SQLite、`ThumbPrep` 轉正）、`DemoRecordingTest`（錄影）、`SystemUiTest`（挑選器、存檔畫面）、
-  release 冒煙測試（真的抓 `https://github.com/`）。假網站在 `FakeSite`
+  `BrowserTest`（uBO 從 AMO 安裝、擋廣告、popup）、release 冒煙測試（真的抓 `https://github.com/`、用內建瀏覽器打開）。假網站在 `FakeSite`
 
 改東西之前先跑「在 VM 內驗證」，改完看 CI 的錄影。
 
@@ -111,13 +114,38 @@ JSON（UTF-8、縮排兩格、中文不跳脫；用 kotlinx.serialization 的 `@
 - `thumbnail` 是字串：`http(s)://` 開頭是網路上的圖，其餘是 zip 裡的相對路徑
 - 時間是當地時間＋時差，到秒（`LinkStore` 存的就是這個格式）
 
+### 內建瀏覽器
+
+使用者自己用、不上架。GeckoView 只負責顯示網頁，外殼（網址列、按鈕、對話框）都是自己寫的。
+
+- 入口在清單：**點一筆用內建瀏覽器打開**（長按進編輯頁）、右上角「瀏覽」開空白頁（網址列等著輸入）、編輯頁的「用瀏覽器開」。
+  「用其他 App 開」放在瀏覽器右上角的選單
+- 一頁瀏覽器就是一個分頁（`Route.Browser`），先不做分頁列：`target=_blank`、`window.open` 在同一個分頁開；
+  沒有使用者點擊的彈出視窗不理。`mailto:`、`tel:`、`intent:` 這類交給手機上別的 App，而且要使用者點了才開
+- 網址列：`http(s)://` 照用、看起來像網域的補 `https://`、其他用 DuckDuckGo 搜尋（`BrowserInput.SEARCH`）
+- 下面的工具列：上一頁、下一頁、重新整理／停止，右邊是「加到清單」（走一般的新增流程，加完回到瀏覽器）；
+  正在看的網頁已經在清單裡（網址照字串比對）就顯示「已在清單」，點了進編輯頁
+- 返回鍵：全螢幕時先退出全螢幕，能回上一頁就回上一頁，不能才關掉瀏覽器
+- 網頁的對話框（alert、confirm、prompt、`<select>`、離開頁面與重新送出表單的確認）用 Compose 的 AlertDialog；
+  長按連結、圖片有選單（開啟、加到清單、複製網址）；影片全螢幕時系統列也藏起來
+- **不做**：下載（跳一句「不支援下載檔案」）、上傳檔案、歷史紀錄、無痕、登入資訊的儲存。
+  權限一律拒絕（定位、相機、麥克風、通知、DRM、有聲的自動播放），只放行靜音的自動播放
+- **uBlock Origin 不打包進 APK**，跟 Firefox 一樣從 AMO 裝有 Mozilla 簽章的版本
+  （`WebExtensionController.install`，`Ublock.AMO_URL`）：第一次打開瀏覽器時裝，`PromptDelegate` 只同意 uBO 自己的權限；
+  裝好的留在 GeckoView 的設定檔，之後用 `list()` 找到就好；一天最多 `update()` 一次。
+  不用 `ensureBuiltIn` 載入自己打包的 uBO：有人回報 `menus` 權限不被接受、最後 "Extension is invalid"
+- uBO 的按鈕在網址列右邊：它自己的圖示（關掉過濾時變灰）＋這一頁擋了幾個（每個分頁一份 badge）。
+  按下去的 popup（`ActionDelegate.onTogglePopup` 回傳的 GeckoSession）放在 BottomSheet 裡的 GeckoView（TextureView）。
+  看得到的那一頁要 `setTabActive(session, true)`，popup 才知道要顯示哪一頁的統計
+
 ### 先不做（要做之前先問使用者）
 
 匯入、雲端同步、帳號、分類／標籤、搜尋、排序、網址正規化、匯出時把網路上的縮圖也下載進 zip。
+瀏覽器的多分頁、歷史紀錄、無痕、下載、上傳。
 
 ## 程式的分層
 
-- 規則都在純 Kotlin、有 JVM 測試：`LinkStore`（已有）、`WebUrls`、`PageMeta`、`MetaFetcher`、`Export`。
+- 規則都在純 Kotlin、有 JVM 測試：`LinkStore`（已有）、`WebUrls`、`PageMeta`、`MetaFetcher`、`Export`、`BrowserInput`。
   `MetaFetcher` 的測試用 `mockwebserver3`（轉址、`image/*`、逾時、超過 1 MB、Big5）
 - `LinkStore` 透過 `Sql` 介面存取資料庫：手機上是 `AndroidSql`（`databases/thumblinks.db`），
   JVM 測試是 `JdbcSql`（sqlite-jdbc 的記憶體資料庫，SQL 跑在真的 SQLite 上）。
@@ -132,6 +160,11 @@ JSON（UTF-8、縮排兩格、中文不跳脫；用 kotlinx.serialization 的 `@
 - 資料庫與網路一律在 `Dispatchers.IO`，不要在組畫面時讀資料庫
 - 整個 App 共用一個 `OkHttpClient`（放在 `AppContainer`）；Coil 也用它：
   `ThumbLinksApplication` 實作 `SingletonImageLoader.Factory`，網路層用 `OkHttpNetworkFetcherFactory` 接同一個 client
+- 內建瀏覽器：`GeckoRuntime` 一個行程只能有一個，放在 `AppContainer.gecko`，第一次打開瀏覽器時才建立（主執行緒）。
+  GeckoView 會另外開網頁內容的子行程，子行程也跑 `ThumbLinksApplication`，所以 `onCreate` 裡不能碰 `container`。
+  分頁（`BrowserTab`）也放在 `AppContainer`（key 是那一頁在導覽 stack 裡的 key，關掉那一頁時 `closeTab`），
+  不放在組合（composition）裡：轉螢幕、進出新增頁都不會重新載入。GeckoView 的 delegate 都在主執行緒被呼叫，直接改 Compose 的狀態。
+  GeckoView 自己的網路層不看 Android 的 network security config，release 版一樣載得了 `http://127.0.0.1`
 
 ## 專案約定
 
@@ -139,7 +172,8 @@ JSON（UTF-8、縮排兩格、中文不跳脫；用 kotlinx.serialization 的 `@
 - applicationId / namespace：`com.twtrubiks.thumblinks`（`scripts/ci/record.sh` 依賴這個值，改了要一起改）。
   不要改：applicationId 一變，手機會當成另一個 App，原本的清單就接不回來
 - 單一 module `app`，主畫面 `MainActivity`
-- **minSdk 28（Android 9）**，compileSdk 37，targetSdk 36，Java / Kotlin target 17
+- **minSdk 28（Android 9）**，compileSdk 37.2（GeckoView 159 要求，`compileSdk { version = release(37) { minorApiLevel = 2 } }`；
+  缺 `platforms;android-37.2` 時 AGP 會自動下載），targetSdk 36，Java / Kotlin target 17
   （`java.time` 在 API 26 就內建，不需要 core library desugaring；新增 API 29+ 的 API 前先跑 `./gradlew lintDebug` 看 NewApi）
 - 依賴版本集中在 `gradle/libs.versions.toml`
 - AGP 9.x 使用 built-in Kotlin：**不要**套 `org.jetbrains.kotlin.android`；Compose 套 `org.jetbrains.kotlin.plugin.compose`，
@@ -149,7 +183,14 @@ JSON（UTF-8、縮排兩格、中文不跳脫；用 kotlinx.serialization 的 `@
   lifecycle-runtime-ktx 2.11.0、OkHttp / mockwebserver3 5.5.1、jsoup 1.23.2、Coil 3.6.3、kotlinx-serialization-json 1.12.0、
   exifinterface 1.4.2、sqlite-jdbc 3.53.4.0（只給 JVM 測試）、androidx.test runner 1.7.0、core 1.7.0、ext:junit 1.3.0、uiautomator 2.4.0。
   若 build 報版本相容問題，以錯誤訊息為準調整，並更新這段
-- OkHttp、jsoup、Coil、kotlinx.serialization 都自帶 R8 規則，`app/proguard-rules.pro` 目前是空的
+- **GeckoView**（`org.mozilla.geckoview:geckoview`，目前 159.0.20261022150525）只放在 `maven.mozilla.org`（`settings.gradle.kts` 只讓這個 group 從那裡拿）。
+  它就是瀏覽器的引擎，約每 4 週一版、帶安全修補：**要跟著升**。最新版看
+  `https://maven.mozilla.org/maven2/org/mozilla/geckoview/geckoview/maven-metadata.xml` 的 `<release>`，改 `libs.versions.toml` 再發一版
+- **APK 按 CPU 拆開**（`splits.abi`）：GeckoView 每種 CPU 一份引擎，整包 500 MB 以上，只出 `arm64-v8a`（手機，release.yml 發這份）
+  與 `x86_64`（CI 的模擬器，record.sh 裝這份）。輸出是 `app-<abi>-<debug|release>.apk`。
+  native library 用壓縮的打包（`useLegacyPackaging`）：arm64 的 release 版約 95 MB（不壓縮是 197 MB，光 `libxul.so` 就 150 MB）
+- `MainActivity` 的 `configChanges` 包含轉螢幕：不重建 Activity，GeckoView 不用重接畫面（Compose 自己會重排）
+- OkHttp、jsoup、Coil、kotlinx.serialization、GeckoView 都自帶 R8 規則，`app/proguard-rules.pro` 目前是空的
 - `android:allowBackup="true"`：清單只是公開網頁的連結，交給系統備份，換手機、重裝時接得回來
 - debug 版的 network security config（`app/src/debug/`）只對 127.0.0.1 放行明碼連線，給測試的假網站用；release 版不帶
 - 畫面用 Material 3，深淺跟系統，Android 12 以上用桌布取色（`Theme.kt`）
@@ -178,7 +219,8 @@ JSON（UTF-8、縮排兩格、中文不跳脫；用 kotlinx.serialization 的 `@
   錯誤訊息通常不會直接寫 429，而是 `Plugin [id: '...'] was not found in any of the following sources`、
   `Could not resolve <group>:<artifact>:<version>` 或 `Configuration cache state could not be cached`，
   加 `--info` 才看得到底下的 `HTTP 429`。新 session 第一次 build 看到這幾種，先重跑，不要去改版本
-- VM 的網路只放行套件庫，抓不到一般網頁：抓縮圖的邏輯靠 JVM 測試的 MockWebServer，真的連外交給 CI 的模擬器
+- VM 的網路只放行套件庫，抓不到一般網頁：抓縮圖的邏輯靠 JVM 測試的 MockWebServer，真的連外交給 CI 的模擬器。
+  `maven.mozilla.org`（GeckoView）連得到；AMO（uBO）連不到，只能在 CI 測（`BrowserTest`）
 
 ## 在 VM 內驗證（每次 push 前）
 
@@ -206,7 +248,10 @@ CI 錄影前也會跑 `testDebugUnitTest`，沒過就不會錄影（失敗原因
 - **網頁由模擬器上的假網站提供**（`mockwebserver3`，debug 版允許 127.0.0.1 明碼連線），不連外：
   有 og:image 與 og:title 的網頁、沒有縮圖的網頁、圖片本身（測試裡用 `Bitmap` 畫一張 PNG），都在 `FakeSite`。
   展示流程：貼網址 → 抓到縮圖與標題 → 改標題 → 加入；從「瀏覽器」分享同一個網址進來 → 已經在清單裡了 → 打開那一筆；
-  貼沒有縮圖的網址 → 貼圖片網址 → 加入；刪除一筆；打開匯出
+  貼沒有縮圖的網址 → 貼圖片網址 → 加入；點一筆用內建瀏覽器打開（已在清單）→ 網址列換一篇 → 加到清單；長按刪除一筆；打開匯出。
+  uBO 要連 AMO，不放在錄影裡
+- 內建瀏覽器的網頁內容在 GeckoView 裡，UiAutomator 不保證讀得到；只操作我們自己畫的部分（`url_bar`、`add_to_list`、`in_list`、
+  `ublock_button`、`ublock_badge`、`ublock_popup` 這些 testTag）。網址列打字：先點一下拿到焦點、`text = …`、`device.pressEnter()`
 - 開始前清空清單（`container.links`），要用到的資料都在測試裡建
 - 鍵盤開著才按返回鍵收起（`hideKeyboard()`）——沒開的時候按返回鍵會離開那一頁
 
@@ -229,13 +274,23 @@ CI 錄影前也會跑 `testDebugUnitTest`，沒過就不會錄影（失敗原因
 
 寫法照 treesay 的 `SystemUiTest` 與 `android/scripts/ci/record.sh`。
 
+## 內建瀏覽器的測試：BrowserTest
+
+`app/src/androidTest/java/com/twtrubiks/thumblinks/BrowserTest.kt`，不錄影。`record.sh` 在 SystemUiTest 之後先 `pm clear` 再跑
+（每次都是第一次安裝 uBO），輸出在 `browser-test.txt`、`logcat-browser.txt`，截圖是 `browser-*.png`。
+右上角「瀏覽」→ 網址列打開 `FakeSite` 的 `/ads`（載入 `pagead2.googlesyndication.com` 的廣告 script）→
+等 uBO 從 AMO 裝好（工具列出現 `ublock_button`，最多 2 分鐘）→ 重新整理，等 badge（`ublock_badge`）至少擋下 1 個 → 打開 popup。
+
 ## release 冒煙測試
 
 `record.sh` 最後覆蓋安裝 release 版（同一把 debug 金鑰，可以直接覆蓋），打開 App 截圖（`screenshots/release-1-launch.png`），
 再用 `uiautomator dump` 找元件：按「新增」、輸入 `https://github.com/`、按「抓縮圖」，等到預覽的 testTag 變成 `thumb_ready`
 （Coil 真的把縮圖載出來了，`release-2-fetched.png`），按「加入」，清單上出現 `github.com`（`release-3-added.png`）。
 R8 壓過的 OkHttp、jsoup、Coil 只有真的抓一次才跑得到；release 版不認 127.0.0.1 的明碼連線，不能用假網站。
-等不到縮圖、加不進清單，或 `logcat-release.txt` 有 `FATAL EXCEPTION` 時 job 會失敗。
+接著點那一筆，用內建瀏覽器打開 github.com，等 logcat 出現 App 寫的兩行（`BrowserTab` 的「網頁載入完成 success=true https://github.com/」、
+`Ublock` 的「uBlock Origin … 可以用了」，`release-4-browser.png`）：壓過的 GeckoView 要真的載入網頁、從 AMO 裝好 uBO。
+網頁一直在動，`uiautomator dump` 等不到畫面靜止，所以瀏覽器這一段看 logcat 不用 dump。
+等不到縮圖、加不進清單、瀏覽器沒載完或 uBO 沒裝好，或 `logcat-release.txt` 有 `FATAL EXCEPTION` 時 job 會失敗。
 輸入框拿到焦點後游標會閃、鍵盤會打開，dump 等不到畫面靜止，所以新增頁先在沒有人拿到焦點時 dump 一次記下座標；
 按「抓縮圖」時 App 會把焦點拿掉，之後的 dump 才等得到。
 
@@ -263,6 +318,8 @@ R8 壓過的 OkHttp、jsoup、Coil 只有真的抓一次才跑得到；release �
    - `/tmp/media/gradle-build.txt`：CI 的 Gradle build 輸出
    - `/tmp/media/device-test.txt`：DeviceTest 的輸出
    - `/tmp/media/instrument.txt`、`logcat.txt`：DemoRecordingTest 的輸出與 log
+   - `/tmp/media/system-ui-test.txt`、`logcat-system-ui.txt`：SystemUiTest 的輸出與 log
+   - `/tmp/media/browser-test.txt`、`logcat-browser.txt`：BrowserTest（uBO）的輸出與 log
    - `/tmp/media/release-smoke.txt`、`logcat-release.txt`：release 冒煙測試的啟動時間與 log
    - `/tmp/media/demo.mp4`：壓縮後的影片（給使用者看）
 

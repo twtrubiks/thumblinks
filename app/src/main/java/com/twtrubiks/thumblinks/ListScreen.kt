@@ -7,6 +7,7 @@ import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -50,9 +51,12 @@ import java.io.IOException
 import java.time.LocalDate
 import java.time.OffsetDateTime
 
-/** 首頁就是清單，新加的在上面。右上角匯出、右下角新增。[links] 是 null 表示還在讀。 */
+/**
+ * 首頁就是清單，新加的在上面。點一筆用內建瀏覽器打開、長按進編輯頁。
+ * 右上角是空白的瀏覽器與匯出、右下角新增。[links] 是 null 表示還在讀。
+ */
 @Composable
-fun ListScreen(links: List<Link>?, onAdd: () -> Unit, onOpen: (Link) -> Unit) {
+fun ListScreen(links: List<Link>?, onAdd: () -> Unit, onOpen: (Link) -> Unit, onEdit: (Link) -> Unit, onBrowse: () -> Unit) {
     val context = LocalContext.current
     val container = context.container
     val scope = rememberCoroutineScope()
@@ -81,6 +85,7 @@ fun ListScreen(links: List<Link>?, onAdd: () -> Unit, onOpen: (Link) -> Unit) {
     Screen(
         title = "ThumbLinks",
         actions = {
+            TextButton(onClick = onBrowse) { Text("瀏覽") }
             TextButton(onClick = { choosingFormat = true }, enabled = !links.isNullOrEmpty()) { Text("匯出") }
         },
         fab = {
@@ -104,7 +109,7 @@ fun ListScreen(links: List<Link>?, onAdd: () -> Unit, onOpen: (Link) -> Unit) {
                 contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 96.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp),
             ) {
-                items(links, key = Link::id) { LinkRow(it, container.thumbsDir) { onOpen(it) } }
+                items(links, key = Link::id) { LinkRow(it, container.thumbsDir, onClick = { onOpen(it) }, onLongClick = { onEdit(it) }) }
             }
         }
     }
@@ -168,12 +173,12 @@ private class CreateFile : ActivityResultContract<CreateFile.Input, Uri?>() {
 }
 
 @Composable
-private fun LinkRow(link: Link, thumbsDir: java.io.File, onClick: () -> Unit) {
+private fun LinkRow(link: Link, thumbsDir: java.io.File, onClick: () -> Unit, onLongClick: () -> Unit) {
     Row(
         Modifier
             .fillMaxWidth()
             .clip(ThumbShape)
-            .clickable(onClick = onClick)
+            .combinedClickable(onClickLabel = "打開", onLongClickLabel = "編輯", onLongClick = onLongClick, onClick = onClick)
             .padding(vertical = 4.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -202,7 +207,7 @@ private fun EmptyList(modifier: Modifier) {
         Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(12.dp)) {
             Text("還沒有連結", style = MaterialTheme.typography.titleLarge)
             Text(
-                "按右下角的「新增」貼上網址，會幫你抓縮圖和標題。\n也可以在瀏覽器按「分享」，選 ThumbLinks。",
+                "按右下角的「新增」貼上網址，會幫你抓縮圖和標題。\n也可以在瀏覽器按「分享」，選 ThumbLinks，\n或按右上角的「瀏覽」，看到喜歡的網頁就「加到清單」。",
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )

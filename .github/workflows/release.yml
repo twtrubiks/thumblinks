@@ -103,7 +103,8 @@ jobs:
         run: |
           ./gradlew testDebugUnitTest assembleRelease
           mkdir -p dist
-          cp app/build/outputs/apk/release/app-release.apk dist/thumblinks.apk
+          # APK 按 CPU 拆開（GeckoView 每種 CPU 一份引擎），手機是 arm64-v8a
+          cp app/build/outputs/apk/release/app-arm64-v8a-release.apk dist/thumblinks.apk
 
       - name: Verify signature
         shell: bash

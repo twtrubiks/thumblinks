@@ -12,7 +12,8 @@ import org.junit.runner.RunWith
  * 網頁由模擬器上的假網站（[FakeSite]）提供，不連外。全長控制在 150 秒內。
  *
  * 貼網址 → 抓到縮圖與標題 → 改標題 → 加入；分享同一個網址進來 → 已經在清單裡了 → 打開那一筆；
- * 貼沒有縮圖的網址 → 貼圖片網址 → 加入；刪除一筆；打開匯出。
+ * 貼沒有縮圖的網址 → 貼圖片網址 → 加入；點一筆用內建瀏覽器打開（已在清單）→ 網址列換一篇 → 加到清單；
+ * 長按刪除一筆；打開匯出。uBlock Origin 要連 AMO，不放在錄影裡（[BrowserTest]）。
  */
 @RunWith(AndroidJUnit4::class)
 class DemoRecordingTest : UiTest() {
@@ -84,16 +85,42 @@ class DemoRecordingTest : UiTest() {
         screenshot("07-list")
         assertEquals(listOf(FakeSite.PLAIN_TITLE, "陽明山芒草"), container.links.all().map { it.title })
 
-        // 刪除一筆（要確認）
+        // 點一筆：用內建瀏覽器打開，這一頁已經在清單裡
         find(By.text("陽明山芒草")).click()
+        waitFor(By.res("in_list"), timeout = 30_000)
+        pause(3000)
+        screenshot("08-browser")
+        // 網址列換一篇還沒加過的，按「加到清單」走一樣的新增流程，加完回到瀏覽器
+        find(By.res("url_bar")).click()
+        pause(800)
+        find(By.res("url_bar")).text = site.url("/autumn")
+        pause(800)
+        device.pressEnter()
+        waitFor(By.res("add_to_list"), timeout = 30_000)
+        pause(2500)
+        screenshot("09-browser-not-in-list")
+        find(By.res("add_to_list")).click()
+        waitFor(By.res("thumb_ready"), timeout = 20_000)
+        waitFor(By.text(FakeSite.AUTUMN_TITLE))
+        pause(2000)
+        find(By.text("加入")).click()
+        waitFor(By.res("in_list"), timeout = 20_000)
+        pause(2000)
+        screenshot("10-browser-added")
+        find(By.desc("回清單")).click()
+        backOnList()
+        waitFor(By.text(FakeSite.AUTUMN_TITLE))
+        pause(2000)
+        assertEquals(listOf(FakeSite.AUTUMN_TITLE, FakeSite.PLAIN_TITLE, "陽明山芒草"), container.links.all().map { it.title })
+
+        // 長按進編輯頁，刪除一筆（要確認）
+        find(By.text("陽明山芒草")).longClick()
         reveal(By.text("刪除這一筆")).click()
         waitFor(By.text("刪除這一筆？"))
         pause(1500)
-        screenshot("08-confirm-delete")
+        screenshot("11-confirm-delete")
         find(By.text("刪除")).click()
-        // 回到清單，只剩另一筆
         backOnList()
-        waitFor(By.text(FakeSite.PLAIN_TITLE))
         waitGone(By.text("陽明山芒草"))
         pause(2000)
 
@@ -101,9 +128,9 @@ class DemoRecordingTest : UiTest() {
         find(By.text("匯出")).click()
         waitFor(By.text("Markdown"))
         pause(2500)
-        screenshot("09-export")
+        screenshot("12-export")
         find(By.text("取消")).click()
         pause(1500)
-        assertEquals(listOf(FakeSite.PLAIN_TITLE), container.links.all().map { it.title })
+        assertEquals(listOf(FakeSite.AUTUMN_TITLE, FakeSite.PLAIN_TITLE), container.links.all().map { it.title })
     }
 }
