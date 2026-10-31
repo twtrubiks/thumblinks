@@ -139,10 +139,10 @@ fun AddScreen(initialText: String?, onBack: () -> Unit, onAdded: () -> Unit, onO
                     value = input,
                     onValueChange = {
                         if (phase == AddPhase.NO_URL) phase = AddPhase.IDLE
-                        // Enter、貼上多行的文字：當作按了「前往」
+                        // 貼上多行的文字（有些螢幕鍵盤的 Enter 也是送換行）：當作按了「前往」
                         if (it.hasNewline()) submit(it) else input = it
                     },
-                    modifier = Modifier.weight(1f).testTag("url_input"),
+                    modifier = Modifier.weight(1f).onEnter { submit(input) }.testTag("url_input"),
                     label = { Text("網址") },
                     placeholder = { Text("https://…") },
                     trailingIcon = if (input.isEmpty()) {
@@ -206,7 +206,7 @@ fun AddScreen(initialText: String?, onBack: () -> Unit, onAdded: () -> Unit, onO
                 OutlinedTextField(
                     value = title,
                     onValueChange = { title = it.oneLine() },
-                    modifier = Modifier.fillMaxWidth().testTag("title_input"),
+                    modifier = Modifier.fillMaxWidth().onEnter { focus.clearFocus() }.testTag("title_input"),
                     label = { Text("標題（選填）") },
                     maxLines = 3,
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),

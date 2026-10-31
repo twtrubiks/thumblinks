@@ -15,6 +15,11 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onPreviewKeyEvent
+import androidx.compose.ui.input.key.type
 import androidx.compose.ui.res.painterResource
 
 /**
@@ -26,6 +31,16 @@ fun String.oneLine(): String = replace(NEWLINES, " ")
 fun String.hasNewline(): Boolean = any { it == '\n' || it == '\r' }
 
 private val NEWLINES = Regex("[\r\n]+")
+
+/**
+ * 換行顯示的輸入框（不是 singleLine）按實體鍵盤的 Enter 會插入換行：先攔下來做 [action]（前往、抓縮圖…）。
+ * 螢幕鍵盤的「前往」「完成」還是走 KeyboardActions。
+ */
+fun Modifier.onEnter(action: () -> Unit): Modifier = onPreviewKeyEvent {
+    if (it.key != Key.Enter && it.key != Key.NumPadEnter) return@onPreviewKeyEvent false
+    if (it.type == KeyEventType.KeyDown) action()
+    true
+}
 
 /**
  * 每一頁的骨架：上面的標題列（[onBack] 有給就有返回鍵）、右上角的 [actions]、右下角的 [fab]、下面的提示。
