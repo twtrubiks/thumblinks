@@ -217,7 +217,8 @@ JSON（UTF-8、縮排兩格、中文不跳脫；用 kotlinx.serialization 的 `@
     使用者要移除這一版才能裝正式版，清單會一起刪掉（還沒有匯入）。發第一版 Release 時提醒使用者這件事。
     同一個 session 後來又給了內建瀏覽器的試用版（`claude/browser-geckoview` 的 `534151d`，arm64，versionCode 2、
     versionName `0.2-browser`），同一把金鑰，覆蓋安裝在上面那一版上；
-    再來是修了清單與瀏覽器一片白的 `97b3770`（versionCode 3、`0.3-browser`）
+    再來是修了清單與瀏覽器一片白的 `97b3770`（versionCode 3、`0.3-browser`）、
+    修了 `window.open()` 不帶網址的 `1662901`（versionCode 4、`0.4-browser`）
   - versionCode 是 2026-01-01 起算的分鐘數（workflow 算好用環境變數帶進來），不管從哪個 branch 發都只會變大
   - README 的下載連結是 `releases/latest/download/thumblinks.apk`
 
