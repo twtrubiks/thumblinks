@@ -552,9 +552,15 @@ private fun UblockPopup(session: org.mozilla.geckoview.GeckoSession, onDismiss: 
         // BottomSheet 是另一個視窗，App 根部開的 testTagsAsResourceId 管不到這裡；包著 GeckoView 的 AndroidView 上的 testTag 也讀不到
         Column(Modifier.semantics { testTagsAsResourceId = true }.testTag("ublock_popup")) {
             AndroidView(
-                // 放在會滑動的 BottomSheet 裡，用 TextureView 才會跟著動
-                factory = { GeckoView(it).apply { setViewBackend(GeckoView.BACKEND_TEXTURE_VIEW) } },
-                update = { if (it.session !== session) it.setSession(session) },
+                // 用預設的 SurfaceView：TextureView 在模擬器上整塊是黑的（網頁有畫，顯示不出來）。
+                // BottomSheet 的拖曳關掉了，只有打開、關掉的動畫，SurfaceView 跟得上
+                factory = ::GeckoView,
+                update = {
+                    if (it.session !== session) {
+                        it.setSession(session)
+                        session.setActive(true)
+                    }
+                },
                 onRelease = { it.releaseSession() },
                 modifier = Modifier.fillMaxWidth().height(560.dp),
             )
