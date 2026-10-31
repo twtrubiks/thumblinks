@@ -55,6 +55,9 @@ class BrowserTab(private val context: Context, private val runtime: GeckoRuntime
         /** uBO 在這一頁自己的按鈕狀態（擋了幾個的 badge），畫面用 [Ublock.actionFor] 跟預設值合起來。 */
         var ublockAction by mutableStateOf<WebExtension.Action?>(null)
 
+        /** 要它載入、還沒換過去的網址。session 剛開時 GeckoView 會先報一次 `about:blank`，那時網址列不要跟著變。 */
+        var requested: String? = null
+
         val isCurrent get() = pages.lastOrNull() === this
     }
 
@@ -110,6 +113,7 @@ class BrowserTab(private val context: Context, private val runtime: GeckoRuntime
 
     fun load(uri: String) {
         page.url = uri
+        page.requested = uri
         session.loadUri(uri)
     }
 
@@ -200,7 +204,10 @@ class BrowserTab(private val context: Context, private val runtime: GeckoRuntime
 
     private inner class Navigation(private val page: Page) : GeckoSession.NavigationDelegate {
         override fun onLocationChange(session: GeckoSession, url: String?, perms: MutableList<ContentPermission>, hasUserGesture: Boolean) {
-            if (url != null) page.url = url
+            if (url == null) return
+            if (url == BLANK && page.requested != null && page.requested != BLANK) return
+            page.requested = null
+            page.url = url
         }
 
         override fun onCanGoBack(session: GeckoSession, canGoBack: Boolean) {
@@ -232,7 +239,10 @@ class BrowserTab(private val context: Context, private val runtime: GeckoRuntime
             if (pages.size >= MAX_PAGES) pages.removeAt(0).session.close()
             leaveCurrentPage()
             val opened = newPage(open = false)
-            if (BrowserInput.canAdd(uri)) opened.url = uri
+            if (BrowserInput.canAdd(uri)) {
+                opened.url = uri
+                opened.requested = uri
+            }
             pages += opened
             return GeckoResult.fromValue(opened.session)
         }
@@ -354,6 +364,8 @@ class BrowserTab(private val context: Context, private val runtime: GeckoRuntime
     private companion object {
         /** 一個分頁最多疊幾頁新視窗，超過就關掉最底下的。 */
         const val MAX_PAGES = 6
+
+        const val BLANK = "about:blank"
 
         /** 錯誤頁上給使用者看的原因。 */
         fun reason(error: WebRequestError): String = when (error.code) {
