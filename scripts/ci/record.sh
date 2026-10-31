@@ -218,8 +218,12 @@ if [ -f "$RELEASE_APK" ]; then
     echo "$(date +%T) 瀏覽器等完了 browsed=$browsed" | tee -a "$OUT/release-smoke.txt"
     sleep 3
   fi
-  timeout 60 adb exec-out screencap -p > "$OUT/screenshots/release-4-browser.png" \
-    || echo "$(date +%T) screencap 逾時" | tee -a "$OUT/release-smoke.txt"
+  # exec-out 串流的 screencap 在 GeckoView 開著時會卡住（debug 版測試用 UiAutomation 截圖沒事）：改成先存在模擬器上再 pull，截不到就算了
+  if timeout 30 adb shell screencap -p /sdcard/release-4-browser.png; then
+    timeout 30 adb pull /sdcard/release-4-browser.png "$OUT/screenshots/release-4-browser.png" >/dev/null || true
+  else
+    echo "$(date +%T) screencap 逾時" | tee -a "$OUT/release-smoke.txt"
+  fi
 
   timeout 60 adb logcat -d > "$OUT/logcat-release.txt" || echo "$(date +%T) logcat 逾時" | tee -a "$OUT/release-smoke.txt"
   if grep -q 'FATAL EXCEPTION' "$OUT/logcat-release.txt"; then

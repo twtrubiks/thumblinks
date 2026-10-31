@@ -264,6 +264,9 @@ CI 錄影前也會跑 `testDebugUnitTest`，沒過就不會錄影（失敗原因
   uBO 要連 AMO，不放在錄影裡
 - 內建瀏覽器的網頁內容在 GeckoView 裡，UiAutomator 不保證讀得到；只操作我們自己畫的部分（`url_bar`、`add_to_list`、`in_list`、
   `ublock_button`、`ublock_badge`、`ublock_popup` 這些 testTag）。網址列打字：先點一下拿到焦點、`text = …`、`device.pressEnter()`
+- 網頁載完了沒用 `UiTest.loadPage(url) { 動作 }`：看 `BrowserTab` 寫進 logcat 的「網頁載入完成」。
+  工具列的「重新整理」在開始載入之前也是它，拿來等會在網頁還一片白的時候就截圖（模擬器第一次開 GeckoView 要好幾秒）
+- 包著 GeckoView 的 `AndroidView` 加 testTag UiAutomator 也讀不到；要點網頁時用座標（網址列下緣到「上一頁」上緣之間）
 - 開始前清空清單（`container.links`），要用到的資料都在測試裡建
 - 鍵盤開著才按返回鍵收起（`hideKeyboard()`）——沒開的時候按返回鍵會離開那一頁
 
@@ -305,7 +308,8 @@ R8 壓過的 OkHttp、jsoup、Coil 只有真的抓一次才跑得到；release �
 接著點那一筆，用內建瀏覽器打開 github.com，等 logcat 出現 App 寫的兩行（`BrowserTab` 的「網頁載入完成 success=true https://github.com/」、
 `Ublock` 的「uBlock Origin … 可以用了」，`release-4-browser.png`）：壓過的 GeckoView 要真的載入網頁、從 AMO 裝好 uBO。
 網頁一直在動，`uiautomator dump` 等不到畫面靜止，所以瀏覽器這一段看 logcat 不用 dump。
-開著 GeckoView 時 `adb exec-out screencap` 曾經卡了 30 分鐘、整個 job 逾時：這一段的 adb 指令都包 `timeout`，進度（含時間）寫進 `release-smoke.txt`。
+開著 GeckoView 時 `adb exec-out screencap` 會卡住（曾經卡了 30 分鐘、整個 job 逾時）：這一段的 adb 指令都包 `timeout`，
+截圖改成先存在模擬器上再 pull，截不到就算了（`release-4-browser.png` 可能沒有），進度（含時間）寫進 `release-smoke.txt`。
 等不到縮圖、加不進清單、瀏覽器沒載完或 uBO 沒裝好，或 `logcat-release.txt` 有 `FATAL EXCEPTION` 時 job 會失敗。
 輸入框拿到焦點後游標會閃、鍵盤會打開，dump 等不到畫面靜止，所以新增頁先在沒有人拿到焦點時 dump 一次記下座標；
 按「抓縮圖」時 App 會把焦點拿掉，之後的 dump 才等得到。

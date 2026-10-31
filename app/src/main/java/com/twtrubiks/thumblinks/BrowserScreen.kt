@@ -185,7 +185,7 @@ fun BrowserScreen(
                 // 讀了 tab.session：換頁之後會再呼叫一次，換成那一頁的 session
                 update = tab::attach,
                 onRelease = tab::detach,
-                modifier = Modifier.fillMaxSize().testTag("web_view"),
+                modifier = Modifier.fillMaxSize(),
             )
             SnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter))
         }
