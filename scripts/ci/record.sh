@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # 在模擬器上先跑 DeviceTest（Android 9 的 SQLite、Bitmap 縮圖轉正，不錄影），再一邊錄影一邊跑 DemoRecordingTest，
-# 錄完清掉 App 資料跑 SystemUiTest（系統的照片挑選器、存檔的檔案畫面，不錄影），再清掉跑 BrowserTest（uBO 從 AMO 安裝、擋廣告；新視窗、錯誤頁），
-# 最後覆蓋安裝 release 版做冒煙測試（真的抓一次 https 網頁的縮圖、用內建瀏覽器打開它）。
+# 錄完清掉 App 資料跑 SystemUiTest（系統的照片挑選器、存檔的檔案畫面，不錄影），再覆蓋安裝 release 版做冒煙測試
+# （真的抓一次 https 網頁的縮圖、用內建瀏覽器打開它），最後換回 debug 版跑 BrowserTest（uBO 從 AMO 安裝、擋廣告；新視窗、錯誤頁）。
 # APK 按 CPU 拆開（GeckoView），模擬器裝 x86_64 那一份。
 # 輸出到 $1（預設 out/）：device-test.txt、demo.raw.mp4、instrument.txt、logcat.txt、system-ui-test.txt、
 # logcat-system-ui.txt、browser-test.txt、logcat-browser.txt、screenshots/，以及 release 版冒煙測試的 release-smoke.txt、logcat-release.txt、screenshots/release-*.png
@@ -98,19 +98,6 @@ adb shell am force-stop "$APP_ID" || true
 adb pull "/sdcard/Android/data/$APP_ID/files/screenshots" "$OUT/" || true
 adb logcat -d > "$OUT/logcat-system-ui.txt" || true
 
-# 內建瀏覽器的 uBlock Origin：從 AMO 安裝（要連外）、擋廣告、popup。不錄影。
-# 先清掉 App 資料，每次都從第一次安裝 uBO 開始（截圖已經 pull 回來了）
-step "BrowserTest"
-adb shell pm clear "$APP_ID" || true
-adb logcat -c || true
-timeout 600 adb shell am instrument -w -e class "$BROWSER_TEST_CLASS" \
-  "$APP_ID.test/androidx.test.runner.AndroidJUnitRunner" | tee "$OUT/browser-test.txt"
-# 測完瀏覽器停在網頁上，接下來的 adb 指令曾經卡住：先把 App（連同 GeckoView 的行程）關掉
-step "BrowserTest 結束，關掉 App、收回截圖與 log"
-adb shell am force-stop "$APP_ID" || true
-adb pull "/sdcard/Android/data/$APP_ID/files/screenshots" "$OUT/" || true
-adb logcat -d > "$OUT/logcat-browser.txt" || true
-
 # 給 release 版冒煙測試用：沒有 UiAutomator 測試 APK 可用，靠 uiautomator dump 找元件
 # 剛跑完 UiAutomator 測試時，前一個 UiAutomation 連線可能還沒放掉，dump 會回 null root node：隔兩秒再試
 ui_dump() {
@@ -159,10 +146,6 @@ if ! grep -q '^OK (' "$OUT/instrument.txt"; then
 fi
 if ! grep -q '^OK (' "$OUT/system-ui-test.txt"; then
   echo "SystemUiTest 沒有通過，詳見 $OUT/system-ui-test.txt、$OUT/logcat-system-ui.txt 與 screenshots/system-*.png"
-  status=1
-fi
-if ! grep -q '^OK (' "$OUT/browser-test.txt"; then
-  echo "BrowserTest 沒有通過，詳見 $OUT/browser-test.txt、$OUT/logcat-browser.txt 與 screenshots/browser-*.png"
   status=1
 fi
 
@@ -260,6 +243,26 @@ if [ -f "$RELEASE_APK" ]; then
     echo "release 版的內建瀏覽器沒等到 github.com 載完或 uBO 裝好，詳見 $OUT/screenshots/release-4-browser.png 與 $OUT/logcat-release.txt"
     status=1
   fi
+fi
+
+# 內建瀏覽器：uBO 從 AMO 安裝（要連外）、擋廣告、popup；新視窗、錯誤頁。不錄影，放在最後：
+# 模擬器（軟體繪圖）曾經在測完瀏覽器、關掉 App 時整個當掉（device offline），之後的步驟都做不了。
+# release 版裝在上面了，換回 debug 版（同一把金鑰）；先清掉 App 資料，每次都從第一次安裝 uBO 開始
+step "BrowserTest"
+adb shell pm clear "$APP_ID" || true
+ADB_TIMEOUT=300 adb install -r -t app/build/outputs/apk/debug/app-x86_64-debug.apk || true
+adb logcat -c || true
+# logcat 邊跑邊存：模擬器在測試結束後當掉的話，事後就拿不到了
+"$ADB_BIN" logcat > "$OUT/logcat-browser.txt" 2>/dev/null &
+LOGCAT_PID=$!
+timeout 600 adb shell am instrument -w -e class "$BROWSER_TEST_CLASS" \
+  "$APP_ID.test/androidx.test.runner.AndroidJUnitRunner" | tee "$OUT/browser-test.txt"
+step "BrowserTest 結束，收回截圖"
+adb pull "/sdcard/Android/data/$APP_ID/files/screenshots" "$OUT/" || true
+kill "$LOGCAT_PID" 2>/dev/null || true
+if ! grep -q '^OK (' "$OUT/browser-test.txt"; then
+  echo "BrowserTest 沒有通過，詳見 $OUT/browser-test.txt、$OUT/logcat-browser.txt 與 screenshots/browser-*.png"
+  status=1
 fi
 
 exit $status
