@@ -274,7 +274,7 @@ private fun UrlBar(tab: BrowserTab, autoFocus: Boolean, modifier: Modifier) {
         value = text,
         onValueChange = {
             if (it.text.hasNewline()) {
-                // 實體鍵盤的 Enter、貼上多行的文字：當作按了「前往」
+                // 貼上多行的文字（有些螢幕鍵盤的 Enter 也是送換行）：當作按了「前往」
                 go(it.text.oneLine())
             } else if (!(keepSelectAll && it.text == text.text)) {
                 text = it
@@ -282,6 +282,7 @@ private fun UrlBar(tab: BrowserTab, autoFocus: Boolean, modifier: Modifier) {
             keepSelectAll = false
         },
         modifier = modifier
+            .onEnter { go(text.text) }
             .focusRequester(requester)
             .onFocusChanged {
                 if (it.isFocused && !focused) {
@@ -291,8 +292,9 @@ private fun UrlBar(tab: BrowserTab, autoFocus: Boolean, modifier: Modifier) {
                 focused = it.isFocused
             }
             .testTag("url_bar"),
-        // 打字時長網址換行顯示（貼上之後整串看得到，不用左右拖）；沒在打字時一行
-        singleLine = !focused,
+        // 打字時長網址換行顯示（貼上之後整串看得到，不用左右拖）；沒在打字時一行。
+        // 一直都不是 singleLine：singleLine 中途切換的話 TextField 的捲動方向對不上，會閃退
+        singleLine = false,
         maxLines = if (focused) 4 else 1,
         textStyle = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onSurface),
         cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),

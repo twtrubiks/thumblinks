@@ -56,7 +56,9 @@ Kotlin + Jetpack Compose 原生 App，在 claude.ai/code 雲端 session 開發�
   JPEG 品質 85，HEIC 一樣轉成 JPEG。不留原圖的 URI（挑選器給的讀取權限是暫時的）。
   使用者放棄新增或又換了別的縮圖，已經寫出去的檔案要刪掉
 - 輸入框（網址、圖片網址、標題）長的會換行顯示（單行的框貼上長網址後，要拖回前面很難），內容還是一行：
-  換行換成空白（`oneLine()`）；網址欄收到換行（實體鍵盤的 Enter、貼上多行文字）當作按了「前往」。新增頁的網址欄右邊有清除鈕
+  換行換成空白（`oneLine()`）；網址欄收到換行（貼上多行文字）當作按了「前往」。實體鍵盤的 Enter 用 `Modifier.onEnter` 先攔下來
+  （換行顯示的框按 Enter 會插入換行；在 onValueChange 裡才處理的話 `clearFocus()` 不會生效）。新增頁的網址欄右邊有清除鈕。
+  **`singleLine` 不能中途切換**（例如打字時才多行）：TextField 的捲動方向對不上會閃退，要多行就一直是多行、只改 `maxLines`
 - 轉螢幕不能丟東西：輸入到一半的網址、抓到的結果、選好的縮圖、改到一半的標題都放 `rememberSaveable`
 
 ### 清單
