@@ -61,9 +61,11 @@ Kotlin + Jetpack Compose 原生 App，在 claude.ai/code 雲端 session 開發�
 
 ### 清單
 
-- 右上角：深色模式（跟系統／淺色／深色）、「瀏覽」、「匯出」
-- 首頁就是清單，新加的在上面。每筆顯示縮圖、標題（沒有標題就顯示網址）、網域。
-  回到清單時最上面多了一筆就捲回最上面（`LazyColumn` 會跟著原本的第一筆走，新的那筆會被擠到畫面上面看不到）
+- 右上角：深色模式（跟系統／淺色／深色）、排序、「瀏覽」、「匯出」
+- 首頁就是清單，預設新加的在上面。**排序**（右上角，`SortOrder`，`sortLinks` 純 Kotlin、JVM 測）：新的在上／舊的在上／標題／網域，
+  記在 SharedPreferences `settings`；標題、網域一樣的照新的在上，標題不分大小寫、中文照語系（Collator），沒有標題的用網址。
+  匯出的順序跟畫面一樣（`export()` 也照目前的排序）。換排序時捲回最上面每筆顯示縮圖、標題（沒有標題就顯示網址）、網域。
+  回到清單時多了新的一筆就捲到它（`LazyColumn` 會跟著原本的第一筆走，新的那筆會被擠到畫面外看不到）
 - 點一筆進編輯頁：改標題、換縮圖（重新抓、貼圖片網址、上傳）、用瀏覽器開、刪除（要確認）。
   換掉或刪掉上傳的縮圖時，舊的檔案要刪（`LinkStore.update`、`LinkStore.delete` 會刪）。
   在這一頁上傳、還沒存的圖由 `ThumbDraft` 記著，放棄這一頁（返回鍵）或又換一張時刪掉
@@ -142,6 +144,8 @@ JSON（UTF-8、縮排兩格、中文不跳脫；用 kotlinx.serialization 的 `@
   長按連結、圖片有選單（開啟、加到清單、複製網址）；影片全螢幕時系統列也藏起來
 - **不做**：下載（跳一句「不支援下載檔案」）、上傳檔案、歷史紀錄、無痕、登入資訊的儲存。
   權限一律拒絕（定位、相機、麥克風、通知、DRM、有聲的自動播放），只放行靜音的自動播放
+- **先開好引擎**（`AppContainer.warmUpBrowser`）：清單出現 2 秒、主執行緒閒下來之後建立 GeckoRuntime、`Ublock.start()`，
+  點進瀏覽器時不用等引擎啟動與 uBO 讀過濾清單（第一次安裝 uBO 也在這時候）。代價是 App 開著時多佔記憶體，`isLowRamDevice` 的手機不做
 - **uBlock Origin 不打包進 APK**，跟 Firefox 一樣從 AMO 裝有 Mozilla 簽章的版本
   （`WebExtensionController.install`，`Ublock.AMO_URL`）：第一次打開瀏覽器時裝，`PromptDelegate` 只同意 uBO 自己的權限；
   裝好的留在 GeckoView 的設定檔，之後用 `list()` 找到就好；一天最多 `update()` 一次。
@@ -153,7 +157,7 @@ JSON（UTF-8、縮排兩格、中文不跳脫；用 kotlinx.serialization 的 `@
 
 ### 先不做（要做之前先問使用者）
 
-匯入、雲端同步、帳號、分類／標籤、搜尋、排序、網址正規化、匯出時把網路上的縮圖也下載進 zip。
+匯入、雲端同步、帳號、分類／標籤、搜尋、手動拖曳排順序、網址正規化、匯出時把網路上的縮圖也下載進 zip。
 瀏覽器的多分頁、歷史紀錄、無痕、下載、上傳。
 
 ## 程式的分層
@@ -270,7 +274,7 @@ CI 錄影前也會跑 `testDebugUnitTest`，沒過就不會錄影（失敗原因
   有 og:image 與 og:title 的網頁、沒有縮圖的網頁、圖片本身（測試裡用 `Bitmap` 畫一張 PNG），都在 `FakeSite`。
   展示流程：貼網址 → 抓到縮圖與標題 → 改標題 → 加入；從「瀏覽器」分享同一個網址進來 → 已經在清單裡了 → 打開那一筆；
   貼沒有縮圖的網址 → 貼圖片網址 → 加入；點一筆用內建瀏覽器打開（已在清單）→ 網址列換一篇 → 加到清單；長按刪除一筆；打開匯出；
-  右上角切成深色模式再切回跟系統（設定存在 SharedPreferences，不切回來會留給下一個測試）。
+  右上角切成深色模式再切回跟系統、排序換成舊的在上再換回來（設定存在 SharedPreferences，不切回來會留給下一個測試）。
   uBO 要連 AMO，不放在錄影裡
 - 內建瀏覽器的網頁內容在 GeckoView 裡，UiAutomator 不保證讀得到；只操作我們自己畫的部分（`url_bar`、`add_to_list`、`in_list`、
   `ublock_button`、`ublock_badge`、`ublock_popup` 這些 testTag）。網址列打字：先點一下拿到焦點、`text = …`、`device.pressEnter()`
@@ -347,6 +351,8 @@ R8 壓過的 OkHttp、jsoup、Coil 只有真的抓一次才跑得到；release �
    - `/tmp/media/frames/*.png`：每 2 秒一張影格，用 Read 看圖確認畫面
    - `/tmp/media/screenshots/*.png`：測試在關鍵畫面存的截圖（半解析度），`release-*.png` 是 release 冒煙測試的截圖
    - `/tmp/media/info.txt`：branch、commit、api level、run 網址、job status
+   - `/tmp/media/progress.txt`：`record.sh` 每一段開始的時間，卡住（job 逾時、被取消）時看卡在哪一段。
+     `record.sh` 的 adb 指令都限時（GeckoView 用過之後 adb 曾經整個卡住），測完瀏覽器先 `am force-stop`
    - `/tmp/media/gradle-build.txt`：CI 的 Gradle build 輸出
    - `/tmp/media/device-test.txt`：DeviceTest 的輸出
    - `/tmp/media/instrument.txt`、`logcat.txt`：DemoRecordingTest 的輸出與 log

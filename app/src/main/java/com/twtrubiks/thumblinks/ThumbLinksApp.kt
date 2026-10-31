@@ -100,6 +100,9 @@ fun ThumbLinksApp(sharedText: String? = null, onSharedTextTaken: () -> Unit = {}
         holder.removeState(route.key)
     }
 
+    // 內建瀏覽器的引擎與 uBO 先在背景準備好，點進瀏覽器時不用再等引擎啟動、uBO 讀過濾清單
+    LaunchedEffect(Unit) { container.warmUpBrowser() }
+
     LaunchedEffect(sharedText) {
         if (sharedText != null) {
             add(sharedText)
@@ -107,7 +110,7 @@ fun ThumbLinksApp(sharedText: String? = null, onSharedTextTaken: () -> Unit = {}
         }
     }
 
-    ThumbLinksTheme(container.theme.mode) {
+    ThumbLinksTheme(container.theme.value) {
         Surface(
             Modifier
                 .fillMaxSize()

@@ -57,8 +57,9 @@ import java.time.LocalDate
 import java.time.OffsetDateTime
 
 /**
- * 首頁就是清單，新加的在上面。點一筆用內建瀏覽器打開、長按進編輯頁。
- * 右上角是空白的瀏覽器與匯出、右下角新增。[links] 是 null 表示還在讀。
+ * 首頁就是清單，預設新加的在上面。點一筆用內建瀏覽器打開、長按進編輯頁。
+ * 右上角是深色模式、排序、空白的瀏覽器與匯出，右下角新增。
+ * [links] 是 [LinkStore.all] 的順序（新的在上），null 表示還在讀；畫面上照使用者選的排序。
  */
 @Composable
 fun ListScreen(links: List<Link>?, onAdd: () -> Unit, onOpen: (Link) -> Unit, onEdit: (Link) -> Unit, onBrowse: () -> Unit) {
@@ -69,15 +70,21 @@ fun ListScreen(links: List<Link>?, onAdd: () -> Unit, onOpen: (Link) -> Unit, on
     var choosingFormat by rememberSaveable { mutableStateOf(false) }
     // 存檔畫面回來之前 Activity 可能被重建，選的格式要留著
     var pendingFormat by rememberSaveable { mutableStateOf<ExportFormat?>(null) }
+    val order = container.sort.value
+    val shown = remember(links, order) { links?.let { sortLinks(it, order) } }
     val listState = rememberLazyListState()
-    // 新加的在最上面。回到清單時先畫的是舊的那份，新的讀進來時 LazyColumn 會跟著原本的第一筆走，
-    // 新的那筆就被擠到畫面上面、看起來像沒加進來：最上面多了一筆就捲回最上面
-    var top by rememberSaveable { mutableStateOf<String?>(null) }
+    // 回到清單時先畫的是舊的那份，新的讀進來時 LazyColumn 會跟著原本的第一筆走，新加的那筆可能被擠到畫面外、
+    // 看起來像沒加進來：多了新的一筆（links 的第一筆換了、原本的還在）就捲到它
+    var newest by rememberSaveable { mutableStateOf<String?>(null) }
     LaunchedEffect(links) {
         if (links.isNullOrEmpty()) return@LaunchedEffect
-        val previous = top
-        top = links.first().id
-        if (previous != null && previous != top && links.any { it.id == previous }) listState.scrollToItem(0)
+        val previous = newest
+        val added = links.first().id
+        newest = added
+        if (previous != null && previous != added && links.any { it.id == previous }) {
+            val index = sortLinks(links, order).indexOfFirst { it.id == added }
+            if (index >= 0) listState.scrollToItem(index)
+        }
     }
 
     val createFile = rememberLauncherForActivityResult(CreateFile()) { uri ->
@@ -100,7 +107,28 @@ fun ListScreen(links: List<Link>?, onAdd: () -> Unit, onOpen: (Link) -> Unit, on
     Screen(
         title = "ThumbLinks",
         actions = {
-            ThemeButton(container.theme)
+            ChoiceButton(
+                tag = "theme_button",
+                description = "深色模式：${container.theme.value.label}",
+                icon = container.theme.value.icon,
+                options = ThemeMode.entries,
+                selected = container.theme.value,
+                label = { it.label },
+                optionIcon = { it.icon },
+                onSelect = container.theme::set,
+            )
+            ChoiceButton(
+                tag = "sort_button",
+                description = "排序：${order.label}",
+                icon = R.drawable.ic_sort,
+                options = SortOrder.entries,
+                selected = order,
+                label = { it.label },
+                onSelect = {
+                    container.sort.set(it)
+                    scope.launch { listState.scrollToItem(0) }
+                },
+            )
             TextButton(onClick = onBrowse) { Text("瀏覽") }
             TextButton(onClick = { choosingFormat = true }, enabled = !links.isNullOrEmpty()) { Text("匯出") }
         },
@@ -117,8 +145,8 @@ fun ListScreen(links: List<Link>?, onAdd: () -> Unit, onOpen: (Link) -> Unit, on
         snackbar = snackbar,
     ) { modifier ->
         when {
-            links == null -> Unit
-            links.isEmpty() -> EmptyList(modifier)
+            shown == null -> Unit
+            shown.isEmpty() -> EmptyList(modifier)
             else -> LazyColumn(
                 modifier.fillMaxSize().testTag("link_list"),
                 state = listState,
@@ -126,7 +154,7 @@ fun ListScreen(links: List<Link>?, onAdd: () -> Unit, onOpen: (Link) -> Unit, on
                 contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 96.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp),
             ) {
-                items(links, key = Link::id) { LinkRow(it, container.thumbsDir, onClick = { onOpen(it) }, onLongClick = { onEdit(it) }) }
+                items(shown, key = Link::id) { LinkRow(it, container.thumbsDir, onClick = { onOpen(it) }, onLongClick = { onEdit(it) }) }
             }
         }
     }
@@ -168,10 +196,10 @@ fun ListScreen(links: List<Link>?, onAdd: () -> Unit, onOpen: (Link) -> Unit, on
     }
 }
 
-/** 匯出當下的清單（不是畫面上那份，避免中間又有變動），寫進使用者選的位置。 */
+/** 匯出當下的清單（不是畫面上那份，避免中間又有變動），照畫面上的排序，寫進使用者選的位置。 */
 private fun export(context: Context, uri: Uri, format: ExportFormat) {
     val container = context.container
-    val links = container.links.all()
+    val links = sortLinks(container.links.all(), container.sort.value)
     context.contentResolver.openOutputStream(uri, "wt")?.use { out ->
         Export.write(links, format, OffsetDateTime.now(), container.thumbsDir, out)
     } ?: throw IOException("打不開 $uri")
@@ -218,24 +246,33 @@ private fun LinkRow(link: Link, thumbsDir: java.io.File, onClick: () -> Unit, on
     }
 }
 
-/** 深色模式：圖示是目前的設定，按下去選跟系統、淺色、深色。 */
+/** 右上角的圖示按鈕，按下去從 [options] 選一個（深色模式、排序），目前的打勾。 */
 @Composable
-private fun ThemeButton(theme: ThemeSetting) {
+private fun <E> ChoiceButton(
+    tag: String,
+    description: String,
+    icon: Int,
+    options: List<E>,
+    selected: E,
+    label: (E) -> String,
+    optionIcon: ((E) -> Int)? = null,
+    onSelect: (E) -> Unit,
+) {
     var open by remember { mutableStateOf(false) }
     Box {
-        IconButton(onClick = { open = true }, modifier = Modifier.testTag("theme_button")) {
-            Icon(painterResource(theme.mode.icon), contentDescription = "深色模式：${theme.mode.label}")
+        IconButton(onClick = { open = true }, modifier = Modifier.testTag(tag)) {
+            Icon(painterResource(icon), contentDescription = description)
         }
         DropdownMenu(expanded = open, onDismissRequest = { open = false }) {
-            for (mode in ThemeMode.entries) {
+            for (option in options) {
                 DropdownMenuItem(
-                    text = { Text(mode.label) },
+                    text = { Text(label(option)) },
                     onClick = {
                         open = false
-                        theme.set(mode)
+                        onSelect(option)
                     },
-                    leadingIcon = { Icon(painterResource(mode.icon), contentDescription = null) },
-                    trailingIcon = if (mode == theme.mode) ({ Icon(painterResource(R.drawable.ic_check), contentDescription = "目前的設定") }) else null,
+                    leadingIcon = optionIcon?.let { { Icon(painterResource(it(option)), contentDescription = null) } },
+                    trailingIcon = if (option == selected) ({ Icon(painterResource(R.drawable.ic_check), contentDescription = "目前的設定") }) else null,
                 )
             }
         }
