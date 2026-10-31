@@ -101,11 +101,11 @@ private fun EditLink(link: Link, onBack: () -> Unit, onOpenBrowser: (String) -> 
 
             OutlinedTextField(
                 value = title,
-                onValueChange = { title = it },
+                onValueChange = { title = it.oneLine() },
                 modifier = Modifier.fillMaxWidth().testTag("title_input"),
                 label = { Text("標題（選填）") },
                 placeholder = { Text(link.url, maxLines = 1, overflow = TextOverflow.Ellipsis) },
-                singleLine = true,
+                maxLines = 3,
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(onDone = { focus.clearFocus() }),
             )

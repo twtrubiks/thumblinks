@@ -18,6 +18,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 
 /**
+ * 長的網址、標題在輸入框裡換行顯示（單行的框貼上長網址後，要拖回前面很難），但內容只有一行：
+ * 換行（貼上的、實體鍵盤的 Enter）換成空白。網址欄收到換行時當作按了「前往」，用 [hasNewline] 判斷。
+ */
+fun String.oneLine(): String = replace(NEWLINES, " ")
+
+fun String.hasNewline(): Boolean = any { it == '\n' || it == '\r' }
+
+private val NEWLINES = Regex("[\r\n]+")
+
+/**
  * 每一頁的骨架：上面的標題列（[onBack] 有給就有返回鍵）、右上角的 [actions]、右下角的 [fab]、下面的提示。
  * [content] 拿到的 Modifier 已經讓開標題列。
  */

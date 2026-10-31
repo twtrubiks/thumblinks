@@ -22,8 +22,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
@@ -97,6 +100,7 @@ fun ListScreen(links: List<Link>?, onAdd: () -> Unit, onOpen: (Link) -> Unit, on
     Screen(
         title = "ThumbLinks",
         actions = {
+            ThemeButton(container.theme)
             TextButton(onClick = onBrowse) { Text("瀏覽") }
             TextButton(onClick = { choosingFormat = true }, enabled = !links.isNullOrEmpty()) { Text("匯出") }
         },
@@ -213,6 +217,37 @@ private fun LinkRow(link: Link, thumbsDir: java.io.File, onClick: () -> Unit, on
         }
     }
 }
+
+/** 深色模式：圖示是目前的設定，按下去選跟系統、淺色、深色。 */
+@Composable
+private fun ThemeButton(theme: ThemeSetting) {
+    var open by remember { mutableStateOf(false) }
+    Box {
+        IconButton(onClick = { open = true }, modifier = Modifier.testTag("theme_button")) {
+            Icon(painterResource(theme.mode.icon), contentDescription = "深色模式：${theme.mode.label}")
+        }
+        DropdownMenu(expanded = open, onDismissRequest = { open = false }) {
+            for (mode in ThemeMode.entries) {
+                DropdownMenuItem(
+                    text = { Text(mode.label) },
+                    onClick = {
+                        open = false
+                        theme.set(mode)
+                    },
+                    leadingIcon = { Icon(painterResource(mode.icon), contentDescription = null) },
+                    trailingIcon = if (mode == theme.mode) ({ Icon(painterResource(R.drawable.ic_check), contentDescription = "目前的設定") }) else null,
+                )
+            }
+        }
+    }
+}
+
+private val ThemeMode.icon: Int
+    get() = when (this) {
+        ThemeMode.SYSTEM -> R.drawable.ic_contrast
+        ThemeMode.LIGHT -> R.drawable.ic_light_mode
+        ThemeMode.DARK -> R.drawable.ic_dark_mode
+    }
 
 @Composable
 private fun EmptyList(modifier: Modifier) {

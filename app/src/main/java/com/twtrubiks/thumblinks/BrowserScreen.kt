@@ -265,10 +265,20 @@ private fun UrlBar(tab: BrowserTab, autoFocus: Boolean, modifier: Modifier) {
     LaunchedEffect(tab.url, focused) { if (!focused) text = TextFieldValue(tab.url) }
     LaunchedEffect(Unit) { if (autoFocus) requester.requestFocus() }
 
+    fun go(input: String) {
+        BrowserInput.resolve(input)?.let(tab::load)
+        focus.clearFocus()
+    }
+
     BasicTextField(
         value = text,
         onValueChange = {
-            if (!(keepSelectAll && it.text == text.text)) text = it
+            if (it.text.hasNewline()) {
+                // 實體鍵盤的 Enter、貼上多行的文字：當作按了「前往」
+                go(it.text.oneLine())
+            } else if (!(keepSelectAll && it.text == text.text)) {
+                text = it
+            }
             keepSelectAll = false
         },
         modifier = modifier
@@ -281,14 +291,13 @@ private fun UrlBar(tab: BrowserTab, autoFocus: Boolean, modifier: Modifier) {
                 focused = it.isFocused
             }
             .testTag("url_bar"),
-        singleLine = true,
+        // 打字時長網址換行顯示（貼上之後整串看得到，不用左右拖）；沒在打字時一行
+        singleLine = !focused,
+        maxLines = if (focused) 4 else 1,
         textStyle = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onSurface),
         cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri, imeAction = ImeAction.Go, autoCorrectEnabled = false),
-        keyboardActions = KeyboardActions(onGo = {
-            BrowserInput.resolve(text.text)?.let(tab::load)
-            focus.clearFocus()
-        }),
+        keyboardActions = KeyboardActions(onGo = { go(text.text) }),
         decorationBox = { inner ->
             Row(
                 Modifier
