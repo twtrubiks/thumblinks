@@ -52,6 +52,15 @@ abstract class UiTest {
         }
     }
 
+    /** 剪貼簿裡的文字（App 在前景才讀得到：Android 10 以後背景的 App 讀不到剪貼簿）。 */
+    protected fun clipboardText(): String? {
+        var text: String? = null
+        instrumentation.runOnMainSync {
+            text = context.getSystemService(ClipboardManager::class.java).primaryClip?.takeIf { it.itemCount > 0 }?.getItemAt(0)?.text?.toString()
+        }
+        return text
+    }
+
     /** 假裝從別的 App（瀏覽器）分享一段文字進來；App 開著的話會走 onNewIntent。 */
     protected fun share(text: String) {
         context.startActivity(
