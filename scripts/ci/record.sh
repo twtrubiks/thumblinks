@@ -17,9 +17,18 @@ SYSTEM_UI_TEST_CLASS=$APP_ID.SystemUiTest
 BROWSER_TEST_CLASS=$APP_ID.BrowserTest
 mkdir -p "$OUT"
 
+# adb 指令都限時：GeckoView 用過之後 adb 曾經整個卡住（screencap、logcat -d 卡了 20～30 分鐘，整個 job 逾時）。
+# 預設 120 秒，要更久的在前面加 ADB_TIMEOUT=…。已經自己包 timeout 的（am instrument）呼叫的是執行檔，不經過這裡
+ADB_BIN=$(command -v adb)
+adb() { timeout "${ADB_TIMEOUT:-120}" "$ADB_BIN" "$@"; }
+
+# 每一段開始時記一行（含時間）：卡住時看 progress.txt 就知道卡在哪
+step() { echo "$(date +%T) $*" | tee -a "$OUT/progress.txt"; }
+
 # GeckoView 的 APK 按 CPU 拆開，模擬器是 x86_64
-adb install -r -t app/build/outputs/apk/debug/app-x86_64-debug.apk || exit 1
-adb install -r -t app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk || exit 1
+step "安裝 debug 版與測試 APK"
+ADB_TIMEOUT=300 adb install -r -t app/build/outputs/apk/debug/app-x86_64-debug.apk || exit 1
+ADB_TIMEOUT=300 adb install -r -t app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk || exit 1
 
 # 喚醒並解鎖螢幕、在影片裡顯示點擊位置
 # （不用 keyevent 82：MENU 鍵在桌面會叫出長按選單，被錄進影片開頭）
@@ -49,6 +58,7 @@ fi
 
 # 只有真機才測得到的事：Android 9 內建的 SQLite 跑不跑得動 LinkStore 的 SQL、Bitmap 縮圖轉正。不錄影
 # 測試都設時間上限：卡住的話早點停下來，後面的步驟還能把 log 與截圖收回來，不用等到整個 job 逾時
+step "DeviceTest"
 timeout 300 adb shell am instrument -w -e class "$DEVICE_TEST_CLASS" \
   "$APP_ID.test/androidx.test.runner.AndroidJUnitRunner" | tee "$OUT/device-test.txt"
 
@@ -56,7 +66,8 @@ adb logcat -c || true
 
 # pixel_7_pro 是 1440x3120，直接錄可能超過模擬器編碼器上限，所以錄一半尺寸
 # screenrecord 單次最長 180 秒
-adb shell screenrecord --size 720x1560 --bit-rate 8000000 --time-limit 180 /sdcard/demo.mp4 &
+step "DemoRecordingTest（錄影）"
+ADB_TIMEOUT=200 adb shell screenrecord --size 720x1560 --bit-rate 8000000 --time-limit 180 /sdcard/demo.mp4 &
 REC_PID=$!
 sleep 2
 
@@ -64,11 +75,13 @@ timeout 600 adb shell am instrument -w -e class "$TEST_CLASS" \
   "$APP_ID.test/androidx.test.runner.AndroidJUnitRunner" | tee "$OUT/instrument.txt"
 
 sleep 1
+adb shell am force-stop "$APP_ID" || true
 adb shell 'pkill -INT screenrecord 2>/dev/null || pkill -l 2 screenrecord' || true
 wait "$REC_PID" || true
 # 等 screenrecord 把檔案寫完
 sleep 2
 
+step "收回錄影"
 adb pull /sdcard/demo.mp4 "$OUT/demo.raw.mp4" || true
 # DemoRecordingTest 在關鍵畫面存的截圖
 adb pull "/sdcard/Android/data/$APP_ID/files/screenshots" "$OUT/" || true
@@ -76,19 +89,25 @@ adb logcat -d > "$OUT/logcat.txt" || true
 
 # 系統的畫面（照片挑選器、存檔的檔案畫面）：不錄影。
 # 先清掉 App 資料，從空的清單開始（錄影的截圖已經 pull 回來了）
+step "SystemUiTest"
 adb shell pm clear "$APP_ID" || true
 adb logcat -c || true
 timeout 300 adb shell am instrument -w -e class "$SYSTEM_UI_TEST_CLASS" \
   "$APP_ID.test/androidx.test.runner.AndroidJUnitRunner" | tee "$OUT/system-ui-test.txt"
+adb shell am force-stop "$APP_ID" || true
 adb pull "/sdcard/Android/data/$APP_ID/files/screenshots" "$OUT/" || true
 adb logcat -d > "$OUT/logcat-system-ui.txt" || true
 
 # 內建瀏覽器的 uBlock Origin：從 AMO 安裝（要連外）、擋廣告、popup。不錄影。
 # 先清掉 App 資料，每次都從第一次安裝 uBO 開始（截圖已經 pull 回來了）
+step "BrowserTest"
 adb shell pm clear "$APP_ID" || true
 adb logcat -c || true
 timeout 600 adb shell am instrument -w -e class "$BROWSER_TEST_CLASS" \
   "$APP_ID.test/androidx.test.runner.AndroidJUnitRunner" | tee "$OUT/browser-test.txt"
+# 測完瀏覽器停在網頁上，接下來的 adb 指令曾經卡住：先把 App（連同 GeckoView 的行程）關掉
+step "BrowserTest 結束，關掉 App、收回截圖與 log"
+adb shell am force-stop "$APP_ID" || true
 adb pull "/sdcard/Android/data/$APP_ID/files/screenshots" "$OUT/" || true
 adb logcat -d > "$OUT/logcat-browser.txt" || true
 
@@ -155,8 +174,9 @@ SMOKE_URL=https://github.com/
 RELEASE_APK=app/build/outputs/apk/release/app-x86_64-release.apk
 if [ -f "$RELEASE_APK" ]; then
   mkdir -p "$OUT/screenshots"
+  step "release 冒煙測試"
   adb shell pm clear "$APP_ID" || true
-  adb install -r "$RELEASE_APK" || exit 1
+  ADB_TIMEOUT=300 adb install -r "$RELEASE_APK" || exit 1
   # 系統的轉場與鍵盤動畫停掉，dump 少等一點。錄影已經結束，不影響影片
   for scale in animator_duration_scale window_animation_scale transition_animation_scale; do
     adb shell settings put global "$scale" 0 || true

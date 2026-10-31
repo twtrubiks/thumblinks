@@ -2,6 +2,7 @@ package com.twtrubiks.thumblinks
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.uiautomator.By
+import androidx.test.uiautomator.StaleObjectException
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -13,7 +14,7 @@ import org.junit.runner.RunWith
  *
  * 貼網址 → 抓到縮圖與標題 → 改標題 → 加入；分享同一個網址進來 → 已經在清單裡了 → 打開那一筆；
  * 貼沒有縮圖的網址 → 貼圖片網址 → 加入；點一筆用內建瀏覽器打開（已在清單）→ 網址列換一篇 → 加到清單；
- * 長按刪除一筆；打開匯出；切成深色模式再切回來。uBlock Origin 要連 AMO，不放在錄影裡（[BrowserTest]）。
+ * 長按刪除一筆；打開匯出；切成深色模式再切回來；排序換成舊的在上再換回來。uBlock Origin 要連 AMO，不放在錄影裡（[BrowserTest]）。
  */
 @RunWith(AndroidJUnit4::class)
 class DemoRecordingTest : UiTest() {
@@ -142,5 +143,25 @@ class DemoRecordingTest : UiTest() {
         find(By.res("theme_button")).click()
         find(By.text("跟系統")).click()
         pause(1500)
+
+        // 排序：右上角選「舊的在上」，兩筆上下對調；再換回新的在上（設定一樣會記住）
+        find(By.res("sort_button")).click()
+        find(By.text("舊的在上")).click()
+        waitUntil { above(FakeSite.PLAIN_TITLE, FakeSite.AUTUMN_TITLE) }
+        pause(2000)
+        screenshot("14-sort-oldest")
+        find(By.res("sort_button")).click()
+        find(By.text("新的在上")).click()
+        waitUntil { above(FakeSite.AUTUMN_TITLE, FakeSite.PLAIN_TITLE) }
+        pause(1500)
+    }
+
+    /** 清單上 [upper] 在 [lower] 上面。清單重排時拿到的元件可能馬上就舊了，舊了就當作還沒排好。 */
+    private fun above(upper: String, lower: String): Boolean = try {
+        val a = device.findObject(By.text(upper))?.visibleBounds
+        val b = device.findObject(By.text(lower))?.visibleBounds
+        a != null && b != null && a.top < b.top
+    } catch (e: StaleObjectException) {
+        false
     }
 }
