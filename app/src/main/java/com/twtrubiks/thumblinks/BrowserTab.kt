@@ -172,7 +172,10 @@ class BrowserTab(private val context: Context, private val runtime: GeckoRuntime
         if (page.session.isOpen) page.session.close()
         page.session.open(runtime)
         shown?.setSession(page.session)
-        if (page.url.isNotEmpty()) page.session.loadUri(page.url)
+        if (page.url.isNotEmpty()) {
+            page.requested = page.url
+            page.session.loadUri(page.url)
+        }
     }
 
     /**
@@ -255,16 +258,25 @@ class BrowserTab(private val context: Context, private val runtime: GeckoRuntime
     }
 
     private inner class Progress(private val page: Page) : GeckoSession.ProgressDelegate {
+        // session 剛開時先載入一次 about:blank（比我們要的網址早開始、早結束）：不算，不然還沒開始載就說載完了
+        private var blank = false
+
         override fun onPageStart(session: GeckoSession, url: String) {
+            blank = url == BLANK && page.requested != null && page.requested != BLANK
+            if (blank) return
             page.loading = true
             page.progress = 0
         }
 
         override fun onProgressChange(session: GeckoSession, progress: Int) {
-            page.progress = progress
+            if (!blank) page.progress = progress
         }
 
         override fun onPageStop(session: GeckoSession, success: Boolean) {
+            if (blank) {
+                blank = false
+                return
+            }
             page.loading = false
             // release 冒煙測試看 logcat 的這一行，確認壓過的 GeckoView 真的載入了網頁
             Log.i(TAG, "網頁載入完成 success=$success ${page.url}")
