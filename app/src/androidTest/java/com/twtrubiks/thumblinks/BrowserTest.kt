@@ -2,6 +2,8 @@ package com.twtrubiks.thumblinks
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.uiautomator.By
+import android.graphics.Color
+import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.StaleObjectException
 import org.junit.After
 import org.junit.Assert.assertTrue
@@ -54,6 +56,10 @@ class BrowserTest : UiTest() {
         waitFor(By.text("關閉"), timeout = 20_000)
         pause(4000)
         screenshot("browser-03-ublock-popup")
+        // popup 的內容讀不到，看顏色：BottomSheet 中間那一塊不能整片黑（TextureView 時就是整片黑）
+        val shot = requireNotNull(InstrumentationRegistry.getInstrumentation().uiAutomation.takeScreenshot())
+        val samples = (1..9).flatMap { x -> listOf(0.45f, 0.55f, 0.65f).map { y -> shot.getPixel(shot.width * x / 10, (shot.height * y).toInt()) } }
+        assertTrue("uBO 的 popup 一片黑", samples.any { Color.red(it) + Color.green(it) + Color.blue(it) > 30 })
         find(By.text("關閉")).click()
         waitGone(By.text("關閉"))
     }
@@ -65,6 +71,9 @@ class BrowserTest : UiTest() {
         waitFor(By.text("還沒有連結"), timeout = 30_000)
         find(By.text("瀏覽")).click()
         loadPage(site.url("/opener")) { go(site.url("/opener")) }
+        // uBO 正在安裝時 App 會卡一下，點網頁的那一下可能變不成 click：等它裝好（每次 pm clear 後都是第一次裝）
+        waitFor(By.res("ublock_button"), timeout = 120_000)
+        pause(2000)
 
         // var w = window.open(); w.location = …：疊一頁新的。以前會在同一頁打開 about:blank，一片白
         loadPage(site.url("/autumn")) { tapPage(0.23f) }
