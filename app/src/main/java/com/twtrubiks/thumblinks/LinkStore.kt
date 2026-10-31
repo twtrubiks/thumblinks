@@ -56,9 +56,12 @@ class LinkStore(
 
     fun find(id: String): Link? = sql.query("SELECT * FROM links WHERE id = ?", id).firstOrNull()?.let(::toLink)
 
+    /** 網址照字串比對，不做正規化。 */
+    fun findByUrl(url: String): Link? = sql.query("SELECT * FROM links WHERE url = ?", url).firstOrNull()?.let(::toLink)
+
     /** 標題前後的空白去掉，剩下空字串就當作沒有標題。同一個網址已經在清單裡的話丟 [DuplicateLinkException]。 */
     fun add(url: String, title: String?, thumbnail: Thumbnail): Link = sql.transaction {
-        sql.query("SELECT * FROM links WHERE url = ?", url).firstOrNull()?.let { throw DuplicateLinkException(toLink(it)) }
+        findByUrl(url)?.let { throw DuplicateLinkException(it) }
         val link = Link(
             id = UUID.randomUUID().toString(),
             url = url,
@@ -76,6 +79,25 @@ class LinkStore(
             link.createdAt.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME),
         )
         link
+    }
+
+    /**
+     * 改標題、換縮圖（網址不能改）。標題的規則同 [add]。換掉的縮圖如果是上傳的，舊的檔案一起刪掉。
+     * 那一筆已經不在了回 null。
+     */
+    fun update(id: String, title: String?, thumbnail: Thumbnail): Link? {
+        val old = find(id) ?: return null
+        val link = old.copy(title = title?.trim()?.ifEmpty { null }, thumbnail = thumbnail)
+        sql.execute(
+            "UPDATE links SET title = ?, thumbnail_url = ?, thumbnail_file = ? WHERE id = ?",
+            link.title,
+            (thumbnail as? Thumbnail.Remote)?.url,
+            (thumbnail as? Thumbnail.Uploaded)?.fileName,
+            id,
+        )
+        val oldFile = (old.thumbnail as? Thumbnail.Uploaded)?.fileName
+        if (oldFile != null && oldFile != (thumbnail as? Thumbnail.Uploaded)?.fileName) File(thumbsDir, oldFile).delete()
+        return link
     }
 
     fun delete(id: String) {
