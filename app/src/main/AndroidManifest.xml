@@ -4,10 +4,13 @@
     <!-- 抓網頁的縮圖與標題、載入網路上的縮圖 -->
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <!-- allowBackup 開著：清單只是公開網頁的連結，交給系統備份，換手機、重裝時接得回來 -->
+    <!-- allowBackup 開著：清單只是公開網頁的連結，交給系統備份，換手機、重裝時接得回來。
+         只備份清單、設定、上傳的縮圖，內建瀏覽器的資料不備份（見 res/xml/backup_rules.xml） -->
     <application
         android:name=".ThumbLinksApplication"
         android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher"

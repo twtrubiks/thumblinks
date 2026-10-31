@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Android 11 以前的自動備份（Android 12 以後看 data_extraction_rules.xml，兩份要一樣）。
+     有寫 include 就只備份這些：清單（資料庫）、設定、上傳的縮圖。
+     內建瀏覽器的資料（GeckoView 的設定檔在 files/mozilla/，有 uBO 的過濾清單、cookie）不備份：
+     自動備份每個 App 只有 25 MB，超過就整份不備份，清單也跟著沒了；uBO 換手機後會再從 AMO 裝 -->
+<full-backup-content>
+    <include domain="database" path="." />
+    <include domain="sharedpref" path="settings.xml" />
+    <include domain="file" path="thumbs" />
+</full-backup-content>

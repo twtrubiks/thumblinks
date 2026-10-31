@@ -263,7 +263,11 @@ JSON（UTF-8、縮排兩格、中文不跳脫；用 kotlinx.serialization 的 `@
   native library 用壓縮的打包（`useLegacyPackaging`）：arm64 的 release 版約 95 MB（不壓縮是 197 MB，光 `libxul.so` 就 150 MB）
 - `MainActivity` 的 `configChanges` 包含轉螢幕：不重建 Activity，GeckoView 不用重接畫面（Compose 自己會重排）
 - OkHttp、jsoup、Coil、kotlinx.serialization、GeckoView 都自帶 R8 規則，`app/proguard-rules.pro` 目前是空的
-- `android:allowBackup="true"`：清單只是公開網頁的連結，交給系統備份，換手機、重裝時接得回來
+- `android:allowBackup="true"`：清單只是公開網頁的連結，交給系統備份，換手機、重裝時接得回來。
+  只備份資料庫、SharedPreferences 的 `settings`、上傳的縮圖（`res/xml/backup_rules.xml` 給 Android 11 以前、
+  `data_extraction_rules.xml` 給 Android 12 以後，兩份要一樣）。內建瀏覽器的資料（GeckoView 的設定檔在 `files/mozilla/`，
+  有 uBO 的過濾清單、cookie）不備份：自動備份每個 App 只有 25 MB，超過就整份不備份，清單也跟著沒了。
+  上傳的縮圖一張約 100～300 KB，上傳的圖多到上百張時一樣會超過，到時候再考慮不備份縮圖（還原後那幾筆要重新選圖）
 - debug 版的 network security config（`app/src/debug/`）只對 127.0.0.1 放行明碼連線，給測試的假網站用；release 版不帶
 - 畫面用 Material 3，Android 12 以上用桌布取色（`Theme.kt`）。深淺預設跟系統，清單右上角的按鈕可以改成固定淺色／深色
   （`ThemeSetting`，存在 SharedPreferences `settings`）：系統列圖示的深淺跟著 App（`enableEdgeToEdge` 帶自己的判斷），
