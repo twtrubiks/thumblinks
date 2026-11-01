@@ -436,6 +436,10 @@ repo 頁面沒有影片，一樣有 og:image 與標題。
    - `/tmp/media/release-smoke.txt`、`logcat-release.txt`：release 冒煙測試的啟動時間與 log
    - `/tmp/media/demo.mp4`：壓縮後的影片（給使用者看）
 
+README 的截圖在 `docs/screenshots/`，是從 `media` 的 `screenshots/` 複製的（`list` ← `16-long-press-menu`、`add` ← `02-fetched`、
+`export` ← `12-export`、`browser` ← `08-browser`、`ublock` ← `browser-03-ublock-popup`、`dark` ← `13-dark`）。畫面改了要重新複製；
+README 照事實寫，不誇大（做不到的、有限制的照寫）。
+
 看完 frames 確認畫面正常後，把 `/tmp/media/demo.mp4` 複製到 session 的 scratchpad 目錄，
 用 SendUserFile（`display: render`）直接傳給使用者，讓使用者不用 pull 就能播放。傳之前先核對 `info.txt` 的 commit 是這次的。
 
