@@ -20,6 +20,12 @@ class WebUrlsTest {
         assertEquals("https://example.com/a", WebUrls.extract("看這篇：https://example.com/a。"))
     }
 
+    /** 第一個看起來像網址、其實不合法（埠號超過範圍）：往下找下一個，不是回 null。 */
+    @Test
+    fun skipsAnInvalidFirstUrl() {
+        assertEquals("https://example.com/a", WebUrls.extract("壞的 https://bad.example:99999/ 好的 https://example.com/a"))
+    }
+
     @Test
     fun firstOfSeveral() {
         assertEquals("https://a.example/", WebUrls.extract("https://a.example/ 和 https://b.example/"))

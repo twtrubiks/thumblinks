@@ -16,6 +16,8 @@ import java.util.zip.ZipFile
 /**
  * 檔案裡的一筆。[thumbnail] 是網址，或 zip 裡的相對路徑（`images/<id>.jpg`）。
  * Markdown 沒有時間與愛心：[createdAt] 是 null（加的時候用現在）、[favorite] 是 false。
+ * [writtenUrl] 是 Markdown 裡寫的樣子（解碼之前），跟 [url] 不一樣才有：
+ * 原本的網址就有 `%28` 這種寫法的話，解碼後的 [url] 會變成 `(`，手機上存的卻是 `%28`，兩種都要拿來查重複。
  */
 data class ImportedLink(
     val url: String,
@@ -23,6 +25,7 @@ data class ImportedLink(
     val thumbnail: String,
     val createdAt: OffsetDateTime?,
     val favorite: Boolean,
+    val writtenUrl: String? = null,
 )
 
 /** 整個檔案讀不了：訊息直接給使用者看。 */
@@ -138,7 +141,14 @@ object Import {
         val (alt, thumbnail, url) = MARKDOWN_LINE.matchEntire(line.trim())?.destructured ?: return@mapNotNull null
         val realUrl = decodeTarget(url)
         val title = ESCAPED.replace(alt) { it.groupValues[1] }
-        ImportedLink(realUrl, cleanTitle(title.takeIf { it != realUrl }), decodeTarget(thumbnail), createdAt = null, favorite = false)
+        ImportedLink(
+            realUrl,
+            cleanTitle(title.takeIf { it != realUrl }),
+            decodeTarget(thumbnail),
+            createdAt = null,
+            favorite = false,
+            writtenUrl = url.takeIf { it != realUrl },
+        )
     }.toList()
 
     private fun markdown(text: String, zip: ZipFile?) = ImportFile(parseMarkdown(text), broken = 0, zip)
@@ -147,7 +157,11 @@ object Import {
     private val MARKDOWN_LINE = Regex("""\[!\[((?:\\.|[^\\\[\]])*)]\(([^\s()]+)\)]\(([^\s()]+)\)""")
     private val ESCAPED = Regex("""\\(.)""")
 
-    /** [Export.linkTarget] 反過來：只解它編的那五個，其他的 `%xx` 照原樣。 */
+    /**
+     * [Export.linkTarget] 反過來：只解它編的那五個，其他的 `%xx` 照原樣。
+     * 原本的網址就有這五種 `%xx` 的話會被解成字元，分不出來（匯出時不能把 `%` 也編掉：
+     * Markdown 的連結點下去，瀏覽器會照字送出 `%2528`，打開的就不是原本那一頁），所以查重複時連 [ImportedLink.writtenUrl] 一起查。
+     */
     fun decodeTarget(url: String): String = url
         .replace("%20", " ")
         .replace("%28", "(")
@@ -164,7 +178,8 @@ object Import {
     }
 
     /**
-     * 算出要加的、跳過的。[exists] 問網址是不是已經在清單裡（照字串比對，跟新增一樣）；同一個檔案裡重複的只留第一筆。
+     * 算出要加的、跳過的。[exists] 問網址是不是已經在清單裡（照字串比對，跟新增一樣；Markdown 的兩種寫法都問）；
+     * 同一個檔案裡重複的只留第一筆。
      * 網址要是 `http(s)://`，縮圖要是 `http(s)://` 的網址或 zip 裡有的圖，不然算讀不出來。
      *
      * 加的順序決定清單上的位置（新的在上用的是加入的順序）：照檔案裡的時間從舊到新加，檔案的排序是什麼都一樣；
@@ -180,7 +195,7 @@ object Import {
                     broken++
                     false
                 }
-                !seen.add(link.url) || exists(link.url) -> {
+                !seen.add(link.url) || exists(link.url) || link.writtenUrl?.let(exists) == true -> {
                     duplicates++
                     false
                 }
@@ -208,7 +223,7 @@ object Import {
         var duplicates = plan.duplicates
         var broken = plan.broken
         for (link in plan.toAdd) {
-            if (store.findByUrl(link.url) != null) {
+            if (store.findByUrl(link.url) != null || link.writtenUrl?.let(store::findByUrl) != null) {
                 duplicates++
                 continue
             }
