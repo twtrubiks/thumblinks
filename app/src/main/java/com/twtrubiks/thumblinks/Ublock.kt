@@ -31,6 +31,10 @@ class Ublock(private val runtime: GeckoRuntime, private val prefs: SharedPrefere
     var version by mutableStateOf<String?>(null)
         private set
 
+    /** 新版已經下載好、下次打開 App 才換上的版本（uBO 正在用，它自己要求延後）。沒有是 null。 */
+    var pendingVersion by mutableStateOf<String?>(null)
+        private set
+
     /** 上次成功問過 AMO 的時間（毫秒）：裝的時候、檢查更新的時候。0 是還沒有過。 */
     var checkedAt by mutableLongStateOf(prefs.getLong(CHECKED_AT, 0))
         private set
@@ -105,7 +109,17 @@ class Ublock(private val runtime: GeckoRuntime, private val prefs: SharedPrefere
                 Log.i(TAG, "uBlock Origin 從 $old 更新到 ${updated.metaData.version}")
                 ready(updated)
             }
-        }, { e -> Log.w(TAG, "uBlock Origin 檢查更新失敗，下次打開 App 再試", e) })
+        }, { e ->
+            if ((e as? WebExtension.InstallException)?.code == WebExtension.InstallException.ErrorCodes.ERROR_POSTPONED) {
+                // uBO 有聽 runtime.onUpdateAvailable、正在用的時候不換：新版已經下載好，
+                // 引擎下次啟動（下次打開 App）時才換上。這不是失敗，記下檢查的時間
+                markChecked()
+                pendingVersion = e.extensionVersion ?: "新版"
+                Log.i(TAG, "uBlock Origin 有新版 $pendingVersion，已經下載好，下次打開 App 時換上（現在是 $old）")
+            } else {
+                Log.w(TAG, "uBlock Origin 檢查更新失敗，下次打開 App 再試", e)
+            }
+        })
     }
 
     private fun markChecked() {

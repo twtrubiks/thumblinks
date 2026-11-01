@@ -15,7 +15,7 @@ Kotlin + Jetpack Compose 原生 App，在 claude.ai/code 雲端 session 開發�
   `ThumbnailEditor`／`ThumbDraft`）、上傳的圖（`ThumbPrep`）、分享進來（`MainActivity`，`singleTask` ＋ `onNewIntent`）
 - 內建瀏覽器：`BrowserScreen`、`BrowserTab`（一個 GeckoSession 與它的 delegate）、
   `Ublock`（從 AMO 安裝、更新、badge、popup）、`BrowserInput`（網址列的規則，JVM 測試）。還沒做：多分頁
-- 模擬器上的測試：`DeviceTest`、`DemoRecordingTest`（錄影）、`SystemUiTest`、`BrowserTest`、release 冒煙測試，各自的段落在下面。假網站在 `FakeSite`
+- 模擬器上的測試：`DeviceTest`、`DemoRecordingTest`（錄影）、`SystemUiTest`、`BrowserTest`／`UblockUpdateTest`、release 冒煙測試，各自的段落在下面。假網站在 `FakeSite`
 
 改東西之前先跑「在 VM 內驗證」，改完看 CI 的錄影。
 
@@ -159,7 +159,10 @@ JSON（UTF-8、縮排兩格、中文不跳脫；用 kotlinx.serialization 的 `@
   不用 `ensureBuiltIn` 載入自己打包的 uBO：有人回報 `menus` 權限不被接受、最後 "Extension is invalid"
 - **uBO 自己更新**（`Ublock.maybeUpdate`）：App 打開時（`start()`），距離上次問 AMO 超過 24 小時（跟 Firefox 桌面版一樣）才 `update()`，
   有新版才下載。沒有背景排程：App 一直開著不會再檢查。失敗（沒網路）不記時間，下次打開 App 再試。
-  結果寫進 logcat（「已經是最新」「從 x 更新到 y」「檢查更新失敗」）；瀏覽器右上角選單的最下面顯示 uBO 的版本與上次檢查更新的時間。
+  **uBO 會要求延後**（它有聽 `runtime.onUpdateAvailable`，正在用的時候不換）：`update()` 回 `InstallException` 的 `ERROR_POSTPONED`（-101），
+  這不是失敗，新版已經下載好，引擎下次啟動（下次打開 App）時才換上，所以實際上是「隔一次打開 App」才用到新版。
+  結果寫進 logcat（「已經是最新」「有新版 x，已經下載好，下次打開 App 時換上」「從 x 更新到 y」「檢查更新失敗」）；
+  瀏覽器右上角選單的最下面顯示 uBO 的版本、下載好還沒換上的新版、上次檢查更新的時間。
   過濾清單（廣告規則）是 uBO 自己每隔幾天更新，跟 Firefox 上的 uBO 一樣
 - uBO 的按鈕在網址列右邊：它自己的圖示（關掉過濾時變灰）＋這一頁擋了幾個（每個分頁一份 badge）。
   按下去的 popup（`ActionDelegate.onTogglePopup` 回傳的 GeckoSession）放在 BottomSheet 裡的 GeckoView（預設的 SurfaceView；
@@ -327,9 +330,13 @@ logcat 邊跑邊存、測完先回桌面（`@After`）讓 GeckoView 停下來；
 - 新視窗與錯誤頁：`/opener` 上點（用座標點網頁）`window.open()` 再設 location 的按鈕 → 網址列變成 `/autumn` → 上一頁回到 `/opener`；
   點登入小視窗（`/popup` 改了開它的那頁的網址再 `window.close()`）→ 網址列變成 `/opener#done`；
   打開 `http://thumblinks.invalid/` → logcat 有 `onLoadError` 寫的「網頁載入失敗」（錯誤頁的樣子看 `browser-06-error-page.png`）
-- uBO 自己更新：等背景裝好 uBO → 從 AMO 的 API（`/api/v5/addons/addon/ublock-origin/versions/`，新的在前面）找前一版，
-  移除現在的、裝那一版（`WebExtensionController` 直接做，`await` 等 GeckoResult）→ 把 `Ublock.CHECKED_AT` 改成 0 →
-  `Ublock.restart()`（跟 App 打開時同一條路）→ logcat 出現「從 <前一版> 更新到 <新版>」→ 右上角選單顯示新版與上次檢查的時間（`browser-07-ublock-updated.png`）
+
+uBO 自己更新在 `UblockUpdateTest`，要跨兩次 App 啟動（新版要等引擎重新啟動才換上），`record.sh` 在 BrowserTest 之後
+分兩次 `am instrument` 各跑一個方法（每次都是新的行程，等於重新打開 App），輸出在 `ublock-update-test.txt`：
+1. `downloadsTheNewVersion`：從 AMO 的 API（`/api/v5/addons/addon/ublock-origin/versions/`，新的在前面）找前一版，
+   移除現在的、裝那一版（`WebExtensionController` 直接做，`await` 等 GeckoResult）→ `Ublock.CHECKED_AT` 改成 0 →
+   `Ublock.restart()`（跟 App 打開時同一條路）→ logcat 出現「下次打開 App 時換上」。前一版的版本號寫在測試 APK 自己的檔案，交給第二次
+2. `appliesItAfterRestart`：重新打開 App，uBO 不是前一版了，右上角選單顯示新版與上次檢查的時間（`browser-07-ublock-updated.png`）
 
 ## release 冒煙測試
 
@@ -383,7 +390,7 @@ repo 頁面沒有影片，一樣有 og:image 與標題。
    - `/tmp/media/device-test.txt`：DeviceTest 的輸出
    - `/tmp/media/instrument.txt`、`logcat.txt`：DemoRecordingTest 的輸出與 log
    - `/tmp/media/system-ui-test.txt`、`logcat-system-ui.txt`：SystemUiTest 的輸出與 log
-   - `/tmp/media/browser-test.txt`、`logcat-browser.txt`：BrowserTest（uBO）的輸出與 log
+   - `/tmp/media/browser-test.txt`、`ublock-update-test.txt`、`logcat-browser.txt`：BrowserTest、UblockUpdateTest 的輸出與 log
    - `/tmp/media/release-smoke.txt`、`logcat-release.txt`：release 冒煙測試的啟動時間與 log
    - `/tmp/media/demo.mp4`：壓縮後的影片（給使用者看）
 

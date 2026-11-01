@@ -402,6 +402,9 @@ private fun PageMenu(tab: BrowserTab, ublock: Ublock) {
                 text = {
                     Column {
                         Text(ublock.version?.let { "uBlock Origin $it" } ?: "uBlock Origin 還沒裝好")
+                        ublock.pendingVersion?.let {
+                            Text("$it 已經下載好，下次打開 App 時換上", style = MaterialTheme.typography.bodySmall)
+                        }
                         Text(
                             ublock.checkedAt.takeIf { it > 0 }?.let { "上次檢查更新：${CHECKED_AT_FORMAT.format(Instant.ofEpochMilli(it))}" }
                                 ?: "還沒檢查過更新",

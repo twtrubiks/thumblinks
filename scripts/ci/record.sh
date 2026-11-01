@@ -4,7 +4,7 @@
 # （真的抓一次 https 網頁的縮圖、用內建瀏覽器打開它），最後換回 debug 版跑 BrowserTest（uBO 從 AMO 安裝、擋廣告、自己更新；新視窗、錯誤頁）。
 # APK 按 CPU 拆開（GeckoView），模擬器裝 x86_64 那一份。
 # 輸出到 $1（預設 out/）：device-test.txt、demo.raw.mp4、instrument.txt、logcat.txt、system-ui-test.txt、
-# logcat-system-ui.txt、browser-test.txt、logcat-browser.txt、screenshots/，以及 release 版冒煙測試的 release-smoke.txt、logcat-release.txt、screenshots/release-*.png
+# logcat-system-ui.txt、browser-test.txt、ublock-update-test.txt、logcat-browser.txt、screenshots/，以及 release 版冒煙測試的 release-smoke.txt、logcat-release.txt、screenshots/release-*.png
 # 由 .github/workflows/record.yml 在 android-emulator-runner 裡呼叫，工作目錄是 repo 根目錄。
 set -uo pipefail
 
@@ -243,7 +243,7 @@ if [ -f "$RELEASE_APK" ]; then
   fi
 fi
 
-# 內建瀏覽器：uBO 從 AMO 安裝（要連外）、擋廣告、popup；新視窗、錯誤頁。不錄影，放在最後：
+# 內建瀏覽器：uBO 從 AMO 安裝（要連外）、擋廣告、popup；新視窗、錯誤頁；uBO 自己更新。不錄影，放在最後：
 # 模擬器（軟體繪圖）曾經在測完瀏覽器、關掉 App 時整個當掉（device offline），之後的步驟都做不了。
 # release 版裝在上面了，換回 debug 版（同一把金鑰）；先清掉 App 資料，每次都從第一次安裝 uBO 開始
 step "BrowserTest"
@@ -255,11 +255,22 @@ adb logcat -c || true
 LOGCAT_PID=$!
 timeout 600 adb shell am instrument -w -e class "$BROWSER_TEST_CLASS" \
   "$APP_ID.test/androidx.test.runner.AndroidJUnitRunner" | tee "$OUT/browser-test.txt"
-step "BrowserTest 結束，收回截圖"
+# uBO 自己更新要跨兩次 App 啟動：分兩次 am instrument（每次都是新的行程，等於重新打開 App），
+# 第一次換成前一版、檢查更新、新版下載好；第二次確認重新打開後換上了新版
+step "UblockUpdateTest"
+for method in downloadsTheNewVersion appliesItAfterRestart; do
+  timeout 300 adb shell am instrument -w -e class "$APP_ID.UblockUpdateTest#$method" \
+    "$APP_ID.test/androidx.test.runner.AndroidJUnitRunner" | tee -a "$OUT/ublock-update-test.txt"
+done
+step "瀏覽器的測試結束，收回截圖"
 adb pull "/sdcard/Android/data/$APP_ID/files/screenshots" "$OUT/" || true
 kill "$LOGCAT_PID" 2>/dev/null || true
 if ! grep -q '^OK (' "$OUT/browser-test.txt"; then
   echo "BrowserTest 沒有通過，詳見 $OUT/browser-test.txt、$OUT/logcat-browser.txt 與 screenshots/browser-*.png"
+  status=1
+fi
+if [ "$(grep -c '^OK (1 test)' "$OUT/ublock-update-test.txt" 2>/dev/null)" != 2 ]; then
+  echo "UblockUpdateTest 沒有通過（uBO 自己更新），詳見 $OUT/ublock-update-test.txt 與 $OUT/logcat-browser.txt"
   status=1
 fi
 
