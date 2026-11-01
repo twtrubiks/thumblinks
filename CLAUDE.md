@@ -402,6 +402,13 @@ system_server 被 watchdog 殺掉（`WATCHDOG KILLING SYSTEM PROCESS`、`DeadSys
 輸入框拿到焦點後游標會閃、鍵盤會打開，dump 等不到畫面靜止，所以新增頁先在沒有人拿到焦點時 dump 一次記下座標；
 按「抓縮圖」時 App 會把焦點拿掉，之後的 dump 才等得到。
 
+## 分支與 PR
+
+- 開發的分支是 `claude/browser-geckoview`；使用者要求才開 PR，CI 過了才合併
+- 合併 PR 用 **Rebase and merge**（使用者的選擇）：`main` 上的 commit 會換成新的 hash，跟分支上的對不上。
+  合併後要在同一個分支繼續做，先從最新的 `main` 重開（`git checkout -B claude/browser-geckoview origin/main`），
+  再用 `git push --force-with-lease` 蓋掉遠端的分支（上面只有已經合併的內容）。這一步會被自動權限擋下，要先問使用者
+
 ## 錄影流程（GitHub Actions）
 
 1. push 到目前的 branch；改到 `app/**`、`gradle/**`、`*.gradle.kts`、`gradle.properties`、`scripts/ci/**`、`record.yml` 會自動觸發。
