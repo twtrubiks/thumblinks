@@ -1,0 +1,8 @@
+
+com.twtrubiks.thumblinks.DeviceTest:.......
+
+Time: 0.239
+
+OK (7 tests)
+
+

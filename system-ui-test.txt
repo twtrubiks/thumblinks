@@ -1,0 +1,8 @@
+
+com.twtrubiks.thumblinks.SystemUiTest:.
+
+Time: 29.785
+
+OK (1 test)
+
+

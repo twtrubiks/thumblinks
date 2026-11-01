@@ -1,0 +1,16 @@
+
+com.twtrubiks.thumblinks.UblockUpdateTest:.
+
+Time: 11.347
+
+OK (1 test)
+
+
+
+com.twtrubiks.thumblinks.UblockUpdateTest:.
+
+Time: 11.092
+
+OK (1 test)
+
+

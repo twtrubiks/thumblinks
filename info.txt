@@ -1,0 +1,5 @@
+branch: claude/browser-geckoview
+commit: cb55eedf3e28c2ef7ae6234eea51f13a613d2a89
+api level: 28
+run: https://github.com/twtrubiks/thumblinks/actions/runs/41274622955
+job status: success

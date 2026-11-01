@@ -1,0 +1,1193 @@
+--------- beginning of main
+11-01 04:54:47.662  4207  4207 I oid.documentsu: The ClassLoaderContext is a special shared library.
+--------- beginning of system
+11-01 04:54:47.700  1959  1976 I ActivityManager: Start proc 4228:com.android.externalstorage/u0a16 for content provider com.android.externalstorage/.ExternalStorageProvider
+11-01 04:54:47.701  4228  4228 W externalstorag: Unexpected CPU variant for X86 using defaults: x86_64
+11-01 04:54:47.710  4228  4228 I externalstorag: The ClassLoaderContext is a special shared library.
+11-01 04:54:47.711  1959  2310 I ActivityManager: Killing 2386:com.android.deskclock/u0a55 (adj 906): empty #17
+11-01 04:54:47.713  1959  1977 W libprocessgroup: kill(-2386, 9) failed: No such process
+11-01 04:54:47.725  4228  4228 D ExternalStorage: After updating volumes, found 2 active roots
+11-01 04:54:47.725  4207  4207 I ProvidersCache: Updating roots due to change at content://com.android.externalstorage.documents
+11-01 04:54:47.742  1914  1914 I Zygote  : Process 2386 exited due to signal (9)
+11-01 04:54:47.754  1959  1977 W libprocessgroup: kill(-2386, 9) failed: No such process
+11-01 04:54:47.754  1959  1977 I libprocessgroup: Successfully killed process cgroup uid 10055 pid 2386 in 40ms
+11-01 04:54:47.762  4248  4248 W com.android.mt: Unexpected CPU variant for X86 using defaults: x86_64
+11-01 04:54:47.766  4224  4224 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-01 04:54:47.766  1959  1976 I ActivityManager: Start proc 4248:com.android.mtp/u0a9 for content provider com.android.mtp/.MtpDocumentsProvider
+11-01 04:54:47.773  1959  2085 I ActivityManager: Killing 2726:com.android.managedprovisioning/u0a33 (adj 906): empty #17
+11-01 04:54:47.775  1959  1977 W libprocessgroup: kill(-2726, 9) failed: No such process
+11-01 04:54:47.778  4248  4248 I com.android.mt: The ClassLoaderContext is a special shared library.
+11-01 04:54:47.802  1914  1914 I Zygote  : Process 2726 exited due to signal (9)
+11-01 04:54:47.808  4224  4224 W app_process: Unexpected CPU variant for X86 using defaults: x86_64
+11-01 04:54:47.810  4224  4224 I app_process: The ClassLoaderContext is a special shared library.
+11-01 04:54:47.811  1959  1977 W libprocessgroup: kill(-2726, 9) failed: No such process
+11-01 04:54:47.811  1959  1977 I libprocessgroup: Successfully killed process cgroup uid 10033 pid 2726 in 36ms
+11-01 04:54:47.826  4224  4224 D AndroidRuntime: Calling main entry com.android.commands.am.Am
+11-01 04:54:47.829  1959  1970 I ActivityManager: Force stopping com.twtrubiks.thumblinks appid=10067 user=0: start instr
+11-01 04:54:47.834  4273  4273 I biks.thumblink: Late-enabling -Xcheck:jni
+11-01 04:54:47.840  1959  1976 I ActivityManager: Start proc 4273:com.twtrubiks.thumblinks/u0a67 for added application com.twtrubiks.thumblinks
+11-01 04:54:47.843  4273  4273 W biks.thumblink: Unexpected CPU variant for X86 using defaults: x86_64
+11-01 04:54:47.859  4273  4273 W ActivityThread: Package uses different ABI(s) than its instrumentation: package[com.twtrubiks.thumblinks]: x86_64, null instrumentation[com.twtrubiks.thumblinks.test]: null, null
+11-01 04:54:47.861  4273  4273 W biks.thumblink: ClassLoaderContext classpath size mismatch for position 0. expected=0, found=4 (PCL[] | PCL[/data/app/com.twtrubiks.thumblinks.test-jY6xCwd4mksD34inPuffbg==/base.apk*3167913868:/data/app/com.twtrubiks.thumblinks.test-jY6xCwd4mksD34inPuffbg==/base.apk!classes2.dex*274586213:/data/app/com.twtrubiks.thumblinks.test-jY6xCwd4mksD34inPuffbg==/base.apk!classes3.dex*442162324:/data/app/com.twtrubiks.thumblinks.test-jY6xCwd4mksD34inPuffbg==/base.apk!classes4.dex*1144132602])
+11-01 04:54:47.861  4273  4273 W biks.thumblink: Found duplicate classes, falling back to extracting from APK : /data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/base.apk
+11-01 04:54:47.861  4273  4273 W biks.thumblink: NOTE: This wastes RAM and hurts startup performance.
+11-01 04:54:47.861  4273  4273 W biks.thumblink: Found duplicated class when checking oat files: 'Landroid/accessibilityservice/AccessibilityService$TakeScreenshotCallback;' in /data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/base.apk!classes4.dex and /data/app/com.twtrubiks.thumblinks.test-jY6xCwd4mksD34inPuffbg==/base.apk!classes4.dex
+11-01 04:54:47.861  4273  4273 W biks.thumblink: 
+11-01 04:54:48.216  4273  4273 W biks.thumblink: ClassLoaderContext size mismatch. expected=1, actual=2 (PCL[] | PCL[];PCL[/data/app/com.twtrubiks.thumblinks.test-jY6xCwd4mksD34inPuffbg==/base.apk*3167913868:/data/app/com.twtrubiks.thumblinks.test-jY6xCwd4mksD34inPuffbg==/base.apk!classes2.dex*274586213:/data/app/com.twtrubiks.thumblinks.test-jY6xCwd4mksD34inPuffbg==/base.apk!classes3.dex*442162324:/data/app/com.twtrubiks.thumblinks.test-jY6xCwd4mksD34inPuffbg==/base.apk!classes4.dex*1144132602:/data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/base.apk*2405851276:/data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/base.apk!classes2.dex*2861152045:/data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/base.apk!classes3.dex*2583367652:/data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/base.apk!classes4.dex*1144132602:/data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/base.apk!classes5.dex*307490117:/data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/base.apk!classes6.dex*1232745733])
+11-01 04:54:48.217  4273  4273 W biks.thumblink: Found duplicate classes, falling back to extracting from APK : /data/app/com.twtrubiks.thumblinks.test-jY6xCwd4mksD34inPuffbg==/base.apk
+11-01 04:54:48.217  4273  4273 W biks.thumblink: NOTE: This wastes RAM and hurts startup performance.
+11-01 04:54:48.217  4273  4273 W biks.thumblink: Found duplicated class when checking oat files: 'Landroid/accessibilityservice/AccessibilityService$TakeScreenshotCallback;' in /data/app/com.twtrubiks.thumblinks.test-jY6xCwd4mksD34inPuffbg==/base.apk!classes4.dex and /data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/base.apk!classes4.dex
+11-01 04:54:48.217  4273  4273 W biks.thumblink: 
+11-01 04:54:48.231  4273  4273 W biks.thumblink: ClassLoaderContext size mismatch. expected=1, actual=2 (PCL[] | PCL[/data/app/com.twtrubiks.thumblinks.test-jY6xCwd4mksD34inPuffbg==/base.apk*3167913868:/data/app/com.twtrubiks.thumblinks.test-jY6xCwd4mksD34inPuffbg==/base.apk!classes2.dex*274586213:/data/app/com.twtrubiks.thumblinks.test-jY6xCwd4mksD34inPuffbg==/base.apk!classes3.dex*442162324:/data/app/com.twtrubiks.thumblinks.test-jY6xCwd4mksD34inPuffbg==/base.apk!classes4.dex*1144132602];PCL[/data/app/com.twtrubiks.thumblinks.test-jY6xCwd4mksD34inPuffbg==/base.apk*3167913868:/data/app/com.twtrubiks.thumblinks.test-jY6xCwd4mksD34inPuffbg==/base.apk!classes2.dex*274586213:/data/app/com.twtrubiks.thumblinks.test-jY6xCwd4mksD34inPuffbg==/base.apk!classes3.dex*442162324:/data/app/com.twtrubiks.thumblinks.test-jY6xCwd4mksD34inPuffbg==/base.apk!classes4.dex*1144132602:/data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/base.apk*2405851276:/data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/base.apk!classes2.dex*2861152045:/data/app/com.twtrubiks
+11-01 04:54:48.232  4273  4273 W biks.thumblink: Found duplicate classes, falling back to extracting from APK : /data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/base.apk
+11-01 04:54:48.232  4273  4273 W biks.thumblink: NOTE: This wastes RAM and hurts startup performance.
+11-01 04:54:48.232  4273  4273 W biks.thumblink: Found duplicated class when checking oat files: 'L_COROUTINE/ArtificialStackFrames;' in /data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/base.apk and /data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/base.apk
+11-01 04:54:48.232  4273  4273 W biks.thumblink: 
+11-01 04:54:48.579  1959  2070 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@eaf1883)
+11-01 04:54:48.580  1959  1973 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@eaf1883)
+11-01 04:54:48.793  4273  4273 W biks.thumblink: Accessing hidden method Landroid/app/Instrumentation;->execStartActivity(Landroid/content/Context;Landroid/os/IBinder;Landroid/os/IBinder;Landroid/app/Activity;Landroid/content/Intent;ILandroid/os/Bundle;)Landroid/app/Instrumentation$ActivityResult; (light greylist, linking)
+11-01 04:54:48.794  4273  4273 W biks.thumblink: Accessing hidden method Landroid/app/Instrumentation;->execStartActivity(Landroid/content/Context;Landroid/os/IBinder;Landroid/os/IBinder;Ljava/lang/String;Landroid/content/Intent;ILandroid/os/Bundle;)Landroid/app/Instrumentation$ActivityResult; (light greylist, linking)
+11-01 04:54:48.797  4273  4273 I AndroidJUnitRunner: newApplication com.twtrubiks.thumblinks.ThumbLinksApplication
+11-01 04:54:48.806  4273  4273 W biks.thumblink: Accessing hidden field Landroid/os/Trace;->TRACE_TAG_APP:J (light greylist, reflection)
+11-01 04:54:48.806  4273  4273 W biks.thumblink: Accessing hidden method Landroid/os/Trace;->isTagEnabled(J)Z (light greylist, reflection)
+11-01 04:54:48.878  4273  4273 W biks.thumblink: Accessing hidden method Lcom/android/org/conscrypt/OpenSSLSocketImpl;->setUseSessionTickets(Z)V (light greylist, reflection)
+11-01 04:54:48.878  4273  4273 W biks.thumblink: Accessing hidden method Lcom/android/org/conscrypt/OpenSSLSocketImpl;->setHostname(Ljava/lang/String;)V (light greylist, reflection)
+11-01 04:54:48.878  4273  4273 W biks.thumblink: Accessing hidden method Lcom/android/org/conscrypt/OpenSSLSocketImpl;->getAlpnSelectedProtocol()[B (light greylist, reflection)
+11-01 04:54:48.878  4273  4273 W biks.thumblink: Accessing hidden method Lcom/android/org/conscrypt/OpenSSLSocketImpl;->setAlpnProtocols([B)V (light greylist, reflection)
+11-01 04:54:48.975  4273  4273 I AndroidJUnitRunner: onCreate Bundle[mParcelledData.dataSize=104]
+11-01 04:54:48.976  4273  4273 D AndroidJUnitRunner: Use the raw file system for managing file I/O.
+11-01 04:54:48.987  4273  4273 V TestEventClient: No service name argument was given (testDiscoveryService, testRunEventService or orchestratorService)
+11-01 04:54:48.988  4273  4289 D AndroidJUnitRunner: onStart is called.
+11-01 04:54:49.027  4273  4289 I TestRunner: run started: 1 tests
+11-01 04:54:49.028  4273  4289 I TestRunner: started: photoPickerExportAndImportZip(com.twtrubiks.thumblinks.SystemUiTest)
+11-01 04:54:49.038  4273  4289 I UiDevice: Creating a new instance, old instance exists: false
+11-01 04:54:49.058  1959  1959 V SettingsProvider: Notifying for 0: content://settings/secure/accessibility_enabled
+11-01 04:54:49.074  4273  4289 D UiDevice: Setting accessibility service flags: 65618
+11-01 04:54:49.191  4273  4289 D UiDevice: Executing shell command: rm -f /sdcard/Download/thumblinks-2026-11-01.zip
+11-01 04:54:49.196  4273  4289 D OpenGLRenderer: Skia GL Pipeline
+11-01 04:54:49.209  4273  4289 D UiDevice: Executing shell command: cp /storage/emulated/0/Android/data/com.twtrubiks.thumblinks/files/thumblinks-picker.jpg /sdcard/Pictures/thumblinks-picker.jpg
+11-01 04:54:49.214  4273  4289 D UiDevice: Executing shell command: am broadcast -a android.intent.action.MEDIA_SCANNER_SCAN_FILE -d file:///sdcard/Pictures/thumblinks-picker.jpg
+11-01 04:54:49.223  2615  2615 D MediaScannerReceiver: action: android.intent.action.MEDIA_SCANNER_SCAN_FILE path: /storage/emulated/0/Pictures/thumblinks-picker.jpg
+11-01 04:54:49.364  4207  4207 I ProvidersCache: Updating roots due to change at content://com.android.providers.media.documents/root
+11-01 04:54:49.576  1959  2070 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@e2114fb)
+11-01 04:54:49.576  1959  1973 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@e2114fb)
+11-01 04:54:50.580  1959  2070 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@d9c9918)
+11-01 04:54:50.580  1959  1973 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@d9c9918)
+11-01 04:54:50.583  1959  2070 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@2e2af71)
+11-01 04:54:50.583  1959  1973 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@2e2af71)
+11-01 04:54:51.226  4273  4289 D UiDevice: Retrieving node with selector: BySelector [RES='\Qandroid:id/aerr_close\E'].
+11-01 04:54:51.228  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:54:51.254  4273  4289 D UiDevice: Node not found with selector: BySelector [RES='\Qandroid:id/aerr_close\E'].
+11-01 04:54:51.255  1959  1970 I ActivityManager: START u0 {flg=0x10008000 cmp=com.twtrubiks.thumblinks/.MainActivity} from uid 10067
+11-01 04:54:51.261  4273  4289 D UiDevice: Retrieving node with selector: BySelector [TEXT='\Q還沒有連結\E'].
+11-01 04:54:51.261  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:54:51.263  4273  4273 W ActivityThread: handleWindowVisibility: no activity for token android.os.BinderProxy@715162c
+11-01 04:54:51.326  4273  4273 D LifecycleMonitor: Lifecycle status change: com.twtrubiks.thumblinks.MainActivity@2b161ad in: PRE_ON_CREATE
+11-01 04:54:51.341  1567  1608 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 17973248
+11-01 04:54:51.347  4273  4289 D UiDevice: Node not found with selector: BySelector [TEXT='\Q還沒有連結\E'].
+11-01 04:54:51.397  4273  4273 D LifecycleMonitor: Lifecycle status change: com.twtrubiks.thumblinks.MainActivity@2b161ad in: CREATED
+11-01 04:54:51.399  4273  4273 D LifecycleMonitor: Lifecycle status change: com.twtrubiks.thumblinks.MainActivity@2b161ad in: STARTED
+11-01 04:54:51.400  4273  4273 D LifecycleMonitor: Lifecycle status change: com.twtrubiks.thumblinks.MainActivity@2b161ad in: RESUMED
+11-01 04:54:51.403  1913  1947 E SurfaceFlinger: ro.sf.lcd_density must be defined as a build property
+11-01 04:54:51.449  4273  4289 D UiDevice: Retrieving node with selector: BySelector [TEXT='\Q還沒有連結\E'].
+11-01 04:54:51.450  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:54:51.535  4273  4289 D UiDevice: Node not found with selector: BySelector [TEXT='\Q還沒有連結\E'].
+11-01 04:54:51.584  1959  2070 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@e705f24)
+11-01 04:54:51.584  1959  1973 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@e705f24)
+11-01 04:54:51.636  4273  4289 D UiDevice: Retrieving node with selector: BySelector [TEXT='\Q還沒有連結\E'].
+11-01 04:54:51.636  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:54:51.683  4273  4289 D UiDevice: Node not found with selector: BySelector [TEXT='\Q還沒有連結\E'].
+11-01 04:54:51.784  4273  4289 D UiDevice: Retrieving node with selector: BySelector [TEXT='\Q還沒有連結\E'].
+11-01 04:54:51.784  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:54:51.848  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:54:51.855  2632  2711 D EGL_emulation: eglMakeCurrent: 0x7c06e0ca02a0: ver 3 0 (tinfo 0x7c06e0d44280)
+11-01 04:54:51.864  4273  4289 W UiDevice: Skipping null root node for window: AccessibilityWindowInfo[title=Quickstep, id=20, type=TYPE_APPLICATION, layer=0, bounds=Rect(0, 0 - 1440, 3120), focused=true, active=true, pictureInPicture=false, hasParent=false, isAnchored=false, hasChildren=false]
+11-01 04:54:51.868  4273  4289 D UiDevice: Node not found with selector: BySelector [TEXT='\Q還沒有連結\E'].
+11-01 04:54:51.886  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:54:51.969  4273  4289 D UiDevice: Retrieving node with selector: BySelector [TEXT='\Q還沒有連結\E'].
+11-01 04:54:51.969  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:54:51.970  4273  4289 W UiDevice: Active window root not found.
+11-01 04:54:52.055  4273  4289 W UiDevice: Skipping null root node for window: AccessibilityWindowInfo[title=Quickstep, id=20, type=TYPE_APPLICATION, layer=0, bounds=Rect(0, 0 - 1440, 3120), focused=true, active=true, pictureInPicture=false, hasParent=false, isAnchored=false, hasChildren=false]
+11-01 04:54:52.057  4273  4289 D UiDevice: Node not found with selector: BySelector [TEXT='\Q還沒有連結\E'].
+11-01 04:54:52.100  4273  4273 W biks.thumblink: Accessing hidden field Landroid/view/WindowInsets;->CONSUMED:Landroid/view/WindowInsets; (light greylist, reflection)
+11-01 04:54:52.103  4273  4273 W biks.thumblink: Accessing hidden method Landroid/view/View;->getViewRootImpl()Landroid/view/ViewRootImpl; (light greylist, reflection)
+11-01 04:54:52.103  4273  4273 W biks.thumblink: Accessing hidden field Landroid/view/View$AttachInfo;->mVisibleInsets:Landroid/graphics/Rect; (light greylist, reflection)
+11-01 04:54:52.103  4273  4273 W biks.thumblink: Accessing hidden field Landroid/view/ViewRootImpl;->mAttachInfo:Landroid/view/View$AttachInfo; (light greylist, reflection)
+11-01 04:54:52.103  4273  4273 W biks.thumblink: Accessing hidden field Landroid/graphics/Insets;->left:I (light greylist, linking)
+11-01 04:54:52.103  4273  4273 W biks.thumblink: Accessing hidden field Landroid/graphics/Insets;->top:I (light greylist, linking)
+11-01 04:54:52.103  4273  4273 W biks.thumblink: Accessing hidden field Landroid/graphics/Insets;->right:I (light greylist, linking)
+11-01 04:54:52.103  4273  4273 W biks.thumblink: Accessing hidden field Landroid/graphics/Insets;->bottom:I (light greylist, linking)
+11-01 04:54:52.145  1723  1824 E storaged: getDiskStats failed with result NOT_SUPPORTED and size 0
+11-01 04:54:52.158  4273  4289 D UiDevice: Retrieving node with selector: BySelector [TEXT='\Q還沒有連結\E'].
+11-01 04:54:52.159  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:54:52.159  4273  4289 W UiDevice: Active window root not found.
+11-01 04:54:52.236  4273  4289 W UiDevice: Skipping null root node for window: AccessibilityWindowInfo[title=Quickstep, id=20, type=TYPE_APPLICATION, layer=0, bounds=Rect(0, 0 - 1440, 3120), focused=true, active=true, pictureInPicture=false, hasParent=false, isAnchored=false, hasChildren=false]
+11-01 04:54:52.241  4273  4289 D UiDevice: Node not found with selector: BySelector [TEXT='\Q還沒有連結\E'].
+11-01 04:54:52.341  4273  4289 D UiDevice: Retrieving node with selector: BySelector [TEXT='\Q還沒有連結\E'].
+11-01 04:54:52.342  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:54:52.343  4273  4289 W UiDevice: Active window root not found.
+11-01 04:54:52.437  4273  4289 W UiDevice: Skipping null root node for window: AccessibilityWindowInfo[title=Quickstep, id=20, type=TYPE_APPLICATION, layer=0, bounds=Rect(0, 0 - 1440, 3120), focused=true, active=true, pictureInPicture=false, hasParent=false, isAnchored=false, hasChildren=false]
+11-01 04:54:52.440  4273  4289 D UiDevice: Node not found with selector: BySelector [TEXT='\Q還沒有連結\E'].
+11-01 04:54:52.541  4273  4289 D UiDevice: Retrieving node with selector: BySelector [TEXT='\Q還沒有連結\E'].
+11-01 04:54:52.541  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:54:52.542  4273  4289 W UiDevice: Active window root not found.
+11-01 04:54:52.582  1959  2070 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@6e9dc53)
+11-01 04:54:52.583  1959  1973 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@6e9dc53)
+11-01 04:54:52.600  4273  4289 W UiDevice: Skipping null root node for window: AccessibilityWindowInfo[title=Quickstep, id=20, type=TYPE_APPLICATION, layer=0, bounds=Rect(0, 0 - 1440, 3120), focused=true, active=true, pictureInPicture=false, hasParent=false, isAnchored=false, hasChildren=false]
+11-01 04:54:52.606  4273  4289 D UiDevice: Node not found with selector: BySelector [TEXT='\Q還沒有連結\E'].
+11-01 04:54:52.708  4273  4289 D UiDevice: Retrieving node with selector: BySelector [TEXT='\Q還沒有連結\E'].
+11-01 04:54:52.709  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:54:52.710  4273  4289 W UiDevice: Active window root not found.
+11-01 04:54:52.795  4273  4289 W UiDevice: Skipping null root node for window: AccessibilityWindowInfo[title=Quickstep, id=20, type=TYPE_APPLICATION, layer=0, bounds=Rect(0, 0 - 1440, 3120), focused=true, active=true, pictureInPicture=false, hasParent=false, isAnchored=false, hasChildren=false]
+11-01 04:54:52.796  4273  4289 D UiDevice: Node not found with selector: BySelector [TEXT='\Q還沒有連結\E'].
+11-01 04:54:52.804  4273  4273 W biks.thumblink: Accessing hidden method Landroid/text/SpannableStringInternal;->length()I (light greylist, linking)
+11-01 04:54:52.819  4248  4263 I com.android.mt: Waiting for a blocking GC ProfileSaver
+11-01 04:54:52.834  4273  4273 W biks.thumblink: Accessing hidden method Landroid/view/RenderNode;->create(Ljava/lang/String;Landroid/view/View;)Landroid/view/RenderNode; (light greylist, linking)
+11-01 04:54:52.834  4273  4273 W biks.thumblink: Accessing hidden method Landroid/view/RenderNode;->getScaleX()F (dark greylist, linking)
+11-01 04:54:52.834  4273  4273 W biks.thumblink: Accessing hidden method Landroid/view/RenderNode;->setClipToBounds(Z)Z (light greylist, linking)
+11-01 04:54:52.834  4273  4273 W biks.thumblink: Accessing hidden method Landroid/view/RenderNode;->setClipToOutline(Z)Z (dark greylist, linking)
+11-01 04:54:52.834  4273  4273 I chatty  : uid=10067(com.twtrubiks.thumblinks) identical 1 line
+11-01 04:54:52.834  4273  4273 W biks.thumblink: Accessing hidden method Landroid/view/RenderNode;->setClipToOutline(Z)Z (dark greylist, linking)
+11-01 04:54:52.834  4273  4273 W biks.thumblink: Accessing hidden method Landroid/view/RenderNode;->setLayerType(I)Z (dark greylist, linking)
+11-01 04:54:52.834  4273  4273 I chatty  : uid=10067(com.twtrubiks.thumblinks) identical 1 line
+11-01 04:54:52.834  4273  4273 W biks.thumblink: Accessing hidden method Landroid/view/RenderNode;->setLayerType(I)Z (dark greylist, linking)
+11-01 04:54:52.834  4273  4273 W biks.thumblink: Accessing hidden method Landroid/view/RenderNode;->setPivotX(F)Z (dark greylist, linking)
+11-01 04:54:52.834  4273  4273 W biks.thumblink: Accessing hidden method Landroid/view/RenderNode;->setPivotX(F)Z (dark greylist, linking)
+11-01 04:54:52.835  4273  4273 W biks.thumblink: Accessing hidden method Landroid/view/RenderNode;->setLeftTopRightBottom(IIII)Z (light greylist, linking)
+11-01 04:54:52.835  4273  4273 W biks.thumblink: Accessing hidden method Landroid/view/RenderNode;->getMatrix(Landroid/graphics/Matrix;)V (dark greylist, linking)
+11-01 04:54:52.835  4273  4273 W biks.thumblink: Accessing hidden method Landroid/view/DisplayListCanvas;->drawRenderNode(Landroid/view/RenderNode;)V (light greylist, linking)
+11-01 04:54:52.836  4273  4273 W biks.thumblink: Accessing hidden method Landroid/view/RenderNode;->isValid()Z (light greylist, linking)
+11-01 04:54:52.836  4273  4273 W biks.thumblink: Accessing hidden method Landroid/view/RenderNode;->start(II)Landroid/view/DisplayListCanvas; (light greylist, linking)
+11-01 04:54:52.836  4273  4273 W biks.thumblink: Accessing hidden method Landroid/view/RenderNode;->end(Landroid/view/DisplayListCanvas;)V (light greylist, linking)
+11-01 04:54:52.836  4273  4273 W biks.thumblink: Accessing hidden method Landroid/view/RenderNode;->setAlpha(F)Z (dark greylist, linking)
+11-01 04:54:52.836  4273  4273 W biks.thumblink: Accessing hidden method Landroid/view/RenderNode;->setCameraDistance(F)Z (dark greylist, linking)
+11-01 04:54:52.836  4273  4273 W biks.thumblink: Accessing hidden method Landroid/view/RenderNode;->setLayerPaint(Landroid/graphics/Paint;)Z (dark greylist, linking)
+11-01 04:54:52.837  4273  4273 W biks.thumblink: Accessing hidden method Landroid/view/RenderNode;->setOutline(Landroid/graphics/Outline;)Z (dark greylist, linking)
+11-01 04:54:52.837  4273  4273 W biks.thumblink: Accessing hidden method Landroid/view/RenderNode;->setPivotX(F)Z (dark greylist, linking)
+11-01 04:54:52.837  4273  4273 W biks.thumblink: Accessing hidden method Landroid/view/RenderNode;->setRotationX(F)Z (dark greylist, linking)
+11-01 04:54:52.837  4273  4273 W biks.thumblink: Accessing hidden method Landroid/view/RenderNode;->setRotationY(F)Z (dark greylist, linking)
+11-01 04:54:52.837  4273  4273 W biks.thumblink: Accessing hidden method Landroid/view/RenderNode;->setRotation(F)Z (dark greylist, linking)
+11-01 04:54:52.837  4273  4273 W biks.thumblink: Accessing hidden method Landroid/view/RenderNode;->setScaleX(F)Z (dark greylist, linking)
+11-01 04:54:52.837  4273  4273 W biks.thumblink: Accessing hidden method Landroid/view/RenderNode;->setScaleY(F)Z (dark greylist, linking)
+11-01 04:54:52.837  4273  4273 W biks.thumblink: Accessing hidden method Landroid/view/RenderNode;->setElevation(F)Z (dark greylist, linking)
+11-01 04:54:52.837  4273  4273 W biks.thumblink: Accessing hidden method Landroid/view/RenderNode;->setTranslationX(F)Z (dark greylist, linking)
+11-01 04:54:52.837  4273  4273 W biks.thumblink: Accessing hidden method Landroid/view/RenderNode;->setTranslationY(F)Z (dark greylist, linking)
+11-01 04:54:52.838  4273  4273 W biks.thumblink: Accessing hidden method Landroid/view/RenderNode;->getScaleX()F (dark greylist, linking)
+11-01 04:54:52.898  4273  4289 D UiDevice: Retrieving node with selector: BySelector [TEXT='\Q還沒有連結\E'].
+11-01 04:54:52.899  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:54:52.900  4273  4289 W UiDevice: Active window root not found.
+11-01 04:54:52.990  4273  4289 W UiDevice: Skipping null root node for window: AccessibilityWindowInfo[title=Quickstep, id=20, type=TYPE_APPLICATION, layer=0, bounds=Rect(0, 0 - 1440, 3120), focused=true, active=true, pictureInPicture=false, hasParent=false, isAnchored=false, hasChildren=false]
+11-01 04:54:52.991  4273  4311 D         : HostConnection::get() New Host Connection established 0x7c06efa4b600, tid 4311
+11-01 04:54:52.992  1567  1608 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 17973248
+11-01 04:54:53.005  1567  1608 I chatty  : uid=1000(system) HwBinder:1567_2 identical 1 line
+11-01 04:54:53.009  1567  1608 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 17973248
+11-01 04:54:53.016  4273  4311 I ConfigStore: android::hardware::configstore::V1_0::ISurfaceFlingerConfigs::hasWideColorDisplay retrieved: 0
+11-01 04:54:53.016  4273  4311 I ConfigStore: android::hardware::configstore::V1_0::ISurfaceFlingerConfigs::hasHDRDisplay retrieved: 0
+11-01 04:54:53.016  4273  4311 I OpenGLRenderer: Initialized EGL, version 1.4
+11-01 04:54:53.016  4273  4311 D OpenGLRenderer: Swap behavior 1
+11-01 04:54:53.038  4273  4311 D EGL_emulation: eglCreateContext: 0x7c06efa409a0: maj 3 min 0 rcv 3
+11-01 04:54:53.050  4273  4311 D EGL_emulation: eglMakeCurrent: 0x7c06efa409a0: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:54:53.079  1913  1947 E SurfaceFlinger: ro.sf.lcd_density must be defined as a build property
+11-01 04:54:53.092  4273  4273 I Choreographer: Skipped 81 frames!  The application may be doing too much work on its main thread.
+11-01 04:54:53.152  4273  4289 D UiDevice: Node not found with selector: BySelector [TEXT='\Q還沒有連結\E'].
+11-01 04:54:53.253  4273  4289 D UiDevice: Retrieving node with selector: BySelector [TEXT='\Q還沒有連結\E'].
+11-01 04:54:53.253  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:54:53.301  4273  4311 D EGL_emulation: eglMakeCurrent: 0x7c06efa409a0: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:54:53.582  1959  2070 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@de64990)
+11-01 04:54:53.582  1959  1973 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@de64990)
+11-01 04:54:53.690  4273  4311 I OpenGLRenderer: Davey! duration=1926ms; Flags=1, IntendedVsync=148044841025, Vsync=149394840971, OldestInputEvent=9223372036854775807, NewestInputEvent=0, HandleInputStart=149400695290, AnimationStart=149400752380, PerformTraversalsStart=149489386080, DrawStart=149522782660, SyncQueued=149605322300, SyncStart=149633428260, IssueDrawCommandsStart=149633512570, SwapBuffers=149920140710, FrameCompleted=149999085530, DequeueBufferDuration=61000, QueueBufferDuration=2259000, 
+11-01 04:54:53.692  4273  4273 W biks.thumblink: Accessing hidden method Landroid/os/Trace;->asyncTraceBegin(JLjava/lang/String;I)V (light greylist, reflection)
+11-01 04:54:53.692  4273  4273 W biks.thumblink: Accessing hidden method Landroid/os/Trace;->asyncTraceEnd(JLjava/lang/String;I)V (light greylist, reflection)
+11-01 04:54:53.692  4273  4273 W biks.thumblink: Accessing hidden method Landroid/os/Trace;->traceCounter(JLjava/lang/String;I)V (light greylist, reflection)
+11-01 04:54:53.693  1959  1982 I ActivityManager: Displayed com.twtrubiks.thumblinks/.MainActivity: +2s431ms
+11-01 04:54:53.696  4273  4273 I Choreographer: Skipped 32 frames!  The application may be doing too much work on its main thread.
+11-01 04:54:53.830  4273  4273 W biks.thumblink: Accessing hidden method Landroid/view/View;->getAccessibilityViewId()I (light greylist, reflection)
+11-01 04:54:53.859  4273  4289 I GestureController: can't find MotionEvent#setDisplayId(int)
+11-01 04:54:53.859  4273  4289 I GestureController: java.lang.NoSuchMethodException: setDisplayId [int]
+11-01 04:54:53.859  4273  4289 I GestureController: 	at java.lang.Class.getMethod(Class.java:2068)
+11-01 04:54:53.859  4273  4289 I GestureController: 	at java.lang.Class.getMethod(Class.java:1690)
+11-01 04:54:53.859  4273  4289 I GestureController: 	at androidx.test.uiautomator.GestureController.<clinit>(GestureController.java:64)
+11-01 04:54:53.859  4273  4289 I GestureController: 	at androidx.test.uiautomator.GestureController.getInstance(GestureController.java:116)
+11-01 04:54:53.859  4273  4289 I GestureController: 	at androidx.test.uiautomator.UiObject2.<init>(UiObject2.java:101)
+11-01 04:54:53.859  4273  4289 I GestureController: 	at androidx.test.uiautomator.UiObject2.create(UiObject2.java:122)
+11-01 04:54:53.859  4273  4289 I GestureController: 	at androidx.test.uiautomator.UiDevice.findObject(UiDevice.java:171)
+11-01 04:54:53.859  4273  4289 I GestureController: 	at com.twtrubiks.thumblinks.UiTest.waitFor$lambda$0(UiTest.kt:89)
+11-01 04:54:53.859  4273  4289 I GestureController: 	at com.twtrubiks.thumblinks.UiTest$$ExternalSyntheticLambda2.invoke(D8$$SyntheticClass:0)
+11-01 04:54:53.859  4273  4289 I GestureController: 	at com.twtrubiks.thumblinks.UiTest.poll(UiTest.kt:98)
+11-01 04:54:53.859  4273  4289 I GestureController: 	at com.twtrubiks.thumblinks.UiTest.waitFor(UiTest.kt:89)
+11-01 04:54:53.859  4273  4289 I GestureController: 	at com.twtrubiks.thumblinks.SystemUiTest.photoPickerExportAndImportZip(SystemUiTest.kt:54)
+11-01 04:54:53.859  4273  4289 I GestureController: 	at java.lang.reflect.Method.invoke(Native Method)
+11-01 04:54:53.859  4273  4289 I GestureController: 	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+11-01 04:54:53.859  4273  4289 I GestureController: 	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+11-01 04:54:53.859  4273  4289 I GestureController: 	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+11-01 04:54:53.859  4273  4289 I GestureController: 	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+11-01 04:54:53.859  4273  4289 I GestureController: 	at androidx.test.internal.runner.junit4.statement.RunBefores.evaluate(RunBefores.java:80)
+11-01 04:54:53.859  4273  4289 I GestureController: 	at androidx.test.internal.runner.junit4.statement.RunAfters.evaluate(RunAfters.java:61)
+11-01 04:54:53.859  4273  4289 I GestureController: 	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+11-01 04:54:53.859  4273  4289 I GestureController: 	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+11-01 04:54:53.859  4273  4289 I GestureController: 	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+11-01 04:54:53.859  4273  4289 I GestureController: 	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+11-01 04:54:53.859  4273  4289 I GestureController: 	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+11-01 04:54:53.859  4273  4289 I GestureController: 	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+11-01 04:54:53.859  4273  4289 I GestureController: 	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+11-01 04:54:53.859  4273  4289 I GestureController: 	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+11-01 04:54:53.859  4273  4289 I GestureController: 	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+11-01 04:54:53.859  4273  4289 I GestureController: 	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+11-01 04:54:53.859  4273  4289 I GestureController: 	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+11-01 04:54:53.859  4273  4289 I GestureController: 	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+11-01 04:54:53.859  4273  4289 I GestureController: 	at androidx.test.ext.junit.runners.AndroidJUnit4.run(AndroidJUnit4.java:162)
+11-01 04:54:53.859  4273  4289 I GestureController: 	at org.junit.runners.Suite.runChild(Suite.java:128)
+11-01 04:54:53.859  4273  4289 I GestureController: 	at org.junit.runners.Suite.runChild(Suite.java:27)
+11-01 04:54:53.859  4273  4289 I GestureController: 	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+11-01 04:54:53.859  4273  4289 I GestureController: 	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+11-01 04:54:53.859  4273  4289 I GestureController: 	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+11-01 04:54:53.859  4273  4289 I GestureController: 	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+11-01 04:54:53.859  4273  4289 I GestureController: 	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+11-01 04:54:53.859  4273  4289 I GestureController: 	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+11-01 04:54:53.859  4273  4289 I GestureController: 	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+11-01 04:54:53.859  4273  4289 I GestureController: 	at org.junit.runner.JUnitCore.run(JUnitCore.java:137)
+11-01 04:54:53.859  4273  4289 I GestureController: 	at org.junit.runner.JUnitCore.run(JUnitCore.java:115)
+11-01 04:54:53.859  4273  4289 I GestureController: 	at androidx.test.internal.runner.TestExecutor.execute(TestExecutor.java:68)
+11-01 04:54:53.859  4273  4289 I GestureController: 	at androidx.test.internal.runner.TestExecutor.execute(TestExecutor.java:59)
+11-01 04:54:53.859  4273  4289 I GestureController: 	at androidx.test.runner.AndroidJUnitRunner.onStart(AndroidJUnitRunner.java:467)
+11-01 04:54:53.859  4273  4289 I GestureController: 	at android.app.Instrumentation$InstrumentationThread.run(Instrumentation.java:2145)
+11-01 04:54:53.863  4273  4289 D UiDevice: Retrieving node with selector: BySelector [RES='\Qadd_button\E'].
+11-01 04:54:53.865  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:54:53.896  1913  2586 W SurfaceFlinger: Attempting to set client state on removed layer: Splash Screen com.twtrubiks.thumblinks#0
+11-01 04:54:53.896  1913  2586 W SurfaceFlinger: Attempting to destroy on removed layer: Splash Screen com.twtrubiks.thumblinks#0
+11-01 04:54:53.907  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:54:53.951  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:54:53.975  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:54:53.977  4273  4289 D UiObject2: Clicking on (1208, 2798).
+11-01 04:54:53.984  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:54:53.998  4273  4289 D UiDevice: Retrieving node with selector: BySelector [TEXT='\Q貼上\E'].
+11-01 04:54:53.999  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:54:54.005  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:54:54.014  1889  3319 W audio_hw_generic: Not supplying enough data to HAL, expected position 3425920 , only wrote 3425760
+11-01 04:54:54.051  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:54:54.082  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:54:54.183  1959  1971 E memtrack: Couldn't load memtrack module
+11-01 04:54:54.183  1959  1971 W android.os.Debug: failed to get memory consumption info: -1
+11-01 04:54:54.361  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:54:54.367  4273  4289 D UiObject2: Clicking on (1236, 462).
+11-01 04:54:54.368  4273  4289 W UiObject2: Clicking on non-clickable object: android.view.accessibility.AccessibilityNodeInfo@9224; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(1187, 425 - 1286, 499); packageName: com.twtrubiks.thumblinks; className: android.widget.TextView; text: 貼上; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: true; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SET_SELECTION - null, AccessibilityAction: ACTION_NEXT_AT_MOVEMENT_GRANULARITY - null, AccessibilityAction: ACTION_PREVIOUS_AT_MOVEMENT_GRANULARITY - null]
+11-01 04:54:54.402  4273  4289 W GestureController: Gestures took longer than expected (33ms >> 16ms), device might be in a busy state.
+11-01 04:54:54.402  4273  4289 D UiDevice: Retrieving node with selector: BySelector [TEXT='\Q這個網頁沒有提供縮圖\E'].
+11-01 04:54:54.402  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:54:54.521  4273  4273 D NetworkSecurityConfig: Using Network Security Config from resource network_security_config_debug debugBuild: true
+11-01 04:54:54.582  1959  2070 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@8fbd9c1)
+11-01 04:54:54.583  1959  1973 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@8fbd9c1)
+11-01 04:54:54.619  4273  4289 D UiDevice: Node not found with selector: BySelector [TEXT='\Q這個網頁沒有提供縮圖\E'].
+11-01 04:54:54.720  4273  4289 D UiDevice: Retrieving node with selector: BySelector [TEXT='\Q這個網頁沒有提供縮圖\E'].
+11-01 04:54:54.720  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:54:54.828  1959  2079 E TaskPersister: File error accessing recents directory (directory doesn't exist?).
+11-01 04:54:54.862  4273  4322 D ProfileInstaller: Installing profile for com.twtrubiks.thumblinks
+11-01 04:54:55.091  4273  4273 I ThumbLinks: 先把內建瀏覽器的引擎開起來
+11-01 04:54:55.091  4273  4289 D UiDevice: Retrieving node with selector: BySelector [TEXT='\Q從手機選圖\E'].
+11-01 04:54:55.091  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:54:55.166  4273  4273 D GeckoThread: State changed to LAUNCHED
+11-01 04:54:55.167  4273  4323 I GeckoThread: preparing to run Gecko
+11-01 04:54:55.172  4273  4323 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/lib/x86_64/libmozglue.so" unused DT entry: unknown (type 0x24 arg 0x3c3e8) (ignoring)
+11-01 04:54:55.172  4273  4323 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/lib/x86_64/libmozglue.so" unused DT entry: unknown (type 0x23 arg 0x150) (ignoring)
+11-01 04:54:55.172  4273  4323 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/lib/x86_64/libmozglue.so" unused DT entry: unknown (type 0x25 arg 0x8) (ignoring)
+11-01 04:54:55.172  4273  4323 D GeckoThread: State changed to MOZGLUE_READY
+11-01 04:54:55.176  4324  4324 I able_art_image: Late-enabling -Xcheck:jni
+11-01 04:54:55.177  4273  4273 D GeckoRuntime: Lifecycle: onCreate
+11-01 04:54:55.177  4273  4273 D GeckoRuntime: Lifecycle: onStart
+11-01 04:54:55.177  4273  4273 D GeckoRuntime: Lifecycle: onResume
+11-01 04:54:55.178  1959  1976 I ActivityManager: Start proc 4324:com.twtrubiks.thumblinks:crashhelper_disable_art_image_/u0a67 for service com.twtrubiks.thumblinks/org.mozilla.gecko.crashhelper.CrashHelper
+11-01 04:54:55.181  4273  4273 D GeckoNetworkManager: Incoming event start for state OffNoListeners -> OnNoListeners
+11-01 04:54:55.182  4273  4273 D GeckoNetworkManager: New network state: UP, WIFI, WIFI
+11-01 04:54:55.183  1959  2310 D ConnectivityService: requestNetwork for uid/pid:10067/4273 NetworkRequest [ TRACK_DEFAULT id=12, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Unwanted:  Uid: 10067] ]
+11-01 04:54:55.184  1959  2053 D WIFI_UT : got request NetworkRequest [ TRACK_DEFAULT id=12, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Unwanted:  Uid: 10067] ] with score 60
+11-01 04:54:55.184  1959  2053 D WIFI    : got request NetworkRequest [ TRACK_DEFAULT id=12, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Unwanted:  Uid: 10067] ] with score 60
+11-01 04:54:55.184  2178  2178 D PhoneSwitcherNetworkRequstListener: got request NetworkRequest [ TRACK_DEFAULT id=12, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Unwanted:  Uid: 10067] ] with score 60
+11-01 04:54:55.190  4324  4324 W able_art_image: Unexpected CPU variant for X86 using defaults: x86_64
+11-01 04:54:55.196  4273  4273 D GeckoNetworkManager: Incoming event receivedUpdate for state OnNoListeners -> OnNoListeners
+11-01 04:54:55.196  4273  4323 D GeckoLoader: Library base=/data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/lib/x86_64
+11-01 04:54:55.199  4273  4273 D GeckoNetworkManager: New network state: UP, WIFI, WIFI
+11-01 04:54:55.199  4273  4323 W Settings: Setting animator_duration_scale has moved from android.provider.Settings.System to android.provider.Settings.Global, returning read-only global URI.
+11-01 04:54:55.205  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:54:55.205  4273  4323 D GeckoLoader: Library base=/data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/lib/x86_64
+11-01 04:54:55.206  4273  4323 E GeckoLibLoad: Load sqlite start
+11-01 04:54:55.206  4273  4289 D UiObject2: Clicking on (719, 1553).
+11-01 04:54:55.206  4273  4289 W UiObject2: Clicking on non-clickable object: android.view.accessibility.AccessibilityNodeInfo@9490; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(596, 1516 - 842, 1590); packageName: com.twtrubiks.thumblinks; className: android.widget.TextView; text: 從手機選圖; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: true; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SET_SELECTION - null, AccessibilityAction: ACTION_NEXT_AT_MOVEMENT_GRANULARITY - null, AccessibilityAction: ACTION_PREVIOUS_AT_MOVEMENT_GRANULARITY - null]
+11-01 04:54:55.207  4273  4323 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/lib/x86_64/libnss3.so" unused DT entry: unknown (type 0x24 arg 0x154d0) (ignoring)
+11-01 04:54:55.207  4273  4323 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/lib/x86_64/libnss3.so" unused DT entry: unknown (type 0x23 arg 0x628) (ignoring)
+11-01 04:54:55.207  4273  4323 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/lib/x86_64/libnss3.so" unused DT entry: unknown (type 0x25 arg 0x8) (ignoring)
+11-01 04:54:55.207  4273  4323 E GeckoLibLoad: Load sqlite done
+11-01 04:54:55.207  4273  4323 D GeckoLoader: Library base=/data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/lib/x86_64
+11-01 04:54:55.207  4273  4323 E GeckoLibLoad: Load nss start
+11-01 04:54:55.207  4273  4323 E GeckoLibLoad: Load nss done
+11-01 04:54:55.207  4273  4323 D GeckoLoader: Library base=/data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/lib/x86_64
+11-01 04:54:55.207  4273  4323 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/lib/x86_64/libxul.so" unused DT entry: unknown (type 0x24 arg 0x67e60) (ignoring)
+11-01 04:54:55.207  4273  4323 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/lib/x86_64/libxul.so" unused DT entry: unknown (type 0x23 arg 0x191c0) (ignoring)
+11-01 04:54:55.207  4273  4323 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/lib/x86_64/libxul.so" unused DT entry: unknown (type 0x25 arg 0x8) (ignoring)
+11-01 04:54:55.207  4273  4323 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/lib/x86_64/libgkcodecs.so" unused DT entry: unknown (type 0x24 arg 0x3150) (ignoring)
+11-01 04:54:55.207  4273  4323 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/lib/x86_64/libgkcodecs.so" unused DT entry: unknown (type 0x23 arg 0xa90) (ignoring)
+11-01 04:54:55.207  4273  4323 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/lib/x86_64/libgkcodecs.so" unused DT entry: unknown (type 0x25 arg 0x8) (ignoring)
+11-01 04:54:55.211  4273  4323 E GeckoLibLoad: Loaded libs in 3.945960ms total, 0ms(0ms) user, 0ms(0ms) system, 0(0) faults
+11-01 04:54:55.211  4273  4323 D GeckoThread: State changed to LIBS_READY
+11-01 04:54:55.211  4273  4323 W GeckoThread: zerdatime 151519 - runGecko
+11-01 04:54:55.216  4324  4324 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/lib/x86_64/libcrashhelper.so" unused DT entry: unknown (type 0x24 arg 0x94c68) (ignoring)
+11-01 04:54:55.216  4324  4324 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/lib/x86_64/libcrashhelper.so" unused DT entry: unknown (type 0x23 arg 0x748) (ignoring)
+11-01 04:54:55.216  4324  4324 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/lib/x86_64/libcrashhelper.so" unused DT entry: unknown (type 0x25 arg 0x8) (ignoring)
+11-01 04:54:55.216  4324  4324 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/lib/x86_64/libmozglue.so" unused DT entry: unknown (type 0x24 arg 0x3c3e8) (ignoring)
+11-01 04:54:55.216  4324  4324 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/lib/x86_64/libmozglue.so" unused DT entry: unknown (type 0x23 arg 0x150) (ignoring)
+11-01 04:54:55.216  4324  4324 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/lib/x86_64/libmozglue.so" unused DT entry: unknown (type 0x25 arg 0x8) (ignoring)
+11-01 04:54:55.225  4273  4273 W biks.thumblink: Accessing hidden method Landroid/content/Context;->getOpPackageName()Ljava/lang/String; (light greylist, linking)
+11-01 04:54:55.226  1959  3014 I ActivityManager: START u0 {act=android.intent.action.OPEN_DOCUMENT typ=image/* cmp=com.android.documentsui/.picker.PickActivity} from uid 10067
+11-01 04:54:55.236  4273  4273 D LifecycleMonitor: Lifecycle status change: com.twtrubiks.thumblinks.MainActivity@2b161ad in: PAUSED
+11-01 04:54:55.237  4273  4289 D UiDevice: Retrieving node with selector: BySelector [TEXT='\Qthumblinks-picker.jpg\E'].
+11-01 04:54:55.238  4207  4207 W ActivityThread: handleWindowVisibility: no activity for token android.os.BinderProxy@dd14894
+11-01 04:54:55.239  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:54:55.291  4207  4207 D PickActivity: Created new state object: State{action=3, acceptMimes=[image/*], allowMultiple=false, localOnly=false, showDeviceStorageOption=true, showAdvanced=false, stack=DocumentStack{root=null, docStack=[], stackTouched=false}, dirConfigs={}, excludedAuthorities=[], openableOnly=false, sortModel=SortModel{dimensions={16908304=SortDimension{id=16908304, labelId=2131755226, dataType=0, sortCapability=0, defaultSortDirection=1, sortDirection=0, visibility=4}, 16908310=SortDimension{id=16908310, labelId=2131755224, dataType=0, sortCapability=3, defaultSortDirection=1, sortDirection=0, visibility=0}, 2131296333=SortDimension{id=2131296333, labelId=2131755222, dataType=1, sortCapability=3, defaultSortDirection=2, sortDirection=0, visibility=0}, 2131296375=SortDimension{id=2131296375, labelId=2131755223, dataType=0, sortCapability=3, defaultSortDirection=1, sortDirection=0, visibility=0}, 2131296509=SortDimension{id=2131296509, labelId=2131755225, dataType=1, sortCapability=3, defaultSortDirection=1, sortDirection=0, visibility=0}}, defaultDimensionId=0, sortedDimension=null}}
+11-01 04:54:55.292  4207  4207 D DrawerController: Calculated drawer width:280.0
+11-01 04:54:55.309  4273  4289 D UiDevice: Node not found with selector: BySelector [TEXT='\Qthumblinks-picker.jpg\E'].
+11-01 04:54:55.310  4273  4289 D UiDevice: Retrieving node with selector: BySelector [RES='.*:id/icon_thumbnail'].
+11-01 04:54:55.313  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:54:55.315  4207  4207 D Metrics : docsui_launch_action: 2
+11-01 04:54:55.316  4207  4207 D Metrics : docsui_open_mime: 5
+11-01 04:54:55.328  4207  4207 D PickerActionHandler: Load last accessed stack.
+11-01 04:54:55.328  4207  4207 D PickerActionHandler: Attempting to load last used stack for calling package.
+11-01 04:54:55.336  4207  4207 D OpenGLRenderer: Skia GL Pipeline
+11-01 04:54:55.339  1913  1951 E SurfaceFlinger: ro.sf.lcd_density must be defined as a build property
+11-01 04:54:55.340  4207  4244 D ProvidersAccess: Matched roots: [Root{authority=null, rootId=null, title=Recent, isUsb=false, isSd=false, isMtp=false} @ content:/root/null, Root{authority=com.android.providers.downloads.documents, rootId=downloads, title=Downloads, isUsb=false, isSd=false, isMtp=false} @ content://com.android.providers.downloads.documents/root/downloads, Root{authority=com.android.providers.media.documents, rootId=images_root, title=Images, isUsb=false, isSd=false, isMtp=false} @ content://com.android.providers.media.documents/root/images_root, Root{authority=com.android.externalstorage.documents, rootId=home, title=Documents, isUsb=false, isSd=false, isMtp=false} @ content://com.android.externalstorage.documents/root/home]
+11-01 04:54:55.345  4273  4323 I Gecko:DumpUtils: Fifo watcher disabled via pref.
+11-01 04:54:55.358  4207  4226 D ProvidersAccess: Matched roots: [Root{authority=null, rootId=null, title=Recent, isUsb=false, isSd=false, isMtp=false} @ content:/root/null, Root{authority=com.android.providers.downloads.documents, rootId=downloads, title=Downloads, isUsb=false, isSd=false, isMtp=false} @ content://com.android.providers.downloads.documents/root/downloads, Root{authority=com.android.providers.media.documents, rootId=images_root, title=Images, isUsb=false, isSd=false, isMtp=false} @ content://com.android.providers.media.documents/root/images_root, Root{authority=com.android.externalstorage.documents, rootId=home, title=Documents, isUsb=false, isSd=false, isMtp=false} @ content://com.android.externalstorage.documents/root/home]
+11-01 04:54:55.359  4273  4323 W biks.thumblink: Accessing hidden method Landroid/os/MessageQueue;->next()Landroid/os/Message; (light greylist, JNI)
+11-01 04:54:55.360  4273  4323 W biks.thumblink: Accessing hidden field Ljava/lang/Boolean;->value:Z (light greylist, JNI)
+11-01 04:54:55.360  4273  4323 W biks.thumblink: Accessing hidden field Ljava/lang/Integer;->value:I (light greylist, JNI)
+11-01 04:54:55.360  4273  4323 W biks.thumblink: Accessing hidden field Ljava/lang/Long;->value:J (light greylist, JNI)
+11-01 04:54:55.360  4273  4323 W biks.thumblink: Accessing hidden field Ljava/lang/Double;->value:D (light greylist, JNI)
+11-01 04:54:55.360  4273  4323 D GeckoThread: State changed to JNI_READY
+11-01 04:54:55.404  4207  4351 D         : HostConnection::get() New Host Connection established 0x7c06efa3f480, tid 4351
+11-01 04:54:55.404  1567  1608 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 17973248
+11-01 04:54:55.406  4207  4351 I ConfigStore: android::hardware::configstore::V1_0::ISurfaceFlingerConfigs::hasWideColorDisplay retrieved: 0
+11-01 04:54:55.406  4207  4351 I ConfigStore: android::hardware::configstore::V1_0::ISurfaceFlingerConfigs::hasHDRDisplay retrieved: 0
+11-01 04:54:55.406  4207  4351 I OpenGLRenderer: Initialized EGL, version 1.4
+11-01 04:54:55.406  4207  4351 D OpenGLRenderer: Swap behavior 1
+11-01 04:54:55.428  1567  1608 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 17973248
+11-01 04:54:55.430  4273  4323 I GeckoConsole: No chrome package registered for chrome://browser/content/built_in_addons.json
+11-01 04:54:55.432  4207  4351 D EGL_emulation: eglCreateContext: 0x7c06efa44720: maj 3 min 0 rcv 3
+11-01 04:54:55.437  1567  1567 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 17973248
+11-01 04:54:55.443  4207  4351 D EGL_emulation: eglMakeCurrent: 0x7c06efa44720: ver 3 0 (tinfo 0x7c06efa0dd20)
+11-01 04:54:55.446  4273  4323 D GeckoThread: State changed to PROFILE_READY
+11-01 04:54:55.465  4273  4323 D GeckoThread: State changed to RUNNING
+11-01 04:54:55.472  4207  4207 D DocumentStack: Root changed to: Root{authority=null, rootId=null, title=Recent, isUsb=false, isSd=false, isMtp=false} @ content:/root/null
+11-01 04:54:55.473  4207  4207 D DirectoryFragment: Creating new fragment null directory
+11-01 04:54:55.488  1913  1951 E SurfaceFlinger: ro.sf.lcd_density must be defined as a build property
+11-01 04:54:55.586  1959  2070 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@6b58ba2)
+11-01 04:54:55.586  1959  1973 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@6b58ba2)
+11-01 04:54:55.595  4273  4273 I ThumbLinks: 從 AMO 安裝 uBlock Origin
+11-01 04:54:55.605  4207  4351 D EGL_emulation: eglMakeCurrent: 0x7c06efa44720: ver 3 0 (tinfo 0x7c06efa0dd20)
+11-01 04:54:55.618  4273  4273 W Gecko   : type=1400 audit(0.0:13): avc: denied { read } for name="product_name" dev="sysfs" ino=195 scontext=u:r:untrusted_app:s0:c67,c256,c512,c768 tcontext=u:object_r:sysfs:s0 tclass=file permissive=0
+11-01 04:54:55.634  4273  4273 D GeckoNetworkManager: Incoming event enableNotifications for state OnNoListeners -> OnWithListeners
+11-01 04:54:55.635  4273  4273 D GeckoNetworkManager: New network state: UP, WIFI, WIFI
+11-01 04:54:55.635  1959  1971 W ActivityManager: Receiver with filter android.content.IntentFilter@d240033 already registered for pid 4273, callerPackage is com.twtrubiks.thumblinks
+11-01 04:54:55.641  4273  4273 D GeckoNetworkManager: Incoming event receivedUpdate for state OnWithListeners -> OnWithListeners
+11-01 04:54:55.642  4273  4273 D GeckoNetworkManager: New network state: UP, WIFI, WIFI
+11-01 04:54:55.642  4273  4323 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/lib/x86_64/libsoftokn3.so" unused DT entry: unknown (type 0x24 arg 0x2350) (ignoring)
+11-01 04:54:55.642  4273  4323 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/lib/x86_64/libsoftokn3.so" unused DT entry: unknown (type 0x23 arg 0x80) (ignoring)
+11-01 04:54:55.642  4273  4323 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/lib/x86_64/libsoftokn3.so" unused DT entry: unknown (type 0x25 arg 0x8) (ignoring)
+11-01 04:54:55.643  4273  4323 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/lib/x86_64/libfreebl3.so" unused DT entry: unknown (type 0x24 arg 0xc78) (ignoring)
+11-01 04:54:55.643  4273  4323 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/lib/x86_64/libfreebl3.so" unused DT entry: unknown (type 0x23 arg 0x68) (ignoring)
+11-01 04:54:55.643  4273  4323 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/lib/x86_64/libfreebl3.so" unused DT entry: unknown (type 0x25 arg 0x8) (ignoring)
+11-01 04:54:55.940  4273  4273 D GeckoRuntime: Lifecycle: onPause
+11-01 04:54:55.940  4273  4273 D GeckoNetworkManager: Incoming event stop for state OnWithListeners -> OffWithListeners
+11-01 04:54:55.941  1959  2056 D ConnectivityService: releasing NetworkRequest [ TRACK_DEFAULT id=12, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Unwanted:  Uid: 10067] ] (release request)
+11-01 04:54:56.119  1959  1982 I ActivityManager: Displayed com.android.documentsui/.picker.PickActivity: +877ms
+11-01 04:54:56.147  4207  4207 D AbstractActionHandler: Creating new loader recents.
+11-01 04:54:56.167  4273  4289 W ByMatcher: Node returned null child: android.view.accessibility.AccessibilityNodeInfo@80006cd8; boundsInParent: Rect(0, 0 - 1440, 3120); boundsInScreen: Rect(0, 0 - 1440, 3120); packageName: com.twtrubiks.thumblinks; className: android.widget.FrameLayout; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: true; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-01 04:54:56.167  4273  4289 W ByMatcher: Skipping null child (0 of 2)
+11-01 04:54:56.168  4207  4207 I Choreographer: Skipped 33 frames!  The application may be doing too much work on its main thread.
+11-01 04:54:56.168  4273  4289 W ByMatcher: Skipping null child (1 of 2)
+11-01 04:54:56.169  4273  4289 W ByMatcher: Node returned null child: android.view.accessibility.AccessibilityNodeInfo@80006cd8; boundsInParent: Rect(0, 0 - 1440, 3120); boundsInScreen: Rect(0, 0 - 1440, 3120); packageName: com.twtrubiks.thumblinks; className: android.widget.FrameLayout; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: true; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-01 04:54:56.169  4273  4289 W ByMatcher: Skipping null child (0 of 2)
+11-01 04:54:56.170  4273  4289 W ByMatcher: Skipping null child (1 of 2)
+11-01 04:54:56.179  4207  4244 D ProvidersAccess: Matched roots: [Root{authority=null, rootId=null, title=Recent, isUsb=false, isSd=false, isMtp=false} @ content:/root/null, Root{authority=com.android.providers.downloads.documents, rootId=downloads, title=Downloads, isUsb=false, isSd=false, isMtp=false} @ content://com.android.providers.downloads.documents/root/downloads, Root{authority=com.android.providers.media.documents, rootId=images_root, title=Images, isUsb=false, isSd=false, isMtp=false} @ content://com.android.providers.media.documents/root/images_root, Root{authority=com.android.externalstorage.documents, rootId=home, title=Documents, isUsb=false, isSd=false, isMtp=false} @ content://com.android.externalstorage.documents/root/home]
+11-01 04:54:56.254  4207  4244 D Documents: Found 2 of 2 recent queries done
+11-01 04:54:56.399  4207  4351 I OpenGLRenderer: Davey! duration=790ms; Flags=1, IntendedVsync=151916393544, Vsync=152466393522, OldestInputEvent=9223372036854775807, NewestInputEvent=0, HandleInputStart=152476693360, AnimationStart=152476727860, PerformTraversalsStart=152476752470, DrawStart=152491633460, SyncQueued=152493743200, SyncStart=152493810190, IssueDrawCommandsStart=152493913630, SwapBuffers=152604325980, FrameCompleted=152707406910, DequeueBufferDuration=27000, QueueBufferDuration=191000, 
+11-01 04:54:56.399  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:54:56.415  4207  4207 D AbstractActionHandler: Loader has finished for: <null DocumentInfo>
+11-01 04:54:56.415  4207  4207 I Model   : Updating model with new result set.
+11-01 04:54:56.416  4207  4207 D DirectoryFragment: Received model update. Loading=false
+11-01 04:54:56.463  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:54:56.502  2615  2709 D OpenGLRenderer: Skia GL Pipeline
+11-01 04:54:56.514  4207  4207 D Metrics : docsui_startup_ms: 1266
+11-01 04:54:56.541  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:54:56.541  4273  4289 D UiDevice: Node not found with selector: BySelector [RES='.*:id/icon_thumbnail'].
+11-01 04:54:56.541  4273  4289 D UiDevice: Retrieving node with selector: BySelector [DESC='^\QPhoto taken\E.*$'].
+11-01 04:54:56.545  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:54:56.556  2615  4313 V MediaStore: Create the thumbnail in memory: origId=11, kind=1, isVideo=false
+11-01 04:54:56.595  1959  2070 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@14911dd)
+11-01 04:54:56.600  1959  1973 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@14911dd)
+11-01 04:54:56.621  4273  4311 D EGL_emulation: eglMakeCurrent: 0x7c06efa409a0: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:54:56.630  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:54:56.679  4273  4273 D LifecycleMonitor: Lifecycle status change: com.twtrubiks.thumblinks.MainActivity@2b161ad in: STOPPED
+11-01 04:54:56.791  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:54:56.884  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:54:56.926  4273  4323 I GeckoConsole: 1793508896925	addons.webextension.uBlock0@raymondhill.net	WARN	Loading extension 'uBlock0@raymondhill.net': Reading manifest: Warning processing permissions: Error processing permissions.2: Value "menus" must either: must either [must either [must either [be one of ["idle"], be one of ["activeTab"], be one of ["cookies"], be one of ["publicSuffix"], be one of ["scripting"], or be one of ["webRequest", "webRequestAuthProvider", "webRequestBlocking", "webRequestFilterResponse", "webRequestFilterResponse.serviceWorkerScript"]], must either [be one of ["mozillaAddons"], be one of ["geckoViewAddons", "nativeMessagingFromContent"], be one of ["activityLog"], be one of ["networkStatus"], or be one of ["telemetry"]], be one of ["alarms", "storage", "unlimitedStorage"], be one of ["declarativeNetRequestWithHostAccess"], be one of ["dns"], or be one of ["theme"]], must either [must either [be one of ["idle"], be one of ["activeTab"], be one of ["cookies"], be one of ["publicSuffix"], be one of ["scripting"], or be one
+11-01 04:54:56.926  4273  4323 I GeckoConsole: 1793508896926	addons.webextension.uBlock0@raymondhill.net	WARN	Loading extension 'uBlock0@raymondhill.net': Reading manifest: Warning processing commands: An unexpected property was found in the WebExtension manifest.
+11-01 04:54:57.096  4273  4289 D UiDevice: Node not found with selector: BySelector [DESC='^\QPhoto taken\E.*$'].
+11-01 04:54:57.197  4273  4289 D UiDevice: Retrieving node with selector: BySelector [TEXT='\Qthumblinks-picker.jpg\E'].
+11-01 04:54:57.197  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:54:57.587  1959  2070 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@d7c2152)
+11-01 04:54:57.587  1959  1973 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@d7c2152)
+11-01 04:54:58.207  4273  4289 D UiDevice: Taking screenshot (scale=0.500000, quality=90) and storing at /storage/emulated/0/Android/data/com.twtrubiks.thumblinks/files/screenshots/system-01-picker.png.
+11-01 04:54:58.209  1567  1567 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 17973248
+11-01 04:54:58.232  4224  4300 D         : HostConnection::get() New Host Connection established 0x750a5dbbd7e0, tid 4300
+11-01 04:54:58.235  4224  4300 D OpenGLRenderer: Skia GL Pipeline
+11-01 04:54:58.237  1913  2343 E SurfaceFlinger: ro.sf.lcd_density must be defined as a build property
+11-01 04:54:58.239  4224  4394 D libEGL  : Emulator has host GPU support, qemu.gles is set to 1.
+11-01 04:54:58.246  4224  4394 W libc    : Unable to set property "qemu.gles" to "1": error code: 0x18
+11-01 04:54:58.247  4224  4394 E vndksupport: Could not load /vendor/lib64/egl/libGLES_emulation.so from sphal namespace: dlopen failed: library "/vendor/lib64/egl/libGLES_emulation.so" not found.
+11-01 04:54:58.247  4224  4394 E libEGL  : load_driver(/vendor/lib64/egl/libGLES_emulation.so): unknown
+11-01 04:54:58.247  4224  4394 D libEGL  : loaded /vendor/lib64/egl/libEGL_emulation.so
+11-01 04:54:58.248  4224  4394 D libEGL  : loaded /vendor/lib64/egl/libGLESv1_CM_emulation.so
+11-01 04:54:58.253  4224  4394 D libEGL  : loaded /vendor/lib64/egl/libGLESv2_emulation.so
+11-01 04:54:58.257  4224  4394 D         : HostConnection::get() New Host Connection established 0x750a5dbbda80, tid 4394
+11-01 04:54:58.258  4224  4394 I ConfigStore: android::hardware::configstore::V1_0::ISurfaceFlingerConfigs::hasWideColorDisplay retrieved: 0
+11-01 04:54:58.258  4224  4394 I ConfigStore: android::hardware::configstore::V1_0::ISurfaceFlingerConfigs::hasHDRDisplay retrieved: 0
+11-01 04:54:58.258  4224  4394 I OpenGLRenderer: Initialized EGL, version 1.4
+11-01 04:54:58.258  4224  4394 D OpenGLRenderer: Swap behavior 1
+11-01 04:54:58.260  4224  4394 D EGL_emulation: eglCreateContext: 0x750a5daa4800: maj 3 min 0 rcv 3
+11-01 04:54:58.260  4224  4394 D EGL_emulation: eglMakeCurrent: 0x750a5daa4800: ver 3 0 (tinfo 0x750a5dabcac0)
+11-01 04:54:58.263  1913  2343 E SurfaceFlinger: ro.sf.lcd_density must be defined as a build property
+11-01 04:54:58.424  1889  1906 W audio_hw_generic: Not supplying enough data to HAL, expected position 3847150 , only wrote 3637440
+11-01 04:54:58.456  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:54:58.460  4273  4289 D UiObject2: Clicking on (444, 1255).
+11-01 04:54:58.460  4273  4289 W UiObject2: Clicking on non-clickable object: android.view.accessibility.AccessibilityNodeInfo@f7be; boundsInParent: Rect(0, 0 - 426, 76); boundsInScreen: Rect(231, 1217 - 657, 1293); packageName: com.android.documentsui; className: android.widget.TextView; text: thumblinks-picker.jpg; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: android:id/title; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: true; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_NEXT_AT_MOVEMENT_GRANULARITY - null, AccessibilityAction: ACTION_PREVIOUS_AT_MOVEMENT_GRANULARITY - null, AccessibilityAction: ACTION_SET_SELECTION - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-01 04:54:58.472  4207  4207 D PickerActionHandler: onFinished() [content://com.android.providers.media.documents/document/image%3A11]
+11-01 04:54:58.478  4273  4289 D UiDevice: Retrieving node with selector: BySelector [RES='\Qthumb_ready\E'].
+11-01 04:54:58.478  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:54:58.491  1791  1806 D hwcomposer: hw_composer sent 115 syncs in 65s
+11-01 04:54:58.495  4273  4273 D LifecycleMonitor: Lifecycle status change: com.twtrubiks.thumblinks.MainActivity@2b161ad in: RESTARTED
+11-01 04:54:58.495  4273  4273 D LifecycleMonitor: Lifecycle status change: com.twtrubiks.thumblinks.MainActivity@2b161ad in: STARTED
+11-01 04:54:58.495  4273  4273 D GeckoRuntime: Lifecycle: onStart
+11-01 04:54:58.496  4273  4273 D LifecycleMonitor: Lifecycle status change: com.twtrubiks.thumblinks.MainActivity@2b161ad in: RESUMED
+11-01 04:54:58.496  4273  4273 D GeckoRuntime: Lifecycle: onResume
+11-01 04:54:58.496  4273  4273 D GeckoNetworkManager: Incoming event start for state OffWithListeners -> OnWithListeners
+11-01 04:54:58.497  1959  1971 D ConnectivityService: requestNetwork for uid/pid:10067/4273 NetworkRequest [ TRACK_DEFAULT id=13, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Unwanted:  Uid: 10067] ]
+11-01 04:54:58.502  1959  2053 D WIFI_UT : got request NetworkRequest [ TRACK_DEFAULT id=13, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Unwanted:  Uid: 10067] ] with score 60
+11-01 04:54:58.502  1959  2053 D WIFI    : got request NetworkRequest [ TRACK_DEFAULT id=13, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Unwanted:  Uid: 10067] ] with score 60
+11-01 04:54:58.502  2178  2178 D PhoneSwitcherNetworkRequstListener: got request NetworkRequest [ TRACK_DEFAULT id=13, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Unwanted:  Uid: 10067] ] with score 60
+11-01 04:54:58.516  4273  4289 D UiDevice: Node not found with selector: BySelector [RES='\Qthumb_ready\E'].
+11-01 04:54:58.554  1567  1567 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 17973248
+11-01 04:54:58.555  1567  1608 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 17973248
+11-01 04:54:58.556  1567  1567 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 17973248
+11-01 04:54:58.586  4273  4273 D GeckoNetworkManager: Incoming event receivedUpdate for state OnWithListeners -> OnWithListeners
+11-01 04:54:58.586  4273  4273 D GeckoNetworkManager: New network state: UP, WIFI, WIFI
+11-01 04:54:58.592  1959  2070 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@d7d9413)
+11-01 04:54:58.592  1959  1973 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@d7d9413)
+11-01 04:54:58.617  4273  4289 D UiDevice: Retrieving node with selector: BySelector [RES='\Qthumb_ready\E'].
+11-01 04:54:58.617  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:54:58.676  4273  4311 D EGL_emulation: eglMakeCurrent: 0x7c06efa409a0: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:54:58.701  4273  4284 I biks.thumblink: NativeAlloc concurrent copying GC freed 3782(282KB) AllocSpace objects, 1(16KB) LOS objects, 49% free, 6MB/12MB, paused 398us total 167.626ms
+11-01 04:54:58.706  1567  1567 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 3149824
+11-01 04:54:58.805  1959  2079 E TaskPersister: File error accessing recents directory (directory doesn't exist?).
+11-01 04:54:58.989  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:54:59.101  2100  2336 I chatty  : uid=10015(com.android.systemui) RenderThread identical 2 lines
+11-01 04:54:59.163  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:54:59.169  4207  4351 D EGL_emulation: eglMakeCurrent: 0x7c06efa44720: ver 3 0 (tinfo 0x7c06efa0dd20)
+11-01 04:54:59.194  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:54:59.232  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:54:59.590  1959  2070 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@594fa14)
+11-01 04:54:59.590  1959  1973 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@594fa14)
+11-01 04:54:59.609  4273  4273 D WebExtension: handleMessage GeckoView:WebExtension:InstallPrompt
+11-01 04:54:59.613  4273  4323 W GeckoEventDispatcher: No listener for GeckoView:WebExtension:OnInstalling
+11-01 04:54:59.629  4273  4323 W GeckoEventDispatcher: No listener for GeckoView:WebExtension:OnInstalled
+11-01 04:54:59.630  4273  4273 I ThumbLinks: uBlock Origin 1.75.0 可以用了
+11-01 04:54:59.638  4273  4323 I GeckoConsole: 1793508899638	addons.webextension.uBlock0@raymondhill.net	WARN	Loading extension 'uBlock0@raymondhill.net': Reading manifest: Warning processing permissions: Error processing permissions.2: Value "menus" must either: must either [must either [must either [be one of ["idle"], be one of ["activeTab"], be one of ["cookies"], be one of ["publicSuffix"], be one of ["scripting"], or be one of ["webRequest", "webRequestAuthProvider", "webRequestBlocking", "webRequestFilterResponse", "webRequestFilterResponse.serviceWorkerScript"]], must either [be one of ["mozillaAddons"], be one of ["geckoViewAddons", "nativeMessagingFromContent"], be one of ["activityLog"], be one of ["networkStatus"], or be one of ["telemetry"]], be one of ["alarms", "storage", "unlimitedStorage"], be one of ["declarativeNetRequestWithHostAccess"], be one of ["dns"], or be one of ["theme"]], must either [must either [be one of ["idle"], be one of ["activeTab"], be one of ["cookies"], be one of ["publicSuffix"], be one of ["scripting"], or be one
+11-01 04:54:59.638  4273  4323 I GeckoConsole: 1793508899638	addons.webextension.uBlock0@raymondhill.net	WARN	Loading extension 'uBlock0@raymondhill.net': Reading manifest: Warning processing commands: An unexpected property was found in the WebExtension manifest.
+11-01 04:54:59.653  4273  4323 D         : HostConnection::get() New Host Connection established 0x7c06def022a0, tid 4323
+11-01 04:54:59.654  4273  4323 D EGL_emulation: eglCreateContext: 0x7c06deef3300: maj 3 min 0 rcv 3
+11-01 04:54:59.655  4273  4323 D EGL_emulation: eglMakeCurrent: 0x7c06deef3300: ver 3 0 (tinfo 0x7c06efb84000)
+11-01 04:54:59.669  4273  4323 W VideoCapabilities: Unrecognized profile 4 for video/hevc
+11-01 04:54:59.672  4273  4323 I VideoCapabilities: Unsupported profile 4 for video/mp4v-es
+11-01 04:54:59.674  4273  4323 D HardwareCodecCapability: MIME support: SW audio/g711-mlaw
+11-01 04:54:59.674  4273  4323 D HardwareCodecCapability: MIME support: SW audio/mp4a-latm
+11-01 04:54:59.674  4273  4323 D HardwareCodecCapability: MIME support: SWE video/mp4v-es
+11-01 04:54:59.674  4273  4323 D HardwareCodecCapability: MIME support: SW audio/raw
+11-01 04:54:59.674  4273  4323 D HardwareCodecCapability: MIME support: SWE video/x-vnd.on2.vp8
+11-01 04:54:59.674  4273  4323 D HardwareCodecCapability: MIME support: SWE audio/amr-wb
+11-01 04:54:59.674  4273  4323 D HardwareCodecCapability: MIME support: SW audio/amr-wb
+11-01 04:54:59.674  4273  4323 D HardwareCodecCapability: MIME support: SW video/avc
+11-01 04:54:59.674  4273  4323 D HardwareCodecCapability: MIME support: SW audio/3gpp
+11-01 04:54:59.674  4273  4323 D HardwareCodecCapability: MIME support: SW audio/flac
+11-01 04:54:59.674  4273  4323 D HardwareCodecCapability: MIME support: SW video/hevc
+11-01 04:54:59.674  4273  4323 D HardwareCodecCapability: MIME support: SW video/3gpp
+11-01 04:54:59.674  4273  4323 D HardwareCodecCapability: MIME support: SW video/mp4v-es
+11-01 04:54:59.674  4273  4323 D HardwareCodecCapability: MIME support: SW audio/vorbis
+11-01 04:54:59.674  4273  4323 D HardwareCodecCapability: MIME support: SW audio/gsm
+11-01 04:54:59.674  4273  4323 D HardwareCodecCapability: MIME support: SWE video/3gpp
+11-01 04:54:59.674  4273  4323 D HardwareCodecCapability: MIME support: SWE audio/3gpp
+11-01 04:54:59.674  4273  4323 D HardwareCodecCapability: MIME support: SWE video/avc
+11-01 04:54:59.674  4273  4323 D HardwareCodecCapability: MIME support: SWE audio/flac
+11-01 04:54:59.674  4273  4323 D HardwareCodecCapability: MIME support: SW audio/opus
+11-01 04:54:59.674  4273  4323 D HardwareCodecCapability: MIME support: SWE audio/mp4a-latm
+11-01 04:54:59.674  4273  4323 D HardwareCodecCapability: MIME support: SW audio/mpeg
+11-01 04:54:59.674  4273  4323 D HardwareCodecCapability: MIME support: SW audio/g711-alaw
+11-01 04:54:59.674  4273  4323 D HardwareCodecCapability: MIME support: SW video/x-vnd.on2.vp8
+11-01 04:54:59.674  4273  4323 D HardwareCodecCapability: MIME support: SW video/x-vnd.on2.vp9
+11-01 04:54:59.674  4273  4323 D HardwareCodecCapability: Found candidate encoder OMX.google.h264.encoder
+11-01 04:54:59.674  4273  4323 D HardwareCodecCapability: MIME support: SW audio/g711-mlaw
+11-01 04:54:59.674  4273  4323 D HardwareCodecCapability: MIME support: SW audio/mp4a-latm
+11-01 04:54:59.674  4273  4323 D HardwareCodecCapability: MIME support: SWE video/mp4v-es
+11-01 04:54:59.674  4273  4323 D HardwareCodecCapability: MIME support: SW audio/raw
+11-01 04:54:59.674  4273  4323 D HardwareCodecCapability: MIME support: SWE video/x-vnd.on2.vp8
+11-01 04:54:59.675  4273  4323 D HardwareCodecCapability: MIME support: SWE audio/amr-wb
+11-01 04:54:59.675  4273  4323 D HardwareCodecCapability: MIME support: SW audio/amr-wb
+11-01 04:54:59.675  4273  4323 D HardwareCodecCapability: MIME support: SW video/avc
+11-01 04:54:59.675  4273  4323 D HardwareCodecCapability: MIME support: SW audio/3gpp
+11-01 04:54:59.675  4273  4323 D HardwareCodecCapability: MIME support: SW audio/flac
+11-01 04:54:59.675  4273  4323 D HardwareCodecCapability: MIME support: SW video/hevc
+11-01 04:54:59.675  4273  4323 D HardwareCodecCapability: MIME support: SW video/3gpp
+11-01 04:54:59.675  4273  4323 D HardwareCodecCapability: MIME support: SW video/mp4v-es
+11-01 04:54:59.675  4273  4323 D HardwareCodecCapability: MIME support: SW audio/vorbis
+11-01 04:54:59.675  4273  4323 D HardwareCodecCapability: MIME support: SW audio/gsm
+11-01 04:54:59.675  4273  4323 D HardwareCodecCapability: MIME support: SWE video/3gpp
+11-01 04:54:59.675  4273  4323 D HardwareCodecCapability: MIME support: SWE audio/3gpp
+11-01 04:54:59.675  4273  4323 D HardwareCodecCapability: MIME support: SWE video/avc
+11-01 04:54:59.675  4273  4323 D HardwareCodecCapability: MIME support: SWE audio/flac
+11-01 04:54:59.675  4273  4323 D HardwareCodecCapability: MIME support: SW audio/opus
+11-01 04:54:59.675  4273  4323 D HardwareCodecCapability: MIME support: SWE audio/mp4a-latm
+11-01 04:54:59.675  4273  4323 D HardwareCodecCapability: MIME support: SW audio/mpeg
+11-01 04:54:59.675  4273  4323 D HardwareCodecCapability: MIME support: SW audio/g711-alaw
+11-01 04:54:59.675  4273  4323 D HardwareCodecCapability: MIME support: SW video/x-vnd.on2.vp8
+11-01 04:54:59.675  4273  4323 D HardwareCodecCapability: MIME support: SW video/x-vnd.on2.vp9
+11-01 04:54:59.675  4273  4323 D HardwareCodecCapability: MIME support: SW audio/g711-mlaw
+11-01 04:54:59.675  4273  4323 D HardwareCodecCapability: MIME support: SW audio/mp4a-latm
+11-01 04:54:59.675  4273  4323 D HardwareCodecCapability: MIME support: SWE video/mp4v-es
+11-01 04:54:59.675  4273  4323 D HardwareCodecCapability: MIME support: SW audio/raw
+11-01 04:54:59.675  4273  4323 D HardwareCodecCapability: MIME support: SWE video/x-vnd.on2.vp8
+11-01 04:54:59.675  4273  4323 D HardwareCodecCapability: MIME support: SWE audio/amr-wb
+11-01 04:54:59.675  4273  4323 D HardwareCodecCapability: MIME support: SW audio/amr-wb
+11-01 04:54:59.675  4273  4323 D HardwareCodecCapability: MIME support: SW video/avc
+11-01 04:54:59.675  4273  4323 D HardwareCodecCapability: MIME support: SW audio/3gpp
+11-01 04:54:59.675  4273  4323 D HardwareCodecCapability: MIME support: SW audio/flac
+11-01 04:54:59.675  4273  4323 D HardwareCodecCapability: MIME support: SW video/hevc
+11-01 04:54:59.675  4273  4323 D HardwareCodecCapability: MIME support: SW video/3gpp
+11-01 04:54:59.675  4273  4323 D HardwareCodecCapability: MIME support: SW video/mp4v-es
+11-01 04:54:59.675  4273  4323 D HardwareCodecCapability: MIME support: SW audio/vorbis
+11-01 04:54:59.675  4273  4323 D HardwareCodecCapability: MIME support: SW audio/gsm
+11-01 04:54:59.675  4273  4323 D HardwareCodecCapability: MIME support: SWE video/3gpp
+11-01 04:54:59.675  4273  4323 D HardwareCodecCapability: MIME support: SWE audio/3gpp
+11-01 04:54:59.675  4273  4323 D HardwareCodecCapability: MIME support: SWE video/avc
+11-01 04:54:59.675  4273  4323 D HardwareCodecCapability: MIME support: SWE audio/flac
+11-01 04:54:59.675  4273  4323 D HardwareCodecCapability: MIME support: SW audio/opus
+11-01 04:54:59.675  4273  4323 D HardwareCodecCapability: MIME support: SWE audio/mp4a-latm
+11-01 04:54:59.675  4273  4323 D HardwareCodecCapability: MIME support: SW audio/mpeg
+11-01 04:54:59.675  4273  4323 D HardwareCodecCapability: MIME support: SW audio/g711-alaw
+11-01 04:54:59.675  4273  4323 D HardwareCodecCapability: MIME support: SW video/x-vnd.on2.vp8
+11-01 04:54:59.675  4273  4323 D HardwareCodecCapability: MIME support: SW video/x-vnd.on2.vp9
+11-01 04:54:59.707  4273  4357 D ServiceAllocator: org.mozilla.gecko.process.GeckoChildProcessServices$gpu updateBindings: FOREGROUND priority, 0 importance, not connected pid, 3 successful binds, 0 failed binds, 0 successful unbinds
+11-01 04:54:59.713  4404  4404 I able_art_image: Late-enabling -Xcheck:jni
+11-01 04:54:59.716  1959  1976 I ActivityManager: Start proc 4404:com.twtrubiks.thumblinks:gpu_disable_art_image_/u0a67 for service com.twtrubiks.thumblinks/org.mozilla.gecko.process.GeckoChildProcessServices$gpu
+11-01 04:54:59.720  4404  4404 W able_art_image: Unexpected CPU variant for X86 using defaults: x86_64
+11-01 04:54:59.756  4404  4404 I ServiceChildProcess: onCreate, process name: com.twtrubiks.thumblinks:gpu_disable_art_image_
+11-01 04:54:59.762  4404  4404 D GeckoThread: State changed to LAUNCHED
+11-01 04:54:59.763  4404  4420 I GeckoThread: preparing to run Gecko
+11-01 04:54:59.767  4404  4420 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/lib/x86_64/libmozglue.so" unused DT entry: unknown (type 0x24 arg 0x3c3e8) (ignoring)
+11-01 04:54:59.767  4404  4420 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/lib/x86_64/libmozglue.so" unused DT entry: unknown (type 0x23 arg 0x150) (ignoring)
+11-01 04:54:59.767  4404  4420 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/lib/x86_64/libmozglue.so" unused DT entry: unknown (type 0x25 arg 0x8) (ignoring)
+11-01 04:54:59.767  4404  4420 D GeckoThread: State changed to MOZGLUE_READY
+11-01 04:54:59.768  4273  4273 D WebExtension: handleMessage GeckoView:BrowserAction:Update
+11-01 04:54:59.772  4404  4420 D GeckoLoader: Library base=/data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/lib/x86_64
+11-01 04:54:59.772  4404  4420 D GeckoLoader: Library base=/data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/lib/x86_64
+11-01 04:54:59.778  4404  4420 E GeckoLibLoad: Load sqlite start
+11-01 04:54:59.778  4404  4420 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/lib/x86_64/libnss3.so" unused DT entry: unknown (type 0x24 arg 0x154d0) (ignoring)
+11-01 04:54:59.778  4404  4420 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/lib/x86_64/libnss3.so" unused DT entry: unknown (type 0x23 arg 0x628) (ignoring)
+11-01 04:54:59.778  4404  4420 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/lib/x86_64/libnss3.so" unused DT entry: unknown (type 0x25 arg 0x8) (ignoring)
+11-01 04:54:59.779  4404  4420 E GeckoLibLoad: Load sqlite done
+11-01 04:54:59.779  4404  4420 D GeckoLoader: Library base=/data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/lib/x86_64
+11-01 04:54:59.779  4404  4420 E GeckoLibLoad: Load nss start
+11-01 04:54:59.779  4404  4420 E GeckoLibLoad: Load nss done
+11-01 04:54:59.779  4404  4420 D GeckoLoader: Library base=/data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/lib/x86_64
+11-01 04:54:59.780  4404  4420 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/lib/x86_64/libxul.so" unused DT entry: unknown (type 0x24 arg 0x67e60) (ignoring)
+11-01 04:54:59.780  4404  4420 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/lib/x86_64/libxul.so" unused DT entry: unknown (type 0x23 arg 0x191c0) (ignoring)
+11-01 04:54:59.780  4404  4420 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/lib/x86_64/libxul.so" unused DT entry: unknown (type 0x25 arg 0x8) (ignoring)
+11-01 04:54:59.780  4404  4420 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/lib/x86_64/libgkcodecs.so" unused DT entry: unknown (type 0x24 arg 0x3150) (ignoring)
+11-01 04:54:59.780  4404  4420 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/lib/x86_64/libgkcodecs.so" unused DT entry: unknown (type 0x23 arg 0xa90) (ignoring)
+11-01 04:54:59.780  4404  4420 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-28lBTkGyZrhfcvGhB5n5ow==/lib/x86_64/libgkcodecs.so" unused DT entry: unknown (type 0x25 arg 0x8) (ignoring)
+11-01 04:54:59.784  4404  4420 E GeckoLibLoad: Loaded libs in 4.592860ms total, 0ms(0ms) user, 0ms(0ms) system, 0(0) faults
+11-01 04:54:59.784  4404  4420 D GeckoThread: State changed to LIBS_READY
+11-01 04:54:59.784  4404  4420 W GeckoThread: zerdatime 156092 - runGecko
+11-01 04:54:59.787  4273  4323 D HardwareCodecCapability: Found candidate encoder OMX.google.vp8.encoder
+11-01 04:54:59.787  4273  4323 D HardwareCodecCapability: Found candidate decoder OMX.google.vp8.decoder
+11-01 04:54:59.789  4404  4420 D GeckoThread: State changed to RUNNING
+11-01 04:54:59.797  4404  4425 D         : HostConnection::get() New Host Connection established 0x7c06ee062880, tid 4425
+11-01 04:54:59.798  4404  4425 I ConfigStore: android::hardware::configstore::V1_0::ISurfaceFlingerConfigs::hasWideColorDisplay retrieved: 0
+11-01 04:54:59.798  4404  4425 I ConfigStore: android::hardware::configstore::V1_0::ISurfaceFlingerConfigs::hasHDRDisplay retrieved: 0
+11-01 04:54:59.800  4404  4425 D EGL_emulation: eglCreateContext: 0x7c06f61f5a80: maj 3 min 0 rcv 3
+11-01 04:54:59.801  4404  4425 D EGL_emulation: eglMakeCurrent: 0x7c06f61f5a80: ver 3 0 (tinfo 0x7c06f6130a40)
+11-01 04:54:59.806  4404  4425 E eglCodecCommon: glUtilsParamSize: unknow param 0x00008caa
+11-01 04:54:59.806  4404  4425 E eglCodecCommon: glUtilsParamSize: unknow param 0x00008caa
+11-01 04:54:59.906  4273  4273 D WebExtension: handleMessage GeckoView:BrowserAction:Update
+11-01 04:54:59.908  4273  4273 I chatty  : uid=10067(com.twtrubiks.thumblinks) identical 3 lines
+11-01 04:54:59.908  4273  4273 D WebExtension: handleMessage GeckoView:BrowserAction:Update
+11-01 04:54:59.924  4273  4323 W GeckoEventDispatcher: No listener for GeckoView:WebExtension:OnReady
+11-01 04:54:59.935  4273  4323 E GeckoConsole: [JavaScript Error: "Native manifests are not supported on android" {file: "resource://gre/modules/NativeManifests.sys.mjs" line: 44}]
+11-01 04:54:59.935  4273  4323 E GeckoConsole: init@resource://gre/modules/NativeManifests.sys.mjs:44:15
+11-01 04:54:59.935  4273  4323 E GeckoConsole: lookupManifest@resource://gre/modules/NativeManifests.sys.mjs:205:17
+11-01 04:54:59.935  4273  4323 E GeckoConsole: lookupManagedStorage@chrome://extensions/content/parent/ext-storage.js:89:36
+11-01 04:54:59.935  4273  4323 E GeckoConsole: getManagedStorageManifestData@chrome://extensions/content/parent/ext-storage.js:104:20
+11-01 04:54:59.935  4273  4323 E GeckoConsole: get@chrome://extensions/content/parent/ext-storage.js:414:30
+11-01 04:54:59.935  4273  4323 E GeckoConsole: recvAPICall/result</</<@resource://gre/modules/ExtensionParent.sys.mjs:1307:16
+11-01 04:54:59.935  4273  4323 E GeckoConsole: withCallContextData@resource://gre/modules/ExtensionParent.sys.mjs:738:14
+11-01 04:54:59.935  4273  4323 E GeckoConsole: recvAPICall/result</<@resource://gre/modules/ExtensionParent.sys.mjs:1306:19
+11-01 04:54:59.935  4273  4323 E GeckoConsole: withPendingBrowser@resource://gre/modules/ExtensionParent.sys.mjs:748:26
+11-01 04:54:59.935  4273  4323 E GeckoConsole: recvAPICall/result<@resource://gre/modules/ExtensionParent.sys.mjs:1305:24
+11-01 04:54:59.935  4273  4323 E GeckoConsole: callAndLog@resource://gre/modules/ExtensionParent.sys.mjs:1258:14
+11-01 04:54:59.935  4273  4323 E GeckoConsole: recvAPICall@resource://gre/modules/ExtensionParent.sys.mjs:1304:25
+11-01 04:54:59.942  4273  4323 I chatty  : uid=10067(com.twtrubiks.thumblinks) identical 4 lines
+11-01 04:54:59.964  4273  4323 E GeckoConsole: [JavaScript Error: "Native manifests are not supported on android" {file: "resource://gre/modules/NativeManifests.sys.mjs" line: 44}]
+11-01 04:54:59.964  4273  4323 E GeckoConsole: init@resource://gre/modules/NativeManifests.sys.mjs:44:15
+11-01 04:54:59.964  4273  4323 E GeckoConsole: lookupManifest@resource://gre/modules/NativeManifests.sys.mjs:205:17
+11-01 04:54:59.964  4273  4323 E GeckoConsole: lookupManagedStorage@chrome://extensions/content/parent/ext-storage.js:89:36
+11-01 04:54:59.964  4273  4323 E GeckoConsole: getManagedStorageManifestData@chrome://extensions/content/parent/ext-storage.js:104:20
+11-01 04:54:59.964  4273  4323 E GeckoConsole: get@chrome://extensions/content/parent/ext-storage.js:414:30
+11-01 04:54:59.964  4273  4323 E GeckoConsole: recvAPICall/result</</<@resource://gre/modules/ExtensionParent.sys.mjs:1307:16
+11-01 04:54:59.964  4273  4323 E GeckoConsole: withCallContextData@resource://gre/modules/ExtensionParent.sys.mjs:738:14
+11-01 04:54:59.964  4273  4323 E GeckoConsole: recvAPICall/result</<@resource://gre/modules/ExtensionParent.sys.mjs:1306:19
+11-01 04:54:59.964  4273  4323 E GeckoConsole: withPendingBrowser@resource://gre/modules/ExtensionParent.sys.mjs:748:26
+11-01 04:54:59.964  4273  4323 E GeckoConsole: recvAPICall/result<@resource://gre/modules/ExtensionParent.sys.mjs:1305:24
+11-01 04:54:59.964  4273  4323 E GeckoConsole: callAndLog@resource://gre/modules/ExtensionParent.sys.mjs:1258:14
+11-01 04:54:59.964  4273  4323 E GeckoConsole: recvAPICall@resource://gre/modules/ExtensionParent.sys.mjs:1304:25
+11-01 04:55:00.007  4273  4289 D UiDevice: Taking screenshot (scale=0.500000, quality=90) and storing at /storage/emulated/0/Android/data/com.twtrubiks.thumblinks/files/screenshots/system-02-photo-picked.png.
+11-01 04:55:00.008  1567  1567 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 17973248
+11-01 04:55:00.017  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:00.031  4224  4267 D         : HostConnection::get() New Host Connection established 0x750a57645180, tid 4267
+11-01 04:55:00.135  4273  4289 D UiDevice: Retrieving node with selector: BySelector [TEXT='\Q加入\E'].
+11-01 04:55:00.136  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:55:00.150  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:55:00.151  4273  4289 D UiObject2: Clicking on (720, 1941).
+11-01 04:55:00.151  4273  4289 W UiObject2: Clicking on non-clickable object: android.view.accessibility.AccessibilityNodeInfo@9623; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(671, 1904 - 770, 1978); packageName: com.twtrubiks.thumblinks; className: android.widget.TextView; text: 加入; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: true; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SET_SELECTION - null, AccessibilityAction: ACTION_NEXT_AT_MOVEMENT_GRANULARITY - null, AccessibilityAction: ACTION_PREVIOUS_AT_MOVEMENT_GRANULARITY - null]
+11-01 04:55:00.168  1889  3319 W audio_hw_generic: Not supplying enough data to HAL, expected position 3637602 , only wrote 3637440
+11-01 04:55:00.170  4273  4289 D UiDevice: Retrieving node with selector: BySelector [RES='\Qlink_list\E'].
+11-01 04:55:00.171  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:55:00.451  4273  4289 D UiDevice: Node not found with selector: BySelector [RES='\Qlink_list\E'].
+11-01 04:55:00.551  4273  4289 D UiDevice: Retrieving node with selector: BySelector [RES='\Qlink_list\E'].
+11-01 04:55:00.552  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:55:00.590  1959  2070 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@61a8c75)
+11-01 04:55:00.590  1959  1973 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@61a8c75)
+11-01 04:55:00.738  4273  4289 D UiDevice: Retrieving node with selector: BySelector [RES='\Qmore_button\E'].
+11-01 04:55:00.739  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:55:00.766  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:55:00.767  4273  4289 D UiObject2: Clicking on (1342, 196).
+11-01 04:55:00.790  4273  4289 D UiDevice: Retrieving node with selector: BySelector [TEXT='\Q匯出\E'].
+11-01 04:55:00.790  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:55:01.021  1567  1567 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 1019904
+11-01 04:55:01.046  1567  1608 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 1019904
+11-01 04:55:01.051  1567  1567 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 1019904
+11-01 04:55:01.156  4273  4311 D EGL_emulation: eglMakeCurrent: 0x7c06efa409a0: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:01.391  4273  4311 I chatty  : uid=10067(com.twtrubiks.thumblinks) identical 2 lines
+11-01 04:55:01.422  4273  4311 D EGL_emulation: eglMakeCurrent: 0x7c06efa409a0: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:01.457  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:55:01.548  4273  4289 D UiObject2: Clicking on (1125, 560).
+11-01 04:55:01.548  4273  4289 W UiObject2: Clicking on non-clickable object: android.view.accessibility.AccessibilityNodeInfo@b1e0; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(1076, 523 - 1175, 597); packageName: com.twtrubiks.thumblinks; className: android.widget.TextView; text: 匯出; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: true; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SET_SELECTION - null, AccessibilityAction: ACTION_NEXT_AT_MOVEMENT_GRANULARITY - null, AccessibilityAction: ACTION_PREVIOUS_AT_MOVEMENT_GRANULARITY - null]
+11-01 04:55:01.569  4273  4289 D UiDevice: Retrieving node with selector: BySelector [TEXT='\QMarkdown\E'].
+11-01 04:55:01.570  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:55:01.597  1959  2070 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@a947af1)
+11-01 04:55:01.597  1959  1973 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@a947af1)
+11-01 04:55:01.629  4273  4311 D EGL_emulation: eglMakeCurrent: 0x7c06efa409a0: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:01.727  1913  1913 D SurfaceFlinger: duplicate layer name: changing com.twtrubiks.thumblinks/com.twtrubiks.thumblinks.MainActivity to com.twtrubiks.thumblinks/com.twtrubiks.thumblinks.MainActivity#1
+11-01 04:55:01.736  1567  1567 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 8065024
+11-01 04:55:01.761  1567  1567 I chatty  : uid=1000(system) allocator@2.0-s identical 1 line
+11-01 04:55:01.765  1567  1567 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 8065024
+11-01 04:55:01.788  4273  4289 W UiDevice: Skipping null root node for window: AccessibilityWindowInfo[title=Pop-Up Window, id=28, type=TYPE_APPLICATION, layer=0, bounds=Rect(978, 224 - 1370, 616), focused=false, active=false, pictureInPicture=false, hasParent=false, isAnchored=false, hasChildren=false]
+11-01 04:55:01.789  4273  4289 W ByMatcher: Node returned null child: android.view.accessibility.AccessibilityNodeInfo@9625; boundsInParent: Rect(0, 0 - 392, 392); boundsInScreen: Rect(1034, 280 - 1426, 672); packageName: com.twtrubiks.thumblinks; className: android.view.ViewGroup; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: android:id/content; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: true; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-01 04:55:01.789  4273  4289 W ByMatcher: Skipping null child (0 of 1)
+11-01 04:55:01.789  4273  4289 W ByMatcher: Node returned null child: android.view.accessibility.AccessibilityNodeInfo@9625; boundsInParent: Rect(0, 0 - 392, 392); boundsInScreen: Rect(1034, 280 - 1426, 672); packageName: com.twtrubiks.thumblinks; className: android.view.ViewGroup; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: android:id/content; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: true; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-01 04:55:01.789  4273  4289 W ByMatcher: Skipping null child (0 of 1)
+11-01 04:55:01.793  4273  4289 D UiDevice: Node not found with selector: BySelector [TEXT='\QMarkdown\E'].
+11-01 04:55:01.814  4273  4311 D EGL_emulation: eglMakeCurrent: 0x7c06efa409a0: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:01.833  4273  4311 D EGL_emulation: eglMakeCurrent: 0x7c06efa409a0: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:01.897  4273  4289 D UiDevice: Retrieving node with selector: BySelector [TEXT='\QMarkdown\E'].
+11-01 04:55:01.897  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:55:01.951  4273  4311 D EGL_emulation: eglMakeCurrent: 0x7c06efa409a0: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:01.954  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:01.978  4273  4311 D EGL_emulation: eglMakeCurrent: 0x7c06efa409a0: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:02.009  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:02.064  4273  4311 D EGL_emulation: eglMakeCurrent: 0x7c06efa409a0: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:02.064  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:02.140  2100  2336 I chatty  : uid=10015(com.android.systemui) RenderThread identical 1 line
+11-01 04:55:02.202  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:02.204  4273  4311 D EGL_emulation: eglMakeCurrent: 0x7c06efa409a0: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:02.264  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:55:02.267  4273  4289 D UiObject2: Clicking on (439, 1407).
+11-01 04:55:02.267  4273  4289 W UiObject2: Clicking on non-clickable object: android.view.accessibility.AccessibilityNodeInfo@bb15; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(300, 1365 - 579, 1449); packageName: com.twtrubiks.thumblinks; className: android.widget.TextView; text: Markdown; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: true; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SET_SELECTION - null, AccessibilityAction: ACTION_NEXT_AT_MOVEMENT_GRANULARITY - null, AccessibilityAction: ACTION_PREVIOUS_AT_MOVEMENT_GRANULARITY - null]
+11-01 04:55:02.280  1959  2079 E TaskPersister: File error accessing recents directory (directory doesn't exist?).
+11-01 04:55:02.319  4273  4289 W GestureController: Gestures took longer than expected (51ms >> 16ms), device might be in a busy state.
+11-01 04:55:02.323  2486  2768 I Dialer  : OmtpVvmCarrierCfgHlpr - OmtpEvent:CONFIG_STATUS_SMS_TIME_OUT
+11-01 04:55:02.324  2486  2486 I Dialer  : RetryPolicy - discarding deferred status: configuration_state=4
+11-01 04:55:02.337  2486  2486 I Dialer  : VvmTaskExecutor - no more tasks, stopping service if no task are added in 5000 millis
+11-01 04:55:02.338  2486  2486 I Dialer  : VvmTaskReceiver - task received
+11-01 04:55:02.338  2486  2486 I Dialer  : VvmTaskReceiver - TaskExecutor already running
+11-01 04:55:02.338  2486  2486 I Dialer  : Task.createTask - create task:com.android.voicemail.impl.ActivationTask
+11-01 04:55:02.338  2486  2486 I Dialer  : RetryPolicy - retry #2 for com.android.voicemail.impl.ActivationTask@dd14894 queued, executing in 5000
+11-01 04:55:02.338  2486  2486 I Dialer  : VvmTaskExecutor - com.android.voicemail.impl.ActivationTask@dd14894 added
+11-01 04:55:02.338  2486  2486 I Dialer  : VvmTaskExecutor - minimal wait time:5000
+11-01 04:55:02.338  2486  2486 I Dialer  : VvmTaskExecutor - sleep for 5000 millis
+11-01 04:55:02.339  4273  4289 D UiDevice: Retrieving node with selector: BySelector [DESC='\QShow roots\E'].
+11-01 04:55:02.339  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:55:02.345  1959  2085 I ActivityManager: START u0 {act=android.intent.action.CREATE_DOCUMENT cat=[android.intent.category.OPENABLE] typ=application/zip cmp=com.android.documentsui/.picker.PickActivity (has extras)} from uid 10067
+11-01 04:55:02.474  4273  4311 D EGL_emulation: eglMakeCurrent: 0x7c06efa409a0: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:02.478  4273  4311 D OpenGLRenderer: endAllActiveAnimators on 0x7c06e0a58700 (UnprojectedRipple) with handle 0x7c06dfc2ce20
+11-01 04:55:02.563  4273  4289 W UiDevice: Active window root not found.
+11-01 04:55:02.564  4273  4273 D LifecycleMonitor: Lifecycle status change: com.twtrubiks.thumblinks.MainActivity@2b161ad in: PAUSED
+11-01 04:55:02.568  4207  4207 W ActivityThread: handleWindowVisibility: no activity for token android.os.BinderProxy@7ecdc9c
+11-01 04:55:02.587  4207  4207 D PickActivity: Created new state object: State{action=4, acceptMimes=[application/zip], allowMultiple=false, localOnly=false, showDeviceStorageOption=true, showAdvanced=false, stack=DocumentStack{root=null, docStack=[], stackTouched=false}, dirConfigs={}, excludedAuthorities=[], openableOnly=true, sortModel=SortModel{dimensions={16908304=SortDimension{id=16908304, labelId=2131755226, dataType=0, sortCapability=0, defaultSortDirection=1, sortDirection=0, visibility=4}, 16908310=SortDimension{id=16908310, labelId=2131755224, dataType=0, sortCapability=3, defaultSortDirection=1, sortDirection=0, visibility=0}, 2131296333=SortDimension{id=2131296333, labelId=2131755222, dataType=1, sortCapability=3, defaultSortDirection=2, sortDirection=0, visibility=0}, 2131296375=SortDimension{id=2131296375, labelId=2131755223, dataType=0, sortCapability=3, defaultSortDirection=1, sortDirection=0, visibility=0}, 2131296509=SortDimension{id=2131296509, labelId=2131755225, dataType=1, sortCapability=3, defaultSortDirection=1, sortDirection=0, visibility=0}}, defaultDimensionId=0, sortedDimension=null}}
+11-01 04:55:02.587  4207  4207 D DrawerController: Calculated drawer width:280.0
+11-01 04:55:02.588  4207  4207 D Metrics : docsui_launch_action: 3
+11-01 04:55:02.588  4207  4207 D Metrics : docsui_create_mime: 3
+11-01 04:55:02.592  4207  4207 D PickerActionHandler: Load last accessed stack.
+11-01 04:55:02.592  4207  4207 D PickerActionHandler: Attempting to load last used stack for calling package.
+11-01 04:55:02.600  1959  2070 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@94e1e0)
+11-01 04:55:02.600  1959  1973 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@94e1e0)
+11-01 04:55:02.612  4273  4289 W UiDevice: Skipping null root node for window: AccessibilityWindowInfo[title=, id=29, type=TYPE_APPLICATION, layer=0, bounds=Rect(48, 768 - 1168, 2044), focused=true, active=true, pictureInPicture=false, hasParent=false, isAnchored=false, hasChildren=false]
+11-01 04:55:02.619  4207  4244 D ProvidersAccess: Matched roots: [Root{authority=com.android.providers.downloads.documents, rootId=downloads, title=Downloads, isUsb=false, isSd=false, isMtp=false} @ content://com.android.providers.downloads.documents/root/downloads, Root{authority=com.android.externalstorage.documents, rootId=home, title=Documents, isUsb=false, isSd=false, isMtp=false} @ content://com.android.externalstorage.documents/root/home]
+11-01 04:55:02.620  4207  4226 D ProvidersAccess: Matched roots: [Root{authority=com.android.providers.downloads.documents, rootId=downloads, title=Downloads, isUsb=false, isSd=false, isMtp=false} @ content://com.android.providers.downloads.documents/root/downloads, Root{authority=com.android.externalstorage.documents, rootId=home, title=Documents, isUsb=false, isSd=false, isMtp=false} @ content://com.android.externalstorage.documents/root/home]
+11-01 04:55:02.621  4207  4244 W LastAccessedStorage: Failed to resume: 
+11-01 04:55:02.621  4207  4244 W LastAccessedStorage: java.io.FileNotFoundException: Failed to find matching mRoot for Root{authority=null, rootId=null, title=Recent, isUsb=false, isSd=false, isMtp=false} @ content:/root/null
+11-01 04:55:02.621  4207  4244 W LastAccessedStorage: 	at com.android.documentsui.base.DocumentStack.updateRoot(DocumentStack.java:212)
+11-01 04:55:02.621  4207  4244 W LastAccessedStorage: 	at com.android.documentsui.base.DocumentStack.fromLastAccessedCursor(DocumentStack.java:235)
+11-01 04:55:02.621  4207  4244 W LastAccessedStorage: 	at com.android.documentsui.picker.LastAccessedStorage$RuntimeLastAccessedStorage.getLastAccessed(LastAccessedStorage.java:67)
+11-01 04:55:02.621  4207  4244 W LastAccessedStorage: 	at com.android.documentsui.picker.LoadLastAccessedStackTask.run(LoadLastAccessedStackTask.java:60)
+11-01 04:55:02.621  4207  4244 W LastAccessedStorage: 	at com.android.documentsui.picker.LoadLastAccessedStackTask.run(LoadLastAccessedStackTask.java:37)
+11-01 04:55:02.621  4207  4244 W LastAccessedStorage: 	at com.android.documentsui.base.CheckedTask.doInBackground(CheckedTask.java:65)
+11-01 04:55:02.621  4207  4244 W LastAccessedStorage: 	at android.os.AsyncTask$2.call(AsyncTask.java:333)
+11-01 04:55:02.621  4207  4244 W LastAccessedStorage: 	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+11-01 04:55:02.621  4207  4244 W LastAccessedStorage: 	at android.os.AsyncTask$SerialExecutor$1.run(AsyncTask.java:245)
+11-01 04:55:02.621  4207  4244 W LastAccessedStorage: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+11-01 04:55:02.621  4207  4244 W LastAccessedStorage: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+11-01 04:55:02.621  4207  4244 W LastAccessedStorage: 	at java.lang.Thread.run(Thread.java:764)
+11-01 04:55:02.653  4273  4289 D UiDevice: Node not found with selector: BySelector [DESC='\QShow roots\E'].
+11-01 04:55:02.685  1567  1567 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 17973248
+11-01 04:55:02.688  1913  2586 W SurfaceFlinger: Attempting to set client state on removed layer: com.twtrubiks.thumblinks/com.twtrubiks.thumblinks.MainActivity#1
+11-01 04:55:02.688  1913  2586 W SurfaceFlinger: Attempting to destroy on removed layer: com.twtrubiks.thumblinks/com.twtrubiks.thumblinks.MainActivity#1
+11-01 04:55:02.717  1567  1567 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 17973248
+11-01 04:55:02.741  1913  2586 W SurfaceFlinger: Attempting to set client state on removed layer: Dim Layer for - Task=7#0
+11-01 04:55:02.741  1913  2586 W SurfaceFlinger: Attempting to destroy on removed layer: Dim Layer for - Task=7#0
+11-01 04:55:02.748  1567  1567 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 17973248
+11-01 04:55:02.754  4273  4289 D UiDevice: Retrieving node with selector: BySelector [DESC='\QShow roots\E'].
+11-01 04:55:02.755  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:55:02.760  4207  4383 D LoadRootTask: Loading root: content://com.android.providers.downloads.documents/root/downloads
+11-01 04:55:02.803  4207  4351 D EGL_emulation: eglMakeCurrent: 0x7c06efa44720: ver 3 0 (tinfo 0x7c06efa0dd20)
+11-01 04:55:02.990  4207  4207 D LoadRootTask: Loaded root: Root{authority=com.android.providers.downloads.documents, rootId=downloads, title=Downloads, isUsb=false, isSd=false, isMtp=false} @ content://com.android.providers.downloads.documents/root/downloads
+11-01 04:55:02.991  4207  4207 W ActionModeController: Tried to finish a null action mode.
+11-01 04:55:02.991  4207  4207 D DocumentStack: Root changed to: Root{authority=com.android.providers.downloads.documents, rootId=downloads, title=Downloads, isUsb=false, isSd=false, isMtp=false} @ content://com.android.providers.downloads.documents/root/downloads
+11-01 04:55:02.994  1959  1982 I ActivityManager: Displayed com.android.documentsui/.picker.PickActivity: +420ms
+11-01 04:55:03.009  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:03.036  4207  4207 D DocumentStack: Adding doc to stack: DocumentInfo{docId=downloads, name=Downloads, mimeType=vnd.android.document/directory, isContainer=true, isDirectory=true, isArchive=false, isInArchive=false, isPartial=false, isVirtual=false, isDeleteSupported=false, isCreateSupported=true, isRenameSupported=false, isMetadataSupported=false} @ content://com.android.providers.downloads.documents/document/downloads
+11-01 04:55:03.037  4207  4207 D DirectoryFragment: Showing directory: content://com.android.providers.downloads.documents/document/downloads
+11-01 04:55:03.037  4207  4207 D DirectoryFragment: Creating new fragment for directory: content://com.android.providers.downloads.documents/document/downloads
+11-01 04:55:03.040  4207  4207 D AbstractActionHandler: Creating new directory loader for: content://com.android.providers.downloads.documents/document/downloads
+11-01 04:55:03.065  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:03.097  4207  4207 D AbstractActionHandler: Loader has finished for: content://com.android.providers.downloads.documents/document/downloads
+11-01 04:55:03.097  4207  4207 I Model   : Updating model with new result set.
+11-01 04:55:03.097  4207  4207 D DirectoryFragment: Received model update. Loading=false
+11-01 04:55:03.162  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:03.177  2100  2336 I chatty  : uid=10015(com.android.systemui) RenderThread identical 1 line
+11-01 04:55:03.211  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:03.213  4207  4207 D Metrics : docsui_startup_ms: 632
+11-01 04:55:03.232  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:55:03.248  4273  4289 D UiObject2: Clicking on (98, 182).
+11-01 04:55:03.270  4273  4273 D GeckoRuntime: Lifecycle: onPause
+11-01 04:55:03.271  4273  4273 D GeckoNetworkManager: Incoming event stop for state OnWithListeners -> OffWithListeners
+11-01 04:55:03.271  4273  4289 D UiDevice: Retrieving node with selector: BySelector [TEXT='\QDownloads\E'].
+11-01 04:55:03.272  1959  2056 D ConnectivityService: releasing NetworkRequest [ TRACK_DEFAULT id=13, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Unwanted:  Uid: 10067] ] (release request)
+11-01 04:55:03.272  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:55:03.284  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:03.556  4273  4273 D LifecycleMonitor: Lifecycle status change: com.twtrubiks.thumblinks.MainActivity@2b161ad in: STOPPED
+11-01 04:55:03.596  1959  2070 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@626c03c)
+11-01 04:55:03.596  1959  1973 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@626c03c)
+11-01 04:55:04.388  4273  4357 D ServiceAllocator: org.mozilla.gecko.process.GeckoChildProcessServices$gpu updateBindings: IDLE priority, 0 importance, 4404 pid, 0 successful binds, 0 failed binds, 2 successful unbinds
+11-01 04:55:04.576  4273  4289 D UiDevice: Retrieving nodes with selector: BySelector [TEXT='\QDownloads\E'].
+11-01 04:55:04.577  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:55:04.587  4273  4289 I chatty  : uid=10067(com.twtrubiks.thumblinks) identical 2 lines
+11-01 04:55:04.588  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:55:04.589  4273  4289 D UiObject2: Clicking on (560, 392).
+11-01 04:55:04.589  4273  4289 W UiObject2: Clicking on non-clickable object: android.view.accessibility.AccessibilityNodeInfo@227d2; boundsInParent: Rect(0, 0 - 559, 66); boundsInScreen: Rect(281, 359 - 840, 425); packageName: com.android.documentsui; className: android.widget.TextView; text: Downloads; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: android:id/title; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: true; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_NEXT_AT_MOVEMENT_GRANULARITY - null, AccessibilityAction: ACTION_PREVIOUS_AT_MOVEMENT_GRANULARITY - null, AccessibilityAction: ACTION_SET_SELECTION - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-01 04:55:04.595  1959  2070 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@77a51c5)
+11-01 04:55:04.595  1959  1973 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@77a51c5)
+11-01 04:55:04.607  4273  4289 D UiDevice: Retrieving node with selector: BySelector [TEXT='Save to|Open from'].
+11-01 04:55:04.607  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:55:04.672  4207  4207 D Metrics : docsui_root_visited_in_picker: 5
+11-01 04:55:04.721  4273  4289 D UiDevice: Retrieving node with selector: BySelector [TEXT='Save to|Open from'].
+11-01 04:55:04.722  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:55:05.018  4273  4289 D UiDevice: Node not found with selector: BySelector [TEXT='Save to|Open from'].
+11-01 04:55:05.403  4273  4273 D GeckoNetworkManager: Incoming event enableNotifications for state OffWithListeners -> null
+11-01 04:55:05.403  4273  4273 W GeckoNetworkManager: Invalid event enableNotifications for state OffWithListeners
+11-01 04:55:05.596  1959  2070 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@75d071a)
+11-01 04:55:05.596  1959  1973 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@75d071a)
+11-01 04:55:05.883  4273  4273 D WebExtension: handleMessage GeckoView:BrowserAction:Update
+11-01 04:55:05.884  4273  4273 I chatty  : uid=10067(com.twtrubiks.thumblinks) identical 1 line
+11-01 04:55:05.885  4273  4273 D WebExtension: handleMessage GeckoView:BrowserAction:Update
+11-01 04:55:05.934  1959  2079 E TaskPersister: File error accessing recents directory (directory doesn't exist?).
+11-01 04:55:06.518  4273  4289 D UiDevice: Taking screenshot (scale=0.500000, quality=90) and storing at /storage/emulated/0/Android/data/com.twtrubiks.thumblinks/files/screenshots/system-03-save-screen.png.
+11-01 04:55:06.520  1567  1567 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 17973248
+11-01 04:55:06.595  1959  2070 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@2e2224b)
+11-01 04:55:06.595  1959  1973 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@2e2224b)
+11-01 04:55:06.598  4273  4289 D UiDevice: Retrieving node with selector: BySelector [TEXT='(?i)save|儲存'].
+11-01 04:55:06.599  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:55:06.606  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:55:06.607  4273  4289 D UiObject2: Clicking on (1277, 2854).
+11-01 04:55:06.625  4273  4289 D UiDevice: Retrieving node with selector: BySelector [TEXT='\Q匯出好了\E'].
+11-01 04:55:06.626  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:55:06.663  4207  4207 D PickerActionHandler: onFinished() [content://com.android.providers.downloads.documents/document/1]
+11-01 04:55:06.669  4273  4289 D UiDevice: Node not found with selector: BySelector [TEXT='\Q匯出好了\E'].
+11-01 04:55:06.686  4273  4273 D LifecycleMonitor: Lifecycle status change: com.twtrubiks.thumblinks.MainActivity@2b161ad in: RESTARTED
+11-01 04:55:06.687  4273  4273 D LifecycleMonitor: Lifecycle status change: com.twtrubiks.thumblinks.MainActivity@2b161ad in: STARTED
+11-01 04:55:06.687  4273  4273 D GeckoRuntime: Lifecycle: onStart
+11-01 04:55:06.687  4273  4273 D LifecycleMonitor: Lifecycle status change: com.twtrubiks.thumblinks.MainActivity@2b161ad in: RESUMED
+11-01 04:55:06.688  4273  4273 D GeckoRuntime: Lifecycle: onResume
+11-01 04:55:06.688  4273  4273 D GeckoNetworkManager: Incoming event start for state OffWithListeners -> OnWithListeners
+11-01 04:55:06.689  1959  2310 D ConnectivityService: requestNetwork for uid/pid:10067/4273 NetworkRequest [ TRACK_DEFAULT id=14, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Unwanted:  Uid: 10067] ]
+11-01 04:55:06.690  1959  2053 D WIFI_UT : got request NetworkRequest [ TRACK_DEFAULT id=14, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Unwanted:  Uid: 10067] ] with score 60
+11-01 04:55:06.690  1959  2053 D WIFI    : got request NetworkRequest [ TRACK_DEFAULT id=14, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Unwanted:  Uid: 10067] ] with score 60
+11-01 04:55:06.691  2178  2178 D PhoneSwitcherNetworkRequstListener: got request NetworkRequest [ TRACK_DEFAULT id=14, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Unwanted:  Uid: 10067] ] with score 60
+11-01 04:55:06.694  4273  4357 D ServiceAllocator: org.mozilla.gecko.process.GeckoChildProcessServices$gpu updateBindings: FOREGROUND priority, 0 importance, 4404 pid, 2 successful binds, 0 failed binds, 0 successful unbinds
+11-01 04:55:06.708  4207  4207 D AbstractActionHandler: Loader has finished for: content://com.android.providers.downloads.documents/document/downloads
+11-01 04:55:06.708  4207  4207 I Model   : Updating model with new result set.
+11-01 04:55:06.708  4207  4207 D DirectoryFragment: Received model update. Loading=false
+11-01 04:55:06.717  2615  2615 D MediaScannerReceiver: action: android.intent.action.MEDIA_SCANNER_SCAN_FILE path: /storage/emulated/0/Download/thumblinks-2026-11-01.zip
+11-01 04:55:06.740  1567  1567 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 17973248
+11-01 04:55:06.747  1567  1567 I chatty  : uid=1000(system) allocator@2.0-s identical 1 line
+11-01 04:55:06.751  1567  1567 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 17973248
+11-01 04:55:06.758  4273  4273 D GeckoNetworkManager: Incoming event receivedUpdate for state OnWithListeners -> OnWithListeners
+11-01 04:55:06.759  4273  4273 D GeckoNetworkManager: New network state: UP, WIFI, WIFI
+11-01 04:55:06.773  4273  4289 D UiDevice: Retrieving node with selector: BySelector [TEXT='\Q匯出好了\E'].
+11-01 04:55:06.774  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:55:06.798  4207  4207 D AbstractActionHandler: Loader has finished for: content://com.android.providers.downloads.documents/document/downloads
+11-01 04:55:06.798  4207  4207 I Model   : Updating model with new result set.
+11-01 04:55:06.798  4207  4207 D DirectoryFragment: Received model update. Loading=false
+11-01 04:55:06.802  4273  4311 D EGL_emulation: eglMakeCurrent: 0x7c06efa409a0: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:07.214  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:07.314  2100  2336 I chatty  : uid=10015(com.android.systemui) RenderThread identical 3 lines
+11-01 04:55:07.348  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:07.373  2486  2768 I Dialer  : VvmTaskExecutor - executing task com.android.voicemail.impl.ActivationTask@dd14894
+11-01 04:55:07.373  2486  2768 I Dialer  : PreOMigrationHandler - ComponentInfo{com.android.phone/com.android.services.telephony.TelephonyConnectionService}, ***, UserHandle{0} already migrated
+11-01 04:55:07.378  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:07.390  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:07.391  4207  4351 D EGL_emulation: eglMakeCurrent: 0x7c06efa44720: ver 3 0 (tinfo 0x7c06efa0dd20)
+11-01 04:55:07.439  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:07.444  2545  3136 I VoicemailNotifier: receivers for android.intent.action.PROVIDER_CHANGED :[]
+11-01 04:55:07.448  2486  2768 I Dialer  : VvmActivationTask - VVM content provider configured - vvm_type_cvvm
+11-01 04:55:07.449  2486  2768 I Dialer  : OmtpVvmCarrierCfgHlpr - OmtpEvent:CONFIG_ACTIVATING
+11-01 04:55:07.457  2545  3136 I VoicemailNotifier: receivers for android.intent.action.PROVIDER_CHANGED :[]
+11-01 04:55:07.463  2486  2768 I Dialer  : TelephonyMangerCompat.setVisualVoicemailSmsFilterSettings - using TelephonyManager
+11-01 04:55:07.469  2486  2768 I Dialer  : TelephonyMangerCompat.sendVisualVoicemailSms - using TelephonyManager
+11-01 04:55:07.595  1959  2070 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@546a22b)
+11-01 04:55:07.596  1959  1973 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@546a22b)
+11-01 04:55:08.200  4273  4289 D UiDevice: Taking screenshot (scale=0.500000, quality=90) and storing at /storage/emulated/0/Android/data/com.twtrubiks.thumblinks/files/screenshots/system-04-exported.png.
+11-01 04:55:08.201  1567  1567 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 17973248
+11-01 04:55:08.273  4273  4282 W System  : A resource failed to call end. 
+11-01 04:55:08.289  4273  4289 D UiDevice: Retrieving node with selector: BySelector [TEXT='\Q沒有縮圖的網頁\E'].
+11-01 04:55:08.289  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:55:08.298  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:55:08.299  4273  4289 D UiObject2: Long-clicking on (725, 433).
+11-01 04:55:08.299  4273  4289 W UiObject2: Long-clicking on non-long-clickable object: android.view.accessibility.AccessibilityNodeInfo@9d67; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(553, 396 - 897, 470); packageName: com.twtrubiks.thumblinks; className: android.widget.TextView; text: 沒有縮圖的網頁; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: true; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SET_SELECTION - null, AccessibilityAction: ACTION_NEXT_AT_MOVEMENT_GRANULARITY - null, AccessibilityAction: ACTION_PREVIOUS_AT_MOVEMENT_GRANULARITY - null]
+11-01 04:55:08.602  1959  2070 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@cbe5688)
+11-01 04:55:08.602  1959  1973 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@cbe5688)
+11-01 04:55:08.867  1567  1567 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 1019904
+11-01 04:55:08.880  1567  1567 I chatty  : uid=1000(system) allocator@2.0-s identical 1 line
+11-01 04:55:08.881  1567  1567 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 1019904
+11-01 04:55:08.948  4273  4311 D EGL_emulation: eglMakeCurrent: 0x7c06efa409a0: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:09.131  4273  4289 D UiDevice: Retrieving node with selector: BySelector [TEXT='\Q編輯\E'].
+11-01 04:55:09.131  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:55:09.140  4273  4311 D EGL_emulation: eglMakeCurrent: 0x7c06efa409a0: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:09.224  4273  4311 D EGL_emulation: eglMakeCurrent: 0x7c06efa409a0: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:09.252  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:55:09.258  4273  4311 D EGL_emulation: eglMakeCurrent: 0x7c06efa409a0: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:09.362  4273  4289 D UiObject2: Clicking on (147, 711).
+11-01 04:55:09.362  4273  4289 W UiObject2: Clicking on non-clickable object: android.view.accessibility.AccessibilityNodeInfo@d57d; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(98, 674 - 197, 748); packageName: com.twtrubiks.thumblinks; className: android.widget.TextView; text: 編輯; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: true; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SET_SELECTION - null, AccessibilityAction: ACTION_NEXT_AT_MOVEMENT_GRANULARITY - null, AccessibilityAction: ACTION_PREVIOUS_AT_MOVEMENT_GRANULARITY - null]
+11-01 04:55:09.384  4273  4289 D UiDevice: Retrieving node with selector: BySelector [TEXT='\Q刪除這一筆\E'].
+11-01 04:55:09.385  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:55:09.519  4273  4289 W UiDevice: Active window root not found.
+11-01 04:55:09.602  1959  2070 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@2e3755d)
+11-01 04:55:09.602  1959  1973 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@2e3755d)
+11-01 04:55:09.684  4273  4289 D UiDevice: Retrieving node with selector: BySelector [TEXT='\Q刪除這一筆\E'].
+11-01 04:55:09.684  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:55:09.720  4273  4289 I chatty  : uid=10067(com.twtrubiks.thumblinks) identical 1 line
+11-01 04:55:09.723  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:55:09.725  4273  4289 D UiObject2: Clicking on (235, 2529).
+11-01 04:55:09.725  4273  4289 W UiObject2: Clicking on non-clickable object: android.view.accessibility.AccessibilityNodeInfo@af91; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(112, 2492 - 358, 2566); packageName: com.twtrubiks.thumblinks; className: android.widget.TextView; text: 刪除這一筆; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: true; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SET_SELECTION - null, AccessibilityAction: ACTION_NEXT_AT_MOVEMENT_GRANULARITY - null, AccessibilityAction: ACTION_PREVIOUS_AT_MOVEMENT_GRANULARITY - null]
+11-01 04:55:09.757  4273  4289 W GestureController: Gestures took longer than expected (32ms >> 16ms), device might be in a busy state.
+11-01 04:55:09.759  4273  4289 D UiDevice: Retrieving node with selector: BySelector [TEXT='\Q刪除\E'].
+11-01 04:55:09.768  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:55:09.860  1913  1913 D SurfaceFlinger: duplicate layer name: changing com.twtrubiks.thumblinks/com.twtrubiks.thumblinks.MainActivity to com.twtrubiks.thumblinks/com.twtrubiks.thumblinks.MainActivity#1
+11-01 04:55:09.876  1567  1567 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 4325376
+11-01 04:55:09.906  1567  1567 I chatty  : uid=1000(system) allocator@2.0-s identical 1 line
+11-01 04:55:09.916  1567  1567 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 4325376
+11-01 04:55:10.145  4273  4311 D EGL_emulation: eglMakeCurrent: 0x7c06efa409a0: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:10.199  4273  4311 D EGL_emulation: eglMakeCurrent: 0x7c06efa409a0: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:10.229  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:10.299  2100  2336 I chatty  : uid=10015(com.android.systemui) RenderThread identical 1 line
+11-01 04:55:10.332  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:10.405  4273  4311 D EGL_emulation: eglMakeCurrent: 0x7c06efa409a0: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:10.411  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:10.432  4273  4311 D EGL_emulation: eglMakeCurrent: 0x7c06efa409a0: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:10.489  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:10.492  1959  2079 E TaskPersister: File error accessing recents directory (directory doesn't exist?).
+11-01 04:55:10.537  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:10.602  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:55:10.605  4273  4289 D UiObject2: Clicking on (1024, 1687).
+11-01 04:55:10.605  4273  4289 W UiObject2: Clicking on non-clickable object: android.view.accessibility.AccessibilityNodeInfo@f538; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(975, 1650 - 1074, 1724); packageName: com.twtrubiks.thumblinks; className: android.widget.TextView; text: 刪除; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: true; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SET_SELECTION - null, AccessibilityAction: ACTION_NEXT_AT_MOVEMENT_GRANULARITY - null, AccessibilityAction: ACTION_PREVIOUS_AT_MOVEMENT_GRANULARITY - null]
+11-01 04:55:10.609  1959  2070 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@f07aef7)
+11-01 04:55:10.609  1959  1973 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@f07aef7)
+11-01 04:55:10.650  4273  4289 W GestureController: Gestures took longer than expected (42ms >> 16ms), device might be in a busy state.
+11-01 04:55:10.650  4273  4289 D UiDevice: Retrieving node with selector: BySelector [TEXT='\Q還沒有連結\E'].
+11-01 04:55:10.650  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:55:10.651  4273  4289 W UiDevice: Active window root not found.
+11-01 04:55:10.654  4273  4289 W UiDevice: Skipping null root node for window: AccessibilityWindowInfo[title=, id=32, type=TYPE_APPLICATION, layer=0, bounds=Rect(118, 1069 - 1098, 1743), focused=true, active=true, pictureInPicture=false, hasParent=false, isAnchored=false, hasChildren=false]
+11-01 04:55:10.657  4273  4289 D UiDevice: Node not found with selector: BySelector [TEXT='\Q還沒有連結\E'].
+11-01 04:55:10.757  4273  4289 D UiDevice: Retrieving node with selector: BySelector [TEXT='\Q還沒有連結\E'].
+11-01 04:55:10.760  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:55:10.785  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:10.833  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:10.840  1913  2586 W SurfaceFlinger: Attempting to set client state on removed layer: com.twtrubiks.thumblinks/com.twtrubiks.thumblinks.MainActivity#1
+11-01 04:55:10.840  1913  2586 W SurfaceFlinger: Attempting to destroy on removed layer: com.twtrubiks.thumblinks/com.twtrubiks.thumblinks.MainActivity#1
+11-01 04:55:10.882  1913  1947 W SurfaceFlinger: Attempting to set client state on removed layer: Dim Layer for - Task=7#0
+11-01 04:55:10.882  1913  1947 W SurfaceFlinger: Attempting to destroy on removed layer: Dim Layer for - Task=7#0
+11-01 04:55:10.885  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:11.014  2100  2336 I chatty  : uid=10015(com.android.systemui) RenderThread identical 2 lines
+11-01 04:55:11.075  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:11.092  4273  4289 D UiDevice: Retrieving node with selector: BySelector [RES='\Qimport_button\E'].
+11-01 04:55:11.092  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:55:11.119  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:55:11.122  4273  4289 D UiObject2: Clicking on (720, 2044).
+11-01 04:55:11.139  1959  2310 I ActivityManager: START u0 {act=android.intent.action.OPEN_DOCUMENT typ=*/* cmp=com.android.documentsui/.picker.PickActivity (has extras)} from uid 10067
+11-01 04:55:11.142  4273  4289 D UiDevice: Retrieving node with selector: BySelector [DESC='\QShow roots\E'].
+11-01 04:55:11.143  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:55:11.166  1959  1967 D         : HostConnection::get() New Host Connection established 0x7c06d38dc1c0, tid 1967
+11-01 04:55:11.175  4273  4273 D LifecycleMonitor: Lifecycle status change: com.twtrubiks.thumblinks.MainActivity@2b161ad in: PAUSED
+11-01 04:55:11.180  4207  4207 W ActivityThread: handleWindowVisibility: no activity for token android.os.BinderProxy@d776c2d
+11-01 04:55:11.186  1959  1973 E memtrack: Couldn't load memtrack module
+11-01 04:55:11.186  1959  1973 W android.os.Debug: failed to get memory consumption info: -1
+11-01 04:55:11.192  4207  4207 D PickActivity: Created new state object: State{action=3, acceptMimes=[*/*], allowMultiple=false, localOnly=false, showDeviceStorageOption=true, showAdvanced=false, stack=DocumentStack{root=null, docStack=[], stackTouched=false}, dirConfigs={}, excludedAuthorities=[], openableOnly=false, sortModel=SortModel{dimensions={16908304=SortDimension{id=16908304, labelId=2131755226, dataType=0, sortCapability=0, defaultSortDirection=1, sortDirection=0, visibility=4}, 16908310=SortDimension{id=16908310, labelId=2131755224, dataType=0, sortCapability=3, defaultSortDirection=1, sortDirection=0, visibility=0}, 2131296333=SortDimension{id=2131296333, labelId=2131755222, dataType=1, sortCapability=3, defaultSortDirection=2, sortDirection=0, visibility=0}, 2131296375=SortDimension{id=2131296375, labelId=2131755223, dataType=0, sortCapability=3, defaultSortDirection=1, sortDirection=0, visibility=0}, 2131296509=SortDimension{id=2131296509, labelId=2131755225, dataType=1, sortCapability=3, defaultSortDirection=1, sortDirection=0, visibility=0}}, defaultDimensionId=0, sortedDimension=null}}
+11-01 04:55:11.192  4207  4207 D DrawerController: Calculated drawer width:280.0
+11-01 04:55:11.192  4207  4207 D Metrics : docsui_launch_action: 2
+11-01 04:55:11.195  4207  4207 D Metrics : docsui_open_mime: 2
+11-01 04:55:11.197  4207  4207 D PickerActionHandler: Load last accessed stack.
+11-01 04:55:11.198  4207  4207 D PickerActionHandler: Attempting to load last used stack for calling package.
+11-01 04:55:11.209  1959  1973 E memtrack: Couldn't load memtrack module
+11-01 04:55:11.209  1959  1973 W android.os.Debug: failed to get memory consumption info: -1
+11-01 04:55:11.211  4207  4226 D ProvidersAccess: Matched roots: [Root{authority=null, rootId=null, title=Recent, isUsb=false, isSd=false, isMtp=false} @ content:/root/null, Root{authority=com.android.providers.downloads.documents, rootId=downloads, title=Downloads, isUsb=false, isSd=false, isMtp=false} @ content://com.android.providers.downloads.documents/root/downloads, Root{authority=com.android.providers.media.documents, rootId=images_root, title=Images, isUsb=false, isSd=false, isMtp=false} @ content://com.android.providers.media.documents/root/images_root, Root{authority=com.android.providers.media.documents, rootId=videos_root, title=Videos, isUsb=false, isSd=false, isMtp=false} @ content://com.android.providers.media.documents/root/videos_root, Root{authority=com.android.externalstorage.documents, rootId=home, title=Documents, isUsb=false, isSd=false, isMtp=false} @ content://com.android.externalstorage.documents/root/home]
+11-01 04:55:11.218  4207  4244 D ProvidersAccess: Matched roots: [Root{authority=null, rootId=null, title=Recent, isUsb=false, isSd=false, isMtp=false} @ content:/root/null, Root{authority=com.android.providers.downloads.documents, rootId=downloads, title=Downloads, isUsb=false, isSd=false, isMtp=false} @ content://com.android.providers.downloads.documents/root/downloads, Root{authority=com.android.providers.media.documents, rootId=images_root, title=Images, isUsb=false, isSd=false, isMtp=false} @ content://com.android.providers.media.documents/root/images_root, Root{authority=com.android.providers.media.documents, rootId=videos_root, title=Videos, isUsb=false, isSd=false, isMtp=false} @ content://com.android.providers.media.documents/root/videos_root, Root{authority=com.android.externalstorage.documents, rootId=home, title=Documents, isUsb=false, isSd=false, isMtp=false} @ content://com.android.externalstorage.documents/root/home]
+11-01 04:55:11.289  1567  1567 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 17973248
+11-01 04:55:11.306  4273  4289 D UiDevice: Node not found with selector: BySelector [DESC='\QShow roots\E'].
+11-01 04:55:11.326  1567  1567 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 17973248
+11-01 04:55:11.338  1567  1608 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 17973248
+11-01 04:55:11.409  4273  4289 D UiDevice: Retrieving node with selector: BySelector [DESC='\QShow roots\E'].
+11-01 04:55:11.410  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:55:11.434  4207  4351 D EGL_emulation: eglMakeCurrent: 0x7c06efa44720: ver 3 0 (tinfo 0x7c06efa0dd20)
+11-01 04:55:11.505  4207  4207 D DocumentStack: Resetting the whole darn stack to: DocumentStack{root=Root{authority=com.android.providers.downloads.documents, rootId=downloads, title=Downloads, isUsb=false, isSd=false, isMtp=false} @ content://com.android.providers.downloads.documents/root/downloads, docStack=[DocumentInfo{docId=downloads, name=Downloads, mimeType=vnd.android.document/directory, isContainer=true, isDirectory=true, isArchive=false, isInArchive=false, isPartial=false, isVirtual=false, isDeleteSupported=false, isCreateSupported=true, isRenameSupported=false, isMetadataSupported=false} @ content://com.android.providers.downloads.documents/document/downloads], stackTouched=true}
+11-01 04:55:11.505  4207  4207 D DirectoryFragment: Showing directory: content://com.android.providers.downloads.documents/document/downloads
+11-01 04:55:11.505  4207  4207 D DirectoryFragment: Creating new fragment for directory: content://com.android.providers.downloads.documents/document/downloads
+11-01 04:55:11.554  1959  1982 I ActivityManager: Displayed com.android.documentsui/.picker.PickActivity: +361ms
+11-01 04:55:11.601  1959  2070 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@d17f18a)
+11-01 04:55:11.601  1959  1973 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@d17f18a)
+11-01 04:55:11.631  4207  4207 D AbstractActionHandler: Creating new directory loader for: content://com.android.providers.downloads.documents/document/downloads
+11-01 04:55:11.707  4207  4207 D AbstractActionHandler: Loader has finished for: content://com.android.providers.downloads.documents/document/downloads
+11-01 04:55:11.707  4207  4207 I Model   : Updating model with new result set.
+11-01 04:55:11.707  4207  4207 D DirectoryFragment: Received model update. Loading=false
+11-01 04:55:11.778  4207  4207 D Metrics : docsui_startup_ms: 590
+11-01 04:55:11.784  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:55:11.788  4273  4289 D UiObject2: Clicking on (98, 182).
+11-01 04:55:11.809  4273  4289 D UiDevice: Retrieving node with selector: BySelector [TEXT='\QDownloads\E'].
+11-01 04:55:11.809  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:55:11.839  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:11.875  4273  4273 D GeckoRuntime: Lifecycle: onPause
+11-01 04:55:11.875  4273  4273 D GeckoNetworkManager: Incoming event stop for state OnWithListeners -> OffWithListeners
+11-01 04:55:11.876  1959  2056 D ConnectivityService: releasing NetworkRequest [ TRACK_DEFAULT id=14, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Unwanted:  Uid: 10067] ] (release request)
+11-01 04:55:11.929  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:11.977  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:12.022  4273  4311 D EGL_emulation: eglMakeCurrent: 0x7c06efa409a0: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:12.068  4273  4273 D LifecycleMonitor: Lifecycle status change: com.twtrubiks.thumblinks.MainActivity@2b161ad in: STOPPED
+11-01 04:55:12.109  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:12.601  1959  2070 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@eb54671)
+11-01 04:55:12.601  1959  1973 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@eb54671)
+11-01 04:55:12.948  4273  4357 D ServiceAllocator: org.mozilla.gecko.process.GeckoChildProcessServices$gpu updateBindings: IDLE priority, 0 importance, 4404 pid, 0 successful binds, 0 failed binds, 2 successful unbinds
+11-01 04:55:13.259  4273  4289 D UiDevice: Retrieving nodes with selector: BySelector [TEXT='\QDownloads\E'].
+11-01 04:55:13.260  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:55:13.272  4273  4289 I chatty  : uid=10067(com.twtrubiks.thumblinks) identical 2 lines
+11-01 04:55:13.272  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:55:13.273  4273  4289 D UiObject2: Clicking on (560, 984).
+11-01 04:55:13.273  4273  4289 W UiObject2: Clicking on non-clickable object: android.view.accessibility.AccessibilityNodeInfo@36329; boundsInParent: Rect(0, 0 - 559, 66); boundsInScreen: Rect(281, 951 - 840, 1017); packageName: com.android.documentsui; className: android.widget.TextView; text: Downloads; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: android:id/title; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: true; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_NEXT_AT_MOVEMENT_GRANULARITY - null, AccessibilityAction: ACTION_PREVIOUS_AT_MOVEMENT_GRANULARITY - null, AccessibilityAction: ACTION_SET_SELECTION - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-01 04:55:13.295  4273  4289 D UiDevice: Retrieving node with selector: BySelector [TEXT='Save to|Open from'].
+11-01 04:55:13.296  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:55:13.349  4207  4207 D Metrics : docsui_root_visited_in_picker: 5
+11-01 04:55:13.406  4273  4289 D UiDevice: Retrieving node with selector: BySelector [TEXT='Save to|Open from'].
+11-01 04:55:13.407  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:55:13.605  1959  2070 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@b0b9c56)
+11-01 04:55:13.606  1959  1973 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@b0b9c56)
+11-01 04:55:13.782  4273  4289 D UiDevice: Node not found with selector: BySelector [TEXT='Save to|Open from'].
+11-01 04:55:14.283  4273  4289 D UiDevice: Retrieving node with selector: BySelector [TEXT='\Qthumblinks-2026-11-01.zip\E'].
+11-01 04:55:14.283  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:55:14.289  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:55:14.290  4273  4289 D UiObject2: Clicking on (444, 1255).
+11-01 04:55:14.290  4273  4289 W UiObject2: Clicking on non-clickable object: android.view.accessibility.AccessibilityNodeInfo@2e387; boundsInParent: Rect(0, 0 - 426, 76); boundsInScreen: Rect(231, 1217 - 657, 1293); packageName: com.android.documentsui; className: android.widget.TextView; text: thumblinks-2026-11-01.zip; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: android:id/title; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: true; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_NEXT_AT_MOVEMENT_GRANULARITY - null, AccessibilityAction: ACTION_PREVIOUS_AT_MOVEMENT_GRANULARITY - null, AccessibilityAction: ACTION_SET_SELECTION - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-01 04:55:14.302  4207  4207 D PickerActionHandler: onFinished() [content://com.android.providers.downloads.documents/document/1]
+11-01 04:55:14.309  4273  4289 D UiDevice: Retrieving node with selector: BySelector [TEXT='\Q匯入 1 筆\E'].
+11-01 04:55:14.309  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:55:14.331  4273  4273 D LifecycleMonitor: Lifecycle status change: com.twtrubiks.thumblinks.MainActivity@2b161ad in: RESTARTED
+11-01 04:55:14.332  4273  4273 D LifecycleMonitor: Lifecycle status change: com.twtrubiks.thumblinks.MainActivity@2b161ad in: STARTED
+11-01 04:55:14.332  4273  4273 D GeckoRuntime: Lifecycle: onStart
+11-01 04:55:14.332  4273  4273 D LifecycleMonitor: Lifecycle status change: com.twtrubiks.thumblinks.MainActivity@2b161ad in: RESUMED
+11-01 04:55:14.332  4273  4273 D GeckoRuntime: Lifecycle: onResume
+11-01 04:55:14.332  4273  4273 D GeckoNetworkManager: Incoming event start for state OffWithListeners -> OnWithListeners
+11-01 04:55:14.333  1959  1970 D ConnectivityService: requestNetwork for uid/pid:10067/4273 NetworkRequest [ TRACK_DEFAULT id=15, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Unwanted:  Uid: 10067] ]
+11-01 04:55:14.334  2178  2178 D PhoneSwitcherNetworkRequstListener: got request NetworkRequest [ TRACK_DEFAULT id=15, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Unwanted:  Uid: 10067] ] with score 60
+11-01 04:55:14.334  1959  2053 D WIFI_UT : got request NetworkRequest [ TRACK_DEFAULT id=15, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Unwanted:  Uid: 10067] ] with score 60
+11-01 04:55:14.334  1959  2053 D WIFI    : got request NetworkRequest [ TRACK_DEFAULT id=15, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Unwanted:  Uid: 10067] ] with score 60
+11-01 04:55:14.345  1567  1608 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 17973248
+11-01 04:55:14.348  1567  1608 I chatty  : uid=1000(system) HwBinder:1567_2 identical 1 line
+11-01 04:55:14.353  1567  1608 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 17973248
+11-01 04:55:14.355  4273  4273 D GeckoNetworkManager: Incoming event receivedUpdate for state OnWithListeners -> OnWithListeners
+11-01 04:55:14.356  4273  4273 D GeckoNetworkManager: New network state: UP, WIFI, WIFI
+11-01 04:55:14.380  4273  4311 D EGL_emulation: eglMakeCurrent: 0x7c06efa409a0: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:14.392  4273  4289 D UiDevice: Node not found with selector: BySelector [TEXT='\Q匯入 1 筆\E'].
+11-01 04:55:14.492  4273  4289 D UiDevice: Retrieving node with selector: BySelector [TEXT='\Q匯入 1 筆\E'].
+11-01 04:55:14.493  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:55:14.607  1959  2070 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@c7c53f4)
+11-01 04:55:14.607  1959  1973 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@c7c53f4)
+11-01 04:55:14.612  1913  1913 D SurfaceFlinger: duplicate layer name: changing com.twtrubiks.thumblinks/com.twtrubiks.thumblinks.MainActivity to com.twtrubiks.thumblinks/com.twtrubiks.thumblinks.MainActivity#1
+11-01 04:55:14.617  1567  1608 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 4325376
+11-01 04:55:14.660  1567  1608 I chatty  : uid=1000(system) HwBinder:1567_2 identical 1 line
+11-01 04:55:14.666  1567  1608 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 4325376
+11-01 04:55:14.725  4273  4311 D EGL_emulation: eglMakeCurrent: 0x7c06efa409a0: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:14.728  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:14.755  1959  2079 E TaskPersister: File error accessing recents directory (directory doesn't exist?).
+11-01 04:55:14.854  2100  2336 I chatty  : uid=10015(com.android.systemui) RenderThread identical 4 lines
+11-01 04:55:14.895  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:14.939  4207  4351 D EGL_emulation: eglMakeCurrent: 0x7c06efa44720: ver 3 0 (tinfo 0x7c06efa0dd20)
+11-01 04:55:14.990  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:15.011  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:15.020  4273  4289 W UiDevice: Skipping null root node for window: AccessibilityWindowInfo[title=Downloads, id=33, type=TYPE_APPLICATION, layer=1, bounds=Rect(0, 0 - 1440, 3120), focused=false, active=false, pictureInPicture=false, hasParent=false, isAnchored=false, hasChildren=false]
+11-01 04:55:15.029  4273  4289 W ByMatcher: Node returned null child: android.view.accessibility.AccessibilityNodeInfo@80006cd8; boundsInParent: Rect(0, 0 - 1440, 3120); boundsInScreen: Rect(0, 0 - 1440, 3120); packageName: com.twtrubiks.thumblinks; className: android.widget.FrameLayout; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: true; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-01 04:55:15.029  4273  4289 W ByMatcher: Skipping null child (0 of 2)
+11-01 04:55:15.029  4273  4289 W ByMatcher: Skipping null child (1 of 2)
+11-01 04:55:15.030  4273  4289 W ByMatcher: Node returned null child: android.view.accessibility.AccessibilityNodeInfo@80006cd8; boundsInParent: Rect(0, 0 - 1440, 3120); boundsInScreen: Rect(0, 0 - 1440, 3120); packageName: com.twtrubiks.thumblinks; className: android.widget.FrameLayout; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: true; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-01 04:55:15.030  4273  4289 W ByMatcher: Skipping null child (0 of 2)
+11-01 04:55:15.030  4273  4289 W ByMatcher: Skipping null child (1 of 2)
+11-01 04:55:15.065  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:15.175  2100  2336 I chatty  : uid=10015(com.android.systemui) RenderThread identical 2 lines
+11-01 04:55:15.183  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:15.337  4273  4357 D ServiceAllocator: org.mozilla.gecko.process.GeckoChildProcessServices$gpu updateBindings: FOREGROUND priority, 0 importance, 4404 pid, 2 successful binds, 0 failed binds, 0 successful unbinds
+11-01 04:55:15.607  1959  2070 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@d363f42)
+11-01 04:55:15.607  1959  1973 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@d363f42)
+11-01 04:55:16.202  4273  4289 D UiDevice: Taking screenshot (scale=0.500000, quality=90) and storing at /storage/emulated/0/Android/data/com.twtrubiks.thumblinks/files/screenshots/system-05-import-confirm.png.
+11-01 04:55:16.204  1567  1608 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 17973248
+11-01 04:55:16.293  4273  4289 D UiDevice: Retrieving node with selector: BySelector [TEXT='\Q匯入\E'].
+11-01 04:55:16.294  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:55:16.299  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:55:16.300  4273  4289 D UiObject2: Clicking on (1024, 1687).
+11-01 04:55:16.301  4273  4289 W UiObject2: Clicking on non-clickable object: android.view.accessibility.AccessibilityNodeInfo@1024e; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(975, 1650 - 1074, 1724); packageName: com.twtrubiks.thumblinks; className: android.widget.TextView; text: 匯入; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: true; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SET_SELECTION - null, AccessibilityAction: ACTION_NEXT_AT_MOVEMENT_GRANULARITY - null, AccessibilityAction: ACTION_PREVIOUS_AT_MOVEMENT_GRANULARITY - null]
+11-01 04:55:16.342  4273  4289 D UiDevice: Retrieving node with selector: BySelector [TEXT='\Q加入 1 筆\E'].
+11-01 04:55:16.342  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:55:16.447  4273  4311 D EGL_emulation: eglMakeCurrent: 0x7c06efa409a0: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:16.452  4273  4311 D OpenGLRenderer: endAllActiveAnimators on 0x7c06e0ba3e00 (UnprojectedRipple) with handle 0x7c06efa0d180
+11-01 04:55:16.554  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:16.556  4273  4311 D EGL_emulation: eglMakeCurrent: 0x7c06efa409a0: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:16.599  4273  4289 W UiDevice: Skipping null root node for window: AccessibilityWindowInfo[title=, id=34, type=TYPE_APPLICATION, layer=0, bounds=Rect(118, 1069 - 1098, 1743), focused=true, active=true, pictureInPicture=false, hasParent=false, isAnchored=false, hasChildren=false]
+11-01 04:55:16.606  4273  4289 W ByMatcher: Node returned null child: android.view.accessibility.AccessibilityNodeInfo@80006ce0; boundsInParent: Rect(0, 0 - 980, 674); boundsInScreen: Rect(230, 1181 - 1210, 1855); packageName: com.twtrubiks.thumblinks; className: android.widget.FrameLayout; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: true; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-01 04:55:16.606  4273  4289 W ByMatcher: Skipping null child (0 of 1)
+11-01 04:55:16.607  4273  4289 W ByMatcher: Node returned null child: android.view.accessibility.AccessibilityNodeInfo@80006ce0; boundsInParent: Rect(0, 0 - 980, 674); boundsInScreen: Rect(230, 1181 - 1210, 1855); packageName: com.twtrubiks.thumblinks; className: android.widget.FrameLayout; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: true; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-01 04:55:16.607  4273  4289 W ByMatcher: Skipping null child (0 of 1)
+11-01 04:55:16.608  1959  2070 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@e1a11bc)
+11-01 04:55:16.611  1959  1973 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@e1a11bc)
+11-01 04:55:16.654  1913  2343 W SurfaceFlinger: Attempting to set client state on removed layer: com.twtrubiks.thumblinks/com.twtrubiks.thumblinks.MainActivity#1
+11-01 04:55:16.654  1913  2343 W SurfaceFlinger: Attempting to destroy on removed layer: com.twtrubiks.thumblinks/com.twtrubiks.thumblinks.MainActivity#1
+11-01 04:55:16.657  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:16.692  1567  1608 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 606208
+11-01 04:55:16.704  1913  2586 W SurfaceFlinger: Attempting to set client state on removed layer: Dim Layer for - Task=7#0
+11-01 04:55:16.704  1913  2586 W SurfaceFlinger: Attempting to destroy on removed layer: Dim Layer for - Task=7#0
+11-01 04:55:16.722  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:16.754  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:16.827  4273  4289 D UiDevice: Node not found with selector: BySelector [TEXT='\Q加入 1 筆\E'].
+11-01 04:55:16.929  4273  4289 D UiDevice: Retrieving node with selector: BySelector [TEXT='\Q加入 1 筆\E'].
+11-01 04:55:16.929  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:55:16.943  4273  4289 D UiDevice: Retrieving node with selector: BySelector [RES='\Qlink_list\E'].
+11-01 04:55:16.943  4273  4289 W QueryController: Could not detect idle state.
+11-01 04:55:17.611  1959  2070 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@7548da8)
+11-01 04:55:17.611  1959  1973 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@7548da8)
+11-01 04:55:17.953  4273  4289 D UiDevice: Taking screenshot (scale=0.500000, quality=90) and storing at /storage/emulated/0/Android/data/com.twtrubiks.thumblinks/files/screenshots/system-06-imported.png.
+11-01 04:55:17.954  1567  1608 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 17973248
+11-01 04:55:18.033  1959  2079 E TaskPersister: File error accessing recents directory (directory doesn't exist?).
+11-01 04:55:18.041  4273  4289 I TestRunner: finished: photoPickerExportAndImportZip(com.twtrubiks.thumblinks.SystemUiTest)
+11-01 04:55:18.042  4273  4289 I MonitoringInstr: Unstopped activity count: 1
+11-01 04:55:18.043  4273  4273 I MonitoringInstr: Finishing activity: com.twtrubiks.thumblinks.MainActivity@2b161ad
+11-01 04:55:18.045  4273  4273 D LifecycleMonitor: Lifecycle status change: com.twtrubiks.thumblinks.MainActivity@2b161ad in: PAUSED
+11-01 04:55:18.087  1567  1608 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 17973248
+11-01 04:55:18.092  1567  1608 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 17973248
+11-01 04:55:18.093  4273  4289 I MonitoringInstr: Unstopped activity count: 1
+11-01 04:55:18.098  1567  1608 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 17973248
+11-01 04:55:18.127  2632  2711 D EGL_emulation: eglMakeCurrent: 0x7c06e0ca02a0: ver 3 0 (tinfo 0x7c06e0d44280)
+11-01 04:55:18.144  4273  4289 I MonitoringInstr: Unstopped activity count: 1
+11-01 04:55:18.160  1567  1608 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 17973248
+11-01 04:55:18.174  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:18.188  2632  3126 D         : HostConnection::get() New Host Connection established 0x7c06efa40320, tid 3126
+11-01 04:55:18.194  4273  4289 I MonitoringInstr: Unstopped activity count: 1
+11-01 04:55:18.203  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:18.244  4273  4289 I MonitoringInstr: Unstopped activity count: 1
+11-01 04:55:18.295  4273  4289 I MonitoringInstr: Unstopped activity count: 1
+11-01 04:55:18.302  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:18.309  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:18.348  4273  4289 I MonitoringInstr: Unstopped activity count: 1
+11-01 04:55:18.358  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:18.398  4273  4289 I MonitoringInstr: Unstopped activity count: 1
+11-01 04:55:18.434  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:18.451  4273  4289 I MonitoringInstr: Unstopped activity count: 1
+11-01 04:55:18.483  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:18.505  4273  4289 I MonitoringInstr: Unstopped activity count: 1
+11-01 04:55:18.545  2100  2336 D EGL_emulation: eglMakeCurrent: 0x7c06efa37f40: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:18.555  4273  4289 I MonitoringInstr: Unstopped activity count: 1
+11-01 04:55:18.605  4273  4289 I MonitoringInstr: Unstopped activity count: 1
+11-01 04:55:18.614  1959  2070 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@d4e86a2)
+11-01 04:55:18.614  1959  1973 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@d4e86a2)
+11-01 04:55:18.656  4273  4289 I MonitoringInstr: Unstopped activity count: 1
+11-01 04:55:18.693  4273  4311 D EGL_emulation: eglMakeCurrent: 0x7c06efa409a0: ver 3 0 (tinfo 0x7c06efa0dfc0)
+11-01 04:55:18.708  4273  4289 I MonitoringInstr: Unstopped activity count: 1
+11-01 04:55:18.731  1959  4167 I ConfigStore: android::hardware::configstore::V1_0::ISurfaceFlingerConfigs::hasWideColorDisplay retrieved: 0
+11-01 04:55:18.731  1959  4167 I ConfigStore: android::hardware::configstore::V1_0::ISurfaceFlingerConfigs::hasHDRDisplay retrieved: 0
+11-01 04:55:18.731  1959  4167 I OpenGLRenderer: Initialized EGL, version 1.4
+11-01 04:55:18.731  1959  4167 D OpenGLRenderer: Swap behavior 1
+11-01 04:55:18.760  4273  4289 I MonitoringInstr: Unstopped activity count: 1
+11-01 04:55:18.761  4273  4273 D LifecycleMonitor: Lifecycle status change: com.twtrubiks.thumblinks.MainActivity@2b161ad in: STOPPED
+11-01 04:55:18.768  4273  4273 D LifecycleMonitor: Lifecycle status change: com.twtrubiks.thumblinks.MainActivity@2b161ad in: DESTROYED
+11-01 04:55:18.777  4273  4273 D GeckoRuntime: Lifecycle: onPause
+11-01 04:55:18.777  4273  4273 D GeckoNetworkManager: Incoming event stop for state OnWithListeners -> OffWithListeners
+11-01 04:55:18.781  1959  2056 D ConnectivityService: releasing NetworkRequest [ TRACK_DEFAULT id=15, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Unwanted:  Uid: 10067] ] (release request)
+11-01 04:55:18.794  1959  4167 D EGL_emulation: eglCreateContext: 0x7c06f61f3fa0: maj 3 min 0 rcv 3
+11-01 04:55:18.795  1959  4167 D EGL_emulation: eglMakeCurrent: 0x7c06f61f3fa0: ver 3 0 (tinfo 0x7c06ec69e2a0)
+11-01 04:55:18.812  4273  4289 I TestRunner: run finished: 1 tests, 0 failed, 0 ignored
+11-01 04:55:18.815  1959  2310 W WindowManager: removeWindowToken: Attempted to remove non-existing token: android.os.Binder@a40b9df
+11-01 04:55:18.816  1959  1959 V SettingsProvider: Notifying for 0: content://settings/secure/accessibility_enabled
+11-01 04:55:18.824  1959  4247 I ActivityManager: Force stopping com.twtrubiks.thumblinks appid=10067 user=0: finished inst
+11-01 04:55:18.824  1959  4247 I ActivityManager: Killing 4324:com.twtrubiks.thumblinks:crashhelper_disable_art_image_/u0a67 (adj 100): stop com.twtrubiks.thumblinks
+11-01 04:55:18.824  1959  4247 W ActivityManager: Scheduling restart of crashed service com.twtrubiks.thumblinks/org.mozilla.gecko.crashhelper.CrashHelper in 1000ms
+11-01 04:55:18.834  1959  1977 W libprocessgroup: kill(-4324, 9) failed: No such process
+11-01 04:55:18.836  1959  4247 I ActivityManager: Killing 4404:com.twtrubiks.thumblinks:gpu_disable_art_image_/u0a67 (adj 0): stop com.twtrubiks.thumblinks
+11-01 04:55:18.842  1959  4247 W ActivityManager: Scheduling restart of crashed service com.twtrubiks.thumblinks/org.mozilla.gecko.process.GeckoChildProcessServices$gpu in 10982ms
+11-01 04:55:18.843  1959  4247 I ActivityManager: Killing 4273:com.twtrubiks.thumblinks/u0a67 (adj 0): stop com.twtrubiks.thumblinks
+11-01 04:55:18.856  1959  4491 W Binder  : Outgoing transactions from this process must be FLAG_ONEWAY
+11-01 04:55:18.856  1959  4491 W Binder  : java.lang.Throwable
+11-01 04:55:18.856  1959  4491 W Binder  : 	at android.os.BinderProxy.transact(Binder.java:1114)
+11-01 04:55:18.856  1959  4491 W Binder  : 	at android.app.IInstrumentationWatcher$Stub$Proxy.instrumentationFinished(IInstrumentationWatcher.java:164)
+11-01 04:55:18.856  1959  4491 W Binder  : 	at com.android.server.am.InstrumentationReporter$MyThread.run(InstrumentationReporter.java:86)
+11-01 04:55:18.857  4224  4224 D AndroidRuntime: Shutting down VM
+11-01 04:55:18.876  1959  1977 W libprocessgroup: kill(-4324, 9) failed: No such process
+11-01 04:55:18.882  1914  1914 I Zygote  : Process 4324 exited due to signal (9)
+11-01 04:55:18.882  1914  1914 I Zygote  : Process 4404 exited due to signal (9)
+11-01 04:55:18.921  1959  1977 W libprocessgroup: kill(-4324, 9) failed: No such process
+11-01 04:55:18.921  1959  1977 I libprocessgroup: Successfully killed process cgroup uid 10067 pid 4324 in 87ms
+11-01 04:55:18.922  1959  1977 W libprocessgroup: kill(-4404, 9) failed: No such process
+11-01 04:55:18.922  1959  1977 I libprocessgroup: Successfully killed process cgroup uid 10067 pid 4404 in 0ms
+11-01 04:55:18.922  1959  1977 W libprocessgroup: kill(-4273, 9) failed: No such process
+11-01 04:55:18.944  1914  1914 I Zygote  : Process 4273 exited due to signal (9)
+11-01 04:55:18.946  1959  1982 W ActivityManager: setHasOverlayUi called on unknown pid: 4273
+11-01 04:55:18.961  1959  1977 W libprocessgroup: kill(-4273, 9) failed: No such process
+11-01 04:55:18.961  1959  1977 I libprocessgroup: Successfully killed process cgroup uid 10067 pid 4273 in 39ms
+11-01 04:55:19.132  1959  1970 I ActivityManager: Force stopping com.twtrubiks.thumblinks appid=10067 user=0: from pid 4494
+11-01 04:55:19.138  2178  2178 D CarrierSvcBindHelper: No carrier app for: 0
