@@ -64,6 +64,13 @@ class PageMetaTest {
         assertEquals("https://example.com/static/og.jpg", relativeBase.imageUrl)
     }
 
+    /** og:image 只有空白（有些網站的樣板會留空）：往下一個找，不是當作沒有縮圖。 */
+    @Test
+    fun blankImageFallsThroughToTheNext() {
+        val meta = parse("""<meta property="og:image" content="  "><meta name="twitter:image" content="/t.jpg">""")
+        assertEquals("https://example.com/t.jpg", meta.imageUrl)
+    }
+
     /** 只收 http／https；前面的不能用就往下找。 */
     @Test
     fun onlyHttpImages() {
@@ -104,6 +111,14 @@ class PageMetaTest {
     @Test
     fun big5FromContentType() {
         val html = """<html><head><title>中文標題</title></head><body>正體中文</body></html>"""
+        val meta = PageMeta.parse(html.toByteArray(charset("Big5")), "text/html; charset=Big5", "https://example.com.tw/")
+        assertEquals("中文標題", meta.title)
+    }
+
+    /** 規格的順序：Content-Type 的 charset 先，`<meta charset>` 後。兩個不一樣時（網站設錯）照 Content-Type。 */
+    @Test
+    fun contentTypeCharsetWinsOverMetaCharset() {
+        val html = """<html><head><meta charset="utf-8"><title>中文標題</title></head></html>"""
         val meta = PageMeta.parse(html.toByteArray(charset("Big5")), "text/html; charset=Big5", "https://example.com.tw/")
         assertEquals("中文標題", meta.title)
     }

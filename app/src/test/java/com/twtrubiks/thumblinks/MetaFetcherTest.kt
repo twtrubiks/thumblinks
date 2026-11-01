@@ -42,6 +42,18 @@ class MetaFetcherTest {
         assertEquals("zh-TW,zh;q=0.9,en;q=0.8", request.headers["Accept-Language"])
     }
 
+    /**
+     * `<head>` 很長（內嵌的 script、style 動輒幾百 KB），og:image 在 200 KB 之後：一次 read 只拿到一小塊（8 KB），
+     * 要一直讀到 1 MB 或讀完。只讀第一塊的話很多網站會抓不到縮圖，其他測試的 og:image 都在最前面，抓不出來。
+     */
+    @Test
+    fun findsOgImageAfterALongHead() {
+        val script = "<script>" + "x".repeat(200 * 1024) + "</script>"
+        server.enqueue(html("""$script<meta property="og:image" content="/og.jpg"><title>很長的 head</title>"""))
+
+        assertEquals(Fetched.Page(PageMeta(server.url("/og.jpg").toString(), "很長的 head")), fetch("/long-head"))
+    }
+
     /** 跟著轉址，相對網址以轉址後的網址為準。 */
     @Test
     fun followsRedirectsAndResolvesAgainstFinalUrl() {

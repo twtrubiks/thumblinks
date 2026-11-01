@@ -188,6 +188,73 @@ class ImportTest {
         assertFalse(a.favorite)
     }
 
+    /**
+     * 原本的網址就有 `%28`、`%29`（不是我們編的）：Markdown 分不出來，匯入時解成「(」「)」。
+     * 手機上已經有原本那筆的話，還是要算「已經在清單裡」，不能同一個網頁多一筆（變異測試找到的 bug）。
+     */
+    @Test
+    fun markdownFindsPercentUrlsAlreadyInTheList() {
+        link("https://e.com/a%28b%29", "原本就有 %28", "2026-10-01T08:00:00+08:00")
+        link("https://e.com/c%20d", "原本就有 %20", "2026-10-02T08:00:00+08:00")
+        link("https://e.com/(plain)", "真的括號", "2026-10-03T08:00:00+08:00")
+        from.all().forEach { to.add(it.url, it.title, it.thumbnail) }
+
+        assertEquals(ImportResult(added = 0, duplicates = 3, broken = 0), import(exported(ExportFormat.MARKDOWN)))
+        assertEquals(3, to.all().size)
+    }
+
+    /** 確認框上的數字（[Import.plan]）本身要對：真的加的時候（[Import.run]）會再擋一次，只看結果的話 plan 錯了也看不出來。 */
+    @Test
+    fun planNumbersAreWhatTheDialogShows() {
+        to.add("https://exists.example", null, Thumbnail.Remote("https://exists.example/og.jpg"))
+        val json = """
+            {"links": [
+              {"url": "https://ok.example", "thumbnail": "https://ok.example/og.jpg"},
+              {"url": "https://ok.example", "thumbnail": "https://ok.example/og.jpg"},
+              {"url": "https://exists.example", "thumbnail": "https://exists.example/og.jpg"},
+              {"url": "ftp://bad.example", "thumbnail": "https://bad.example/og.jpg"},
+              {"url": "https://missing-image.example", "thumbnail": "images/missing.jpg"},
+              {"url": "https://no-thumb.example"}
+            ]}
+        """.trimIndent()
+        Import.read(file(json)).use { f ->
+            val plan = Import.plan(f) { to.findByUrl(it) != null }
+            assertEquals(6, plan.total)
+            assertEquals(listOf("https://ok.example"), plan.toAdd.map { it.url })
+            assertEquals(2, plan.duplicates)
+            assertEquals(3, plan.broken)
+        }
+    }
+
+    /** 每一筆都讀不出來：告訴使用者「N 筆讀不出來」，不是「找不到連結」。 */
+    @Test
+    fun allBrokenIsAPlanNotAnError() {
+        Import.read(file("""{"links": [{"url": "https://a.example"}, {"url": "https://b.example"}]}""")).use { f ->
+            val plan = Import.plan(f) { false }
+            assertEquals(listOf(2, 0, 0, 2), listOf(plan.total, plan.toAdd.size, plan.duplicates, plan.broken))
+        }
+    }
+
+    /** 大小上限：剛好上限讀得了，多 1 byte 就不讀（防止選錯一個超大的檔案把記憶體吃光）。 */
+    @Test
+    fun sizeLimitBoundary() {
+        val limit = 1000L
+        assertEquals(1000, ByteArray(1000).inputStream().readAtMost(limit)?.size)
+        assertNull(ByteArray(1001).inputStream().readAtMost(limit))
+        // 分好幾次 read 才讀完的（網路、zip）也要算總數
+        val slow = object : java.io.InputStream() {
+            var left = 1001
+            override fun read() = if (left-- > 0) 0 else -1
+            override fun read(b: ByteArray, off: Int, len: Int): Int {
+                if (left <= 0) return -1
+                val n = minOf(len, 100, left)
+                left -= n
+                return n
+            }
+        }
+        assertNull(slow.readAtMost(limit))
+    }
+
     @Test
     fun notAThumbLinksFile() {
         assertThrows(ImportException::class.java) { Import.read(file("隨便一段文字\nhttps://a.example\n")) }

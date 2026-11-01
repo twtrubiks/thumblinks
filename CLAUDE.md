@@ -145,7 +145,9 @@ JSON（UTF-8、縮排兩格、中文不跳脫；用 kotlinx.serialization 的 `@
 - 讀不出來（跳過、其他照加）：網址不是 `http(s)://`、少了網址或縮圖、縮圖指到 zip 裡沒有的圖、圖解不開
 - JSON：時間、愛心照檔案；少了時間（或寫錯）用匯入的時間，少了愛心當作沒有；多的欄位不理
 - Markdown：一行 `[![替代文字](縮圖)](網址)`，其他的行不理。替代文字去掉 `\` 跳脫，跟網址一樣就是沒有標題；
-  網址只解 `Export.linkTarget` 編的那五個（`%20`、`%28`、`%29`、`%3C`、`%3E`）。沒有時間與愛心：用匯入的時間、沒有愛心
+  網址只解 `Export.linkTarget` 編的那五個（`%20`、`%28`、`%29`、`%3C`、`%3E`）。沒有時間與愛心：用匯入的時間、沒有愛心。
+  原本的網址就有這五種 `%xx` 的話分不出來（會解成字元），所以查重複時解碼前的寫法（`ImportedLink.writtenUrl`）也查，
+  不然匯回同一支手機會多一筆。匯出時不能把 `%` 也編掉：Markdown 的連結點下去，瀏覽器會照字送出 `%2528`，打開的不是原本那一頁
 - 加的順序（清單「新的在上」用加入的順序）：照檔案裡的時間從舊到新加，匯出時用的是什麼排序都一樣；
   時間一樣或沒有時間的，檔案裡下面的先加（匯出預設新的在上，加完順序跟原本一樣）
 - zip 裡的圖存進 `thumbs/<新的 uuid>.jpg`（`ThumbPrep.saveImported`）：已經是整理好的（JPEG、長邊 1024 以內、不用轉）原樣存，
@@ -295,6 +297,18 @@ JSON（UTF-8、縮排兩格、中文不跳脫；用 kotlinx.serialization 的 `@
 `assembleRelease` 會跑 R8，可以先抓到缺 class 之類的錯誤；執行時才會出現的問題要看 CI 的 release 冒煙測試。
 和 Android 無關的邏輯（取網址、解析 meta、匯出格式）寫成純 Kotlin，放在 JVM 單元測試裡測，幾秒就有結果。
 CI 錄影前也會跑 `testDebugUnitTest`，沒過就不會錄影（失敗原因在 `gradle-build.txt`）。
+
+## 變異測試（PIT，手動跑）
+
+故意把程式改錯一點（`<` 換 `<=`、拿掉一個判斷…）看 JVM 測試抓不抓得到，找測試沒保護到的地方。不進 Gradle、不進 CI，要的時候在 VM 手動跑：
+PIT（`pitest-command-line`、`pitest-entry`、`pitest`，加上 `commons-text`、`commons-lang3`）從 Maven Central 下載到 `/tmp`，
+classpath 用 init script 印出 `testDebugUnitTest` 的 `classpath.files`，把 `runtime_app_classes_jar/.../classes.jar` 換成
+`app/build/intermediates/built_in_kotlinc/debug/compileDebugKotlin/classes`（PIT 只改目錄裡的 class，也用 `--mutableCodePaths` 指它）。
+- 只挑純 Kotlin 的規則（`--targetClasses` 列 `WebUrls*`、`PageMeta*`、`Import*`…）；`PageMeta.parse` 在 companion 裡，不要排除 `$Companion`
+- OkHttp 的 Android 版一碰 `android.util.Log` 就丟例外（mockable android.jar），在 classpath 最前面放一個什麼都不做的 `Log` 替身
+- 看結果時先濾掉雜訊：Kotlin 自動產生的 null 檢查（描述有 `Intrinsics`）、多餘的 `?.` 判斷、`close`／`flush`、
+  `object` 裡 `Json { }` 的設定（靜態初始化，PIT 改了也不會生效）
+- 活下來的不一定是 bug：寫成一次性的測試對真的程式跑一次才知道；確定危險的才補成正式的測試
 
 ## 錄影測試：DemoRecordingTest
 
