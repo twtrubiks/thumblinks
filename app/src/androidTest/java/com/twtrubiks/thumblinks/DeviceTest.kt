@@ -121,7 +121,7 @@ class DeviceTest {
 
     /**
      * 手機拍的 HEIC：轉成 JPEG；方向跟手機拍的一樣記在 HEIF 的 irot 裡（不是 EXIF），像素是橫的。
-     * `assets/portrait.heic` 取自 treesay（pillow-heif 產生）：400x300、上半紅下半藍、要順時針轉 90 度才正。
+     * `assets/portrait.heic` 是用 pillow-heif 產生的：400x300、上半紅下半藍、要順時針轉 90 度才正。
      */
     @Test
     fun heicPhotoBecomesAnUprightJpeg() {

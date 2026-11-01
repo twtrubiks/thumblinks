@@ -74,7 +74,7 @@ private val StackSaver = listSaver<List<Route>, String>(
 )
 
 /**
- * 整個 App。導覽照 treesay 的 `TreeSayApp`：sealed interface 的 Route ＋ rememberSaveable 的 stack，不另外引入 Navigation 套件。
+ * 整個 App。導覽是 sealed interface 的 Route ＋ rememberSaveable 的 stack，不另外引入 Navigation 套件。
  * [sharedText]：別的 App 分享進來的文字（[MainActivity] 接住的），收到就開一頁新增，處理完呼叫 [onSharedTextTaken]。
  */
 @OptIn(ExperimentalComposeUiApi::class)
