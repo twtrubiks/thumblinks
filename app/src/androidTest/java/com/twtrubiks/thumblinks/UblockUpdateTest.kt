@@ -24,11 +24,11 @@ import java.util.concurrent.TimeUnit
  * 1. [downloadsTheNewVersion]：換成 AMO 上的前一版、把上次檢查的時間改成 0，走 App 打開時同一條路（[Ublock.restart]）。
  *    uBO 正在用的時候不換（它有聽 `runtime.onUpdateAvailable`），GeckoView 回 `ERROR_POSTPONED`：新版下載好、等引擎下次啟動
  * 2. [appliesItAfterRestart]：重新打開 App，uBO 換成新版；瀏覽器右上角的選單顯示新版與上次檢查的時間
- * 舊版的版本號記在測試 APK 自己的檔案裡，交給第二次。
+ * 舊版的版本號記在 App 的 `files/` 裡交給第二次（測試跑在 App 的行程，測試 APK 自己的資料夾沒有權限寫）。
  */
 @RunWith(AndroidJUnit4::class)
 class UblockUpdateTest : UiTest() {
-    private val oldVersionFile = File(instrumentation.context.filesDir, "ublock-old-version")
+    private val oldVersionFile = File(context.filesDir, "ublock-old-version")
 
     // 瀏覽器開在畫面上時 App 被砍掉，模擬器（軟體繪圖）曾經整個當掉：測完先回桌面
     @After
@@ -42,12 +42,12 @@ class UblockUpdateTest : UiTest() {
         clearLinks()
         launchApp()
         waitFor(By.text("還沒有連結"), timeout = 30_000)
-        val ublock = container.ublock
+        val ublock = onMain { container.ublock }
         // 清單出現 2 秒後在背景準備 uBO（BrowserTest 已經裝好了，這裡只是找到它）
         val latest = checkNotNull(poll(120_000) { ublock.version }) { "uBO 沒有裝好" }
         val (old, oldUrl) = previousOnAmo(latest)
 
-        val controller = container.gecko.webExtensionController
+        val controller = onMain { container.gecko.webExtensionController }
         await { controller.uninstall(checkNotNull(ublock.extension)) }
         assertEquals(old, await { controller.install(oldUrl) }?.metaData?.version)
         oldVersionFile.writeText(old)
@@ -67,7 +67,7 @@ class UblockUpdateTest : UiTest() {
         clearLinks()
         launchApp()
         waitFor(By.text("還沒有連結"), timeout = 30_000)
-        val ublock = container.ublock
+        val ublock = onMain { container.ublock }
         val now = checkNotNull(poll(120_000) { ublock.version }) { "uBO 沒有裝好" }
         assertNotEquals("重新打開 App 之後 uBO 還是舊版", old, now)
         assertNull(ublock.pendingVersion)
@@ -91,6 +91,16 @@ class UblockUpdateTest : UiTest() {
         val index = versions.indexOfFirst { it.getString("version") == current }
         val previous = versions[if (index >= 0) index + 1 else 1]
         return previous.getString("version") to previous.getJSONObject("file").getString("url")
+    }
+
+    /**
+     * 在主執行緒拿 [block] 的結果。`container.ublock` 第一次拿的時候會建立 GeckoRuntime，只能在主執行緒
+     * （App 平常是清單出現 2 秒後才建立，測試可能比它早）。
+     */
+    private fun <T> onMain(block: () -> T): T {
+        var value: Result<T>? = null
+        instrumentation.runOnMainSync { value = runCatching(block) }
+        return checkNotNull(value).getOrThrow()
     }
 
     /** 在主執行緒叫 GeckoView 做 [action]，等它的結果（GeckoResult 的 callback 回到主執行緒）。 */

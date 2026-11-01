@@ -335,7 +335,7 @@ uBO 自己更新在 `UblockUpdateTest`，要跨兩次 App 啟動（新版要等�
 分兩次 `am instrument` 各跑一個方法（每次都是新的行程，等於重新打開 App），輸出在 `ublock-update-test.txt`：
 1. `downloadsTheNewVersion`：從 AMO 的 API（`/api/v5/addons/addon/ublock-origin/versions/`，新的在前面）找前一版，
    移除現在的、裝那一版（`WebExtensionController` 直接做，`await` 等 GeckoResult）→ `Ublock.CHECKED_AT` 改成 0 →
-   `Ublock.restart()`（跟 App 打開時同一條路）→ logcat 出現「下次打開 App 時換上」。前一版的版本號寫在測試 APK 自己的檔案，交給第二次
+   `Ublock.restart()`（跟 App 打開時同一條路）→ logcat 出現「下次打開 App 時換上」。前一版的版本號寫在 App 的 `files/` 交給第二次（測試跑在 App 的行程，寫不進測試 APK 自己的資料夾）
 2. `appliesItAfterRestart`：重新打開 App，uBO 不是前一版了，右上角選單顯示新版與上次檢查的時間（`browser-07-ublock-updated.png`）
 
 ## release 冒煙測試
