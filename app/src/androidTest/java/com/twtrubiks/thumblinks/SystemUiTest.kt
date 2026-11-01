@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.Paint
 import android.os.Build
 import android.os.ParcelFileDescriptor
 import android.os.SystemClock
@@ -125,7 +126,11 @@ class SystemUiTest : UiTest() {
     /** 放一張照片進相簿。Android 10 以後 App 可以直接寫進 MediaStore；Android 9 要權限，交給 shell 複製再掃描。 */
     private fun putPhotoInGallery() {
         val bitmap = Bitmap.createBitmap(1600, 1200, Bitmap.Config.ARGB_8888)
-        Canvas(bitmap).drawColor(Color.rgb(140, 178, 217))
+        // 不要整片同一個顏色：那種圖重壓一次 JPEG 會剛好跟原本一模一樣，匯入時有沒有原樣存就看不出來
+        Canvas(bitmap).apply {
+            drawColor(Color.rgb(140, 178, 217))
+            drawRect(400f, 300f, 1200f, 900f, Paint().apply { color = Color.rgb(220, 60, 40) })
+        }
         val bytes = ByteArrayOutputStream().also { bitmap.compress(Bitmap.CompressFormat.JPEG, 85, it) }.toByteArray()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             val resolver = context.contentResolver
