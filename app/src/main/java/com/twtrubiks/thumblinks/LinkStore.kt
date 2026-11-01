@@ -63,24 +63,35 @@ class LinkStore(
     /** 網址照字串比對，不做正規化。 */
     fun findByUrl(url: String): Link? = sql.query("SELECT * FROM links WHERE url = ?", url).firstOrNull()?.let(::toLink)
 
-    /** 標題前後的空白去掉，剩下空字串就當作沒有標題。同一個網址已經在清單裡的話丟 [DuplicateLinkException]。 */
-    fun add(url: String, title: String?, thumbnail: Thumbnail): Link = sql.transaction {
+    /**
+     * 標題前後的空白去掉，剩下空字串就當作沒有標題。同一個網址已經在清單裡的話丟 [DuplicateLinkException]。
+     * [createdAt]、[favorite] 是匯入時照檔案裡的；新增的用現在、沒有愛心。
+     */
+    fun add(
+        url: String,
+        title: String?,
+        thumbnail: Thumbnail,
+        createdAt: OffsetDateTime? = null,
+        favorite: Boolean = false,
+    ): Link = sql.transaction {
         findByUrl(url)?.let { throw DuplicateLinkException(it) }
         val link = Link(
             id = UUID.randomUUID().toString(),
             url = url,
             title = title?.trim()?.ifEmpty { null },
             thumbnail = thumbnail,
-            createdAt = now().truncatedTo(ChronoUnit.SECONDS),
+            createdAt = (createdAt ?: now()).truncatedTo(ChronoUnit.SECONDS),
+            favorite = favorite,
         )
         sql.execute(
-            "INSERT INTO links (id, url, title, thumbnail_url, thumbnail_file, created_at) VALUES (?, ?, ?, ?, ?, ?)",
+            "INSERT INTO links (id, url, title, thumbnail_url, thumbnail_file, created_at, favorite) VALUES (?, ?, ?, ?, ?, ?, ?)",
             link.id,
             link.url,
             link.title,
             (thumbnail as? Thumbnail.Remote)?.url,
             (thumbnail as? Thumbnail.Uploaded)?.fileName,
             link.createdAt.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME),
+            if (favorite) 1 else 0,
         )
         link
     }

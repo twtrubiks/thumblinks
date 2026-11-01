@@ -37,6 +37,23 @@ object ThumbPrep {
         return name
     }
 
+    /**
+     * 匯入的 zip 裡的圖：已經是整理好的（JPEG、長邊 [MAX_EDGE] 以內、不用轉）就原樣存，
+     * 不然每搬一次手機就重新壓一次 JPEG、越來越糊；其他的（別人做的 zip）照 [save] 整理。
+     */
+    fun saveImported(bytes: ByteArray, dir: File): String? {
+        val isJpeg = bytes.size > 2 && bytes[0] == 0xFF.toByte() && bytes[1] == 0xD8.toByte()
+        val bounds = BitmapFactory.Options().apply { inJustDecodeBounds = true }
+        BitmapFactory.decodeByteArray(bytes, 0, bytes.size, bounds)
+        val ready = isJpeg && bounds.outWidth in 1..MAX_EDGE && bounds.outHeight in 1..MAX_EDGE &&
+            orientation(bytes) == ExifInterface.ORIENTATION_NORMAL
+        if (!ready) return save(bytes, dir)
+        dir.mkdirs()
+        val name = "${UUID.randomUUID()}.jpg"
+        File(dir, name).writeBytes(bytes)
+        return name
+    }
+
     /** 解圖、縮到長邊 [MAX_EDGE] 以內、轉正。透明的地方鋪白底（JPEG 沒有透明，不鋪會變黑）。 */
     fun prepare(bytes: ByteArray): Bitmap? {
         val bounds = BitmapFactory.Options().apply { inJustDecodeBounds = true }

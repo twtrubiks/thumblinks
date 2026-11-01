@@ -1,7 +1,7 @@
 # ThumbLinks
 
 收集網址的 Android App：貼上網址就幫你抓縮圖（必填）和標題（選填），
-整份清單一次匯出成 Markdown 或 JSON。
+整份清單一次匯出成 Markdown 或 JSON，換手機時再匯入回來。
 
 ```markdown
 [![標題](https://example.com/og.jpg)](https://example.com/article)
@@ -9,6 +9,7 @@
 
 - 縮圖抓網頁的 `og:image` / `twitter:image`；抓不到時可以自己貼圖片網址，或從手機上傳一張
 - 有上傳的圖時，匯出成 zip（`links.md` 或 `links.json` ＋ `images/`）
+- 匯入自己匯出的檔案：已經在清單裡的網址跳過；JSON 連加入的時間和愛心都接得回來
 - 內建會擋廣告的瀏覽器（GeckoView ＋ 從 Mozilla 附加元件網站安裝的 uBlock Origin），看到喜歡的網頁直接「加到清單」
 - Android 9 以上（arm64 手機），Kotlin + Jetpack Compose
 

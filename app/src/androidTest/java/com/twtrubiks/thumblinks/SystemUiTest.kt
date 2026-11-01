@@ -25,7 +25,7 @@ import java.util.regex.Pattern
 import java.util.zip.ZipInputStream
 
 /**
- * 系統的畫面：照片挑選器、存檔的檔案畫面。這些不是 App 畫的，每個 Android 版本長得不一樣
+ * 系統的畫面：照片挑選器、存檔與開檔的檔案畫面。這些不是 App 畫的，每個 Android 版本長得不一樣
  * （Android 9、10 是檔案畫面，Android 11 以後是照片挑選器），只能在模擬器上點一次才知道接不接得上。
  * 不錄影（`record.sh` 在錄影之後、先清掉 App 資料再跑），截圖存成 `system-*.png`。
  */
@@ -39,10 +39,11 @@ class SystemUiTest : UiTest() {
 
     /**
      * 沒有縮圖的網頁 → 從系統的挑選器選一張相簿裡的照片 → 加入；
-     * 再匯出成 Markdown：有上傳的圖，存到 Download 的會是 zip，解開核對 `links.md` 與 `images/`。
+     * 再匯出成 Markdown：有上傳的圖，存到 Download 的會是 zip，解開核對 `links.md` 與 `images/`；
+     * 刪掉那一筆，清單空了 →「從檔案匯入」→ 系統的開檔畫面選那個 zip → 加回來，圖跟匯出的一模一樣。
      */
     @Test
-    fun photoPickerAndExportZip() {
+    fun photoPickerExportAndImportZip() {
         clearLinks()
         // 同名的檔案在的話，系統會存成「… (1).zip」
         val exportName = "thumblinks-${LocalDate.now()}.zip"
@@ -72,7 +73,8 @@ class SystemUiTest : UiTest() {
         assertEquals("1024x768", "${bounds.outWidth}x${bounds.outHeight}")
         assertEquals("image/jpeg", bounds.outMimeType)
 
-        // 匯出：選 Markdown，系統的存檔畫面存到 Download
+        // 匯出：右上角「更多」→ 匯出 → 選 Markdown，系統的存檔畫面存到 Download
+        find(By.res("more_button")).click()
         find(By.text("匯出")).click()
         find(By.text("Markdown")).click()
         openDownloads()
@@ -90,6 +92,34 @@ class SystemUiTest : UiTest() {
             entries.getValue("links.md").toString(Charsets.UTF_8),
         )
         assertArrayEquals(thumb.readBytes(), entries.getValue("images/${link.id}.jpg"))
+
+        // 刪掉那一筆（從畫面，清單才會跟著空）
+        find(By.text(FakeSite.PLAIN_TITLE)).longClick()
+        find(By.text("編輯")).click()
+        reveal(By.text("刪除這一筆")).click()
+        find(By.text("刪除")).click()
+        waitFor(By.text("還沒有連結"))
+        assertEquals(emptyList<Link>(), container.links.all())
+
+        // 匯入：空清單上的「從檔案匯入」→ 系統的開檔畫面 → Download 裡剛匯出的 zip → 確認
+        find(By.res("import_button")).click()
+        openDownloads()
+        find(By.text(exportName)).click()
+        waitFor(By.text("匯入 1 筆"), timeout = 20_000)
+        pause(1000)
+        screenshot("system-05-import-confirm")
+        find(By.text("匯入")).click()
+        waitFor(By.text("加入 1 筆"), timeout = 20_000)
+        backOnList()
+        pause(1000)
+        screenshot("system-06-imported")
+
+        val imported = container.links.all().single()
+        // Markdown 沒有時間：加入的時間是匯入的時候
+        assertEquals(listOf(link.url, link.title), listOf(imported.url, imported.title))
+        // 已經是整理好的 JPEG，原樣存回來，不會再壓一次
+        val importedThumb = File(container.thumbsDir, (imported.thumbnail as Thumbnail.Uploaded).fileName)
+        assertArrayEquals(entries.getValue("images/${link.id}.jpg"), importedThumb.readBytes())
     }
 
     /** 放一張照片進相簿。Android 10 以後 App 可以直接寫進 MediaStore；Android 9 要權限，交給 shell 複製再掃描。 */
