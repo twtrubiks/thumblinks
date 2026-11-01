@@ -23,3 +23,4 @@
 - 規格、架構、約定：[`CLAUDE.md`](CLAUDE.md)
 - 雲端環境設定：[`docs/cloud-setup.md`](docs/cloud-setup.md)
 - 發版金鑰：[`docs/release-key.md`](docs/release-key.md)
+- 之後可能會做：[`docs/ideas.md`](docs/ideas.md)
