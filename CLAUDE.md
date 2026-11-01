@@ -269,7 +269,7 @@ JSON（UTF-8、縮排兩格、中文不跳脫；用 kotlinx.serialization 的 `@
   - **還沒有發版金鑰**：第一次發版前，使用者要在自己的電腦照 `docs/release-key.md` 產生金鑰、設 Secrets、
     把憑證 SHA-256 填進 `release.yml` 的 `EXPECTED_CERT`，再新增 `release-version`。不要在 VM 裡產生金鑰
   - **使用者手機上的試用版**：使用者要求直接給 APK 試用，裝的是雲端 session 的 VM debug 金鑰簽的 release 版（arm64），
-    憑證 SHA-256 `9adf6eb0…4ea897`，最新是 `0.9-import`（versionCode 9）。要再給試用版時：
+    憑證 SHA-256 `9adf6eb0…4ea897`，最新是 `0.10-fixes`（versionCode 10）。要再給試用版時：
     用 `THUMBLINKS_VERSION_CODE`（比上一版大）、`THUMBLINKS_VERSION_NAME` 帶版本 build，
     先用 `apksigner verify --print-certs` 核對憑證跟上面一樣才給（一樣才能直接覆蓋安裝）；不一樣就先跟使用者講清楚只能移除重裝。
     這把金鑰跟正式版對不上：發第一版 Release 時提醒使用者先匯出（JSON 或 zip，帶愛心）、移除試用版、裝正式版後再匯入
