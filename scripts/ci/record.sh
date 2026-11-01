@@ -1,12 +1,11 @@
 #!/usr/bin/env bash
 # 在模擬器上先跑 DeviceTest（Android 9 的 SQLite、Bitmap 縮圖轉正，不錄影），再一邊錄影一邊跑 DemoRecordingTest，
 # 錄完清掉 App 資料跑 SystemUiTest（系統的照片挑選器、存檔的檔案畫面，不錄影），再覆蓋安裝 release 版做冒煙測試
-# （真的抓一次 https 網頁的縮圖、用內建瀏覽器打開它），最後換回 debug 版跑 BrowserTest（uBO 從 AMO 安裝、擋廣告；新視窗、錯誤頁）。
+# （真的抓一次 https 網頁的縮圖、用內建瀏覽器打開它），最後換回 debug 版跑 BrowserTest（uBO 從 AMO 安裝、擋廣告、自己更新；新視窗、錯誤頁）。
 # APK 按 CPU 拆開（GeckoView），模擬器裝 x86_64 那一份。
 # 輸出到 $1（預設 out/）：device-test.txt、demo.raw.mp4、instrument.txt、logcat.txt、system-ui-test.txt、
 # logcat-system-ui.txt、browser-test.txt、logcat-browser.txt、screenshots/，以及 release 版冒煙測試的 release-smoke.txt、logcat-release.txt、screenshots/release-*.png
 # 由 .github/workflows/record.yml 在 android-emulator-runner 裡呼叫，工作目錄是 repo 根目錄。
-# 寫法照 treesay 的 android/scripts/ci/record.sh
 set -uo pipefail
 
 OUT=${1:-out}

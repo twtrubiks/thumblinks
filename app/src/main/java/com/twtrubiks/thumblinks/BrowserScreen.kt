@@ -94,6 +94,9 @@ import org.mozilla.geckoview.GeckoView
 import org.mozilla.geckoview.GeckoSession.PromptDelegate
 import org.mozilla.geckoview.GeckoSession.PromptDelegate.ChoicePrompt
 import org.mozilla.geckoview.WebExtension
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 /**
  * 內建瀏覽器（GeckoView ＋ uBlock Origin），從清單點一筆或右上角的「瀏覽」打開，一頁就是一個分頁。
@@ -174,7 +177,7 @@ fun BrowserScreen(
                 IconButton(onClick = onClose) { Icon(painterResource(R.drawable.ic_close), contentDescription = "回清單") }
                 UrlBar(tab, autoFocus = initialUrl == null, modifier = Modifier.weight(1f))
                 UblockButton(ublock, ublock.actionFor(tab))
-                PageMenu(tab)
+                PageMenu(tab, ublock)
             }
             Box(Modifier.fillMaxWidth().height(2.dp)) {
                 if (tab.loading) LinearProgressIndicator(progress = { tab.progress / 100f }, modifier = Modifier.fillMaxSize())
@@ -367,7 +370,7 @@ private fun UblockButton(ublock: Ublock, action: WebExtension.Action?) {
 }
 
 @Composable
-private fun PageMenu(tab: BrowserTab) {
+private fun PageMenu(tab: BrowserTab, ublock: Ublock) {
     val context = LocalContext.current
     var open by remember { mutableStateOf(false) }
     Box {
@@ -393,9 +396,27 @@ private fun PageMenu(tab: BrowserTab) {
                     copyUrl(context, tab.url) { tab.message = it }
                 },
             )
+            // uBO 的版本與上次檢查更新的時間：看得到它有沒有自己更新（一天最多問一次 AMO）
+            HorizontalDivider()
+            DropdownMenuItem(
+                text = {
+                    Column {
+                        Text(ublock.version?.let { "uBlock Origin $it" } ?: "uBlock Origin 還沒裝好")
+                        Text(
+                            ublock.checkedAt.takeIf { it > 0 }?.let { "上次檢查更新：${CHECKED_AT_FORMAT.format(Instant.ofEpochMilli(it))}" }
+                                ?: "還沒檢查過更新",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                },
+                onClick = { open = false },
+            )
         }
     }
 }
+
+private val CHECKED_AT_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").withZone(ZoneId.systemDefault())
 
 /** 網頁長按連結或圖片時的選單。 */
 @Composable
