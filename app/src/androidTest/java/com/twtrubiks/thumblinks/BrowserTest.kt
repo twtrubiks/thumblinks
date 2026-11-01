@@ -1,20 +1,29 @@
 package com.twtrubiks.thumblinks
 
+import android.content.Context
 import android.graphics.Color
+import androidx.core.content.edit
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.By
 import androidx.test.uiautomator.StaleObjectException
 import kotlin.math.abs
+import org.json.JSONObject
 import org.junit.After
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Assert.fail
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mozilla.geckoview.GeckoResult
+import java.net.URL
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
 
 /**
  * 內建瀏覽器：uBlock Origin 從 AMO 安裝（要連外，CI 的模擬器連得到）、真的擋掉廣告、popup 打得開；
- * 網頁開的新視窗疊在同一個分頁上、`window.close()` 回到原本那頁；載不出來時有錯誤頁。
+ * 網頁開的新視窗疊在同一個分頁上、`window.close()` 回到原本那頁；載不出來時有錯誤頁；
+ * uBO 自己檢查更新、從舊版更新成新版。
  * 網頁的內容 UiAutomator 不一定讀得到，只看我們自己畫的網址列，點網頁時用座標。
  * 不錄影，`record.sh` 在 SystemUiTest 之後先 `pm clear` 再跑，所以每次都是第一次安裝 uBO。截圖存成 `browser-*.png`。
  */
@@ -107,6 +116,72 @@ class BrowserTest : UiTest() {
         screenshot("browser-06-error-page")
     }
 
+    /**
+     * uBO 自己更新：換成 AMO 上的前一版、把上次檢查的時間改成很久以前，當作 App 重新打開（[Ublock.restart]，
+     * 走的是 App 啟動時同一條路），要從舊版更新成新版；瀏覽器右上角的選單顯示新的版本與上次檢查的時間。
+     */
+    @Test
+    fun ublockUpdatesItself() {
+        clearLinks()
+        launchApp()
+        waitFor(By.text("還沒有連結"), timeout = 30_000)
+        val ublock = container.ublock
+        // 清單出現 2 秒後在背景裝 uBO（每次 pm clear 後都是第一次裝）
+        val latest = checkNotNull(poll(120_000) { ublock.version }) { "uBO 沒有裝好" }
+        val (old, oldUrl) = previousOnAmo(latest)
+
+        val controller = container.gecko.webExtensionController
+        await { controller.uninstall(checkNotNull(ublock.extension)) }
+        assertEquals(old, await { controller.install(oldUrl) }?.metaData?.version)
+        context.getSharedPreferences("browser", Context.MODE_PRIVATE).edit { putLong(Ublock.CHECKED_AT, 0) }
+        instrumentation.runOnMainSync { ublock.restart() }
+
+        val updated = poll(120_000) {
+            Regex("uBlock Origin 從 ${Regex.escape(old)} 更新到 (\\S+)")
+                .find(device.executeShellCommand("logcat -d -s ThumbLinks:I"))?.groupValues?.get(1)
+        } ?: fail("uBO 沒有從 $old 更新（logcat 沒有「從 $old 更新到」）")
+        assertEquals(updated, ublock.version)
+        assertTrue("更新後應該比 $old 新：$updated", updated != old)
+
+        // 瀏覽器右上角的選單：新的版本、上次檢查更新的時間
+        find(By.text("瀏覽")).click()
+        waitFor(By.res("ublock_button"), timeout = 60_000)
+        find(By.desc("更多")).click()
+        waitFor(By.textContains("uBlock Origin $updated"))
+        waitFor(By.textContains("上次檢查更新："))
+        pause(1500)
+        screenshot("browser-07-ublock-updated")
+        device.pressBack()
+    }
+
+    /** AMO 上 [current] 的前一個版本（版本號、下載網址）。AMO 的 API 新的在前面。 */
+    private fun previousOnAmo(current: String): Pair<String, String> {
+        val results = JSONObject(URL(AMO_VERSIONS).readText()).getJSONArray("results")
+        val versions = (0 until results.length()).map(results::getJSONObject)
+        val index = versions.indexOfFirst { it.getString("version") == current }
+        val previous = versions[if (index >= 0) index + 1 else 1]
+        return previous.getString("version") to previous.getJSONObject("file").getString("url")
+    }
+
+    /** 在主執行緒叫 GeckoView 做 [action]，等它的結果（GeckoResult 的 callback 回到主執行緒）。 */
+    private fun <T> await(timeout: Long = 120_000, action: () -> GeckoResult<T>): T? {
+        val done = CountDownLatch(1)
+        var value: T? = null
+        var error: Throwable? = null
+        instrumentation.runOnMainSync {
+            action().accept({
+                value = it
+                done.countDown()
+            }, {
+                error = it
+                done.countDown()
+            })
+        }
+        check(done.await(timeout, TimeUnit.MILLISECONDS)) { "等不到 GeckoView" }
+        error?.let { throw AssertionError("GeckoView 做不到", it) }
+        return value
+    }
+
     /** 螢幕高度 30%～80%（BottomSheet 裡 GeckoView 那一塊）有沒有明顯不同的顏色。 */
     private fun popupPainted(): Boolean {
         val shot = InstrumentationRegistry.getInstrumentation().uiAutomation.takeScreenshot() ?: return false
@@ -141,5 +216,10 @@ class BrowserTest : UiTest() {
         val top = find(By.res("url_bar")).visibleBounds.bottom
         val bottom = find(By.desc("上一頁")).visibleBounds.top
         device.click(device.displayWidth / 2, top + ((bottom - top) * fraction).toInt())
+    }
+
+    private companion object {
+        // AMO 的 API：uBlock Origin 上架過的版本，新的在前面，每一版有簽章過的 xpi 下載網址
+        const val AMO_VERSIONS = "https://addons.mozilla.org/api/v5/addons/addon/ublock-origin/versions/?page_size=5"
     }
 }

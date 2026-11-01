@@ -3,7 +3,9 @@ package com.twtrubiks.thumblinks
 import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.util.Log
+import androidx.annotation.VisibleForTesting
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.core.content.edit
@@ -17,11 +19,20 @@ import java.util.concurrent.TimeUnit
 
 /**
  * uBlock Origin。不打包進 APK，跟 Firefox 一樣從 Mozilla 附加元件網站（AMO）裝有簽章的版本：
- * 第一次打開瀏覽器時裝，之後裝好的會留在 GeckoView 的設定檔裡；一天最多檢查一次 AMO 有沒有新版。
+ * 第一次打開瀏覽器時裝，之後裝好的會留在 GeckoView 的設定檔裡；App 打開時，距離上次檢查超過一天就問 AMO 有沒有新版
+ * （跟 Firefox 桌面版一樣 24 小時），有才下載。檢查的結果寫進 logcat，版本與上次檢查的時間顯示在瀏覽器右上角的選單。
  * 擋了幾個（badge）每一頁各自記在 [BrowserTab.Page.ublockAction]；按下去的 popup（那顆大電源鈕）是 [popup]。
  */
 class Ublock(private val runtime: GeckoRuntime, private val prefs: SharedPreferences, private val now: () -> Long = System::currentTimeMillis) {
     var extension by mutableStateOf<WebExtension?>(null)
+        private set
+
+    /** 裝好的版本（瀏覽器右上角的選單顯示），還沒裝好是 null。 */
+    var version by mutableStateOf<String?>(null)
+        private set
+
+    /** 上次成功問過 AMO 的時間（毫秒）：裝的時候、檢查更新的時候。0 是還沒有過。 */
+    var checkedAt by mutableLongStateOf(prefs.getLong(CHECKED_AT, 0))
         private set
     var icon by mutableStateOf<Bitmap?>(null)
         private set
@@ -71,7 +82,7 @@ class Ublock(private val runtime: GeckoRuntime, private val prefs: SharedPrefere
         Log.i(TAG, "從 AMO 安裝 uBlock Origin")
         controller.install(AMO_URL).accept({ installed ->
             if (installed != null) {
-                prefs.edit { putLong(CHECKED_AT, now()) }
+                markChecked()
                 ready(installed)
             }
         }, { e ->
@@ -80,18 +91,41 @@ class Ublock(private val runtime: GeckoRuntime, private val prefs: SharedPrefere
         })
     }
 
+    /** 距離上次問 AMO 超過一天才問；沒有網路之類的失敗不記時間，下次打開 App 再試。 */
     private fun maybeUpdate(installed: WebExtension) {
-        if (now() - prefs.getLong(CHECKED_AT, 0) < TimeUnit.DAYS.toMillis(1)) return
+        if (now() - checkedAt < TimeUnit.DAYS.toMillis(1)) return
+        val old = installed.metaData.version
+        Log.i(TAG, "檢查 uBlock Origin 有沒有新版（現在是 $old）")
         controller.update(installed).accept({ updated ->
-            prefs.edit { putLong(CHECKED_AT, now()) }
-            if (updated != null) ready(updated)
-        }, { e -> Log.w(TAG, "uBlock Origin 檢查更新失敗", e) })
+            markChecked()
+            // 沒有新版時 GeckoView 給 null
+            if (updated == null || updated.metaData.version == old) {
+                Log.i(TAG, "uBlock Origin 已經是最新（$old）")
+            } else {
+                Log.i(TAG, "uBlock Origin 從 $old 更新到 ${updated.metaData.version}")
+                ready(updated)
+            }
+        }, { e -> Log.w(TAG, "uBlock Origin 檢查更新失敗，下次打開 App 再試", e) })
+    }
+
+    private fun markChecked() {
+        checkedAt = now()
+        prefs.edit { putLong(CHECKED_AT, checkedAt) }
+    }
+
+    /** 測試用：當作 App 重新打開，重跑 [start]（找已經裝好的、距離上次檢查超過一天就檢查更新）。 */
+    @VisibleForTesting
+    fun restart() {
+        checkedAt = prefs.getLong(CHECKED_AT, 0)
+        started = false
+        start()
     }
 
     private fun ready(installed: WebExtension) {
         // release 冒煙測試看 logcat 的這一行，確認壓過的 GeckoView 從 AMO 裝好了 uBO
         Log.i(TAG, "uBlock Origin ${installed.metaData.version} 可以用了")
         extension = installed
+        version = installed.metaData.version
         installed.setActionDelegate(object : WebExtension.ActionDelegate {
             override fun onBrowserAction(extension: WebExtension, session: GeckoSession?, action: WebExtension.Action) {
                 // session 是 null：所有分頁的預設值（圖示、標題）
@@ -165,6 +199,7 @@ class Ublock(private val runtime: GeckoRuntime, private val prefs: SharedPrefere
 
         /** AMO 上最新的簽章版，會轉址到 `ublock_origin-<版本>.xpi`。 */
         const val AMO_URL = "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi"
-        private const val CHECKED_AT = "ublock_checked_at"
+        /** 上次問 AMO 的時間，存在 SharedPreferences `browser`（測試改舊它，就會再檢查一次）。 */
+        const val CHECKED_AT = "ublock_checked_at"
     }
 }
