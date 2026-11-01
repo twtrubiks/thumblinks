@@ -45,8 +45,9 @@ object ThumbPrep {
         val isJpeg = bytes.size > 2 && bytes[0] == 0xFF.toByte() && bytes[1] == 0xD8.toByte()
         val bounds = BitmapFactory.Options().apply { inJustDecodeBounds = true }
         BitmapFactory.decodeByteArray(bytes, 0, bytes.size, bounds)
+        // 沒有 EXIF 的 JPEG（App 自己存的就是）ExifInterface 給的是 UNDEFINED（0），不是 NORMAL
         val ready = isJpeg && bounds.outWidth in 1..MAX_EDGE && bounds.outHeight in 1..MAX_EDGE &&
-            orientation(bytes) == ExifInterface.ORIENTATION_NORMAL
+            orientation(bytes) in setOf(ExifInterface.ORIENTATION_UNDEFINED, ExifInterface.ORIENTATION_NORMAL)
         if (!ready) return save(bytes, dir)
         dir.mkdirs()
         val name = "${UUID.randomUUID()}.jpg"
