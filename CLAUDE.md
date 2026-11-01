@@ -5,21 +5,18 @@
 Kotlin + Jetpack Compose 原生 App，在 claude.ai/code 雲端 session 開發。
 雲端 VM 沒有模擬器，模擬器操作與錄影交給 GitHub Actions（`.github/workflows/record.yml`）。
 
-架構（Gradle 設定、`Sql` 分層、CI 錄影、發版）沿用 treesay 的 Android 版（`twtrubiks/treesay` 的 `android/`）。
-那邊踩過的坑都寫在它的 `android/CLAUDE.md`，這裡遇到同樣的問題（UiAutomator、模擬器、R8、系統畫面的測試）可以去翻。
-
 ## 目前的進度
 
-骨架在 2026-10-31 的 session 第一次在 VM 上 build 過（版本都不用改），規格裡的功能都做了：
+規格裡的功能都做了：
 
 - 規則（純 Kotlin、JVM 測試）：`WebUrls`（取網址、網域）、`PageMeta`（解析 meta、Big5）、`MetaFetcher`（OkHttp）、
-  `Export`（Markdown／JSON／zip）、`LinkStore`（新增、查重複、改、刪）
+  `Export`（Markdown／JSON／zip）、`LinkStore`（新增、查重複、改、刪、愛心）、`sortLinks`／`visibleLinks`（排序、只看愛心）
 - 畫面：清單（`ListScreen`，含匯出）、新增（`AddScreen`）、編輯（`EditScreen`）、縮圖預覽與兩個補救（`Thumbnails.kt` 的
   `ThumbnailEditor`／`ThumbDraft`）、上傳的圖（`ThumbPrep`）、分享進來（`MainActivity`，`singleTask` ＋ `onNewIntent`）
-- 內建瀏覽器（`claude/browser-geckoview` 分支，2026-10-31 開始）：`BrowserScreen`、`BrowserTab`（一個 GeckoSession 與它的 delegate）、
+- 內建瀏覽器：`BrowserScreen`、`BrowserTab`（一個 GeckoSession 與它的 delegate）、
   `Ublock`（從 AMO 安裝、更新、badge、popup）、`BrowserInput`（網址列的規則，JVM 測試）。還沒做：多分頁
 - 模擬器：`DeviceTest`（SQLite、`ThumbPrep` 轉正）、`DemoRecordingTest`（錄影）、`SystemUiTest`（挑選器、存檔畫面）、
-  `BrowserTest`（uBO 從 AMO 安裝、擋廣告、popup）、release 冒煙測試（真的抓 `https://github.com/git/git`、用內建瀏覽器打開）。假網站在 `FakeSite`
+  `BrowserTest`（uBO 從 AMO 安裝、擋廣告、popup、自己更新；新視窗、錯誤頁）、release 冒煙測試（真的抓 `https://github.com/git/git`、用內建瀏覽器打開）。假網站在 `FakeSite`
 
 改東西之前先跑「在 VM 內驗證」，改完看 CI 的錄影。
 
@@ -64,7 +61,7 @@ Kotlin + Jetpack Compose 原生 App，在 claude.ai/code 雲端 session 開發�
 ### 清單
 
 - 右上角：深色模式（跟系統／淺色／深色）、排序、只看愛心、「瀏覽」、「匯出」
-- **愛心**（2026-10-31 加的，標記比較喜歡的）：每一筆右邊有愛心（`HeartToggle`，自己的 48dp 點擊範圍，點了不會打開網頁），
+- **愛心**（標記比較喜歡的）：每一筆右邊有愛心（`HeartToggle`，自己的 48dp 點擊範圍，點了不會打開網頁），
   編輯頁右上角也有，按了就存（不用按「儲存」）。清單上按的時候畫面先換、資料庫在背景寫（`ThumbLinksApp.setFavorite`）。
   右上角的愛心是「只看愛心」（`visibleLinks`，純 Kotlin、JVM 測），排序照用；一筆都沒有時說明怎麼按。
   「只看愛心」不存起來（`rememberSaveable`）：下次打開 App 看到的是全部，不會以為清單少了東西。
@@ -74,7 +71,7 @@ Kotlin + Jetpack Compose 原生 App，在 claude.ai/code 雲端 session 開發�
   匯出的順序跟畫面一樣（`export()` 也照目前的排序）。換排序時捲回最上面每筆顯示縮圖、標題（沒有標題就顯示網址）、網域。
   回到清單時多了新的一筆就捲到它（`LazyColumn` 會跟著原本的第一筆走，新的那筆會被擠到畫面外看不到）
 - **長按一筆跳選單**（`LinkRow` 的 DropdownMenu）：「編輯」、「複製網址」。之後要加的動作（分享…）也放這裡
-- **複製網址**（2026-10-31 加的）：清單的長按選單、編輯頁、內建瀏覽器（右上角選單、長按連結或圖片）都用 `copyUrl`，只複製網址本身。
+- **複製網址**：清單的長按選單、編輯頁、內建瀏覽器（右上角選單、長按連結或圖片）都用 `copyUrl`，只複製網址本身。
   複製後 Android 12 以前 App 自己跳「已複製網址」；Android 13 以後系統自己會在畫面下方提示，不再跳一次
 - 編輯頁（長按選單的「編輯」）：改標題、換縮圖（重新抓、貼圖片網址、上傳）、用瀏覽器開、複製網址、刪除（要確認）。
   換掉或刪掉上傳的縮圖時，舊的檔案要刪（`LinkStore.update`、`LinkStore.delete` 會刪）。
@@ -159,8 +156,12 @@ JSON（UTF-8、縮排兩格、中文不跳脫；用 kotlinx.serialization 的 `@
   點進瀏覽器時不用等引擎啟動與 uBO 讀過濾清單（第一次安裝 uBO 也在這時候）。代價是 App 開著時多佔記憶體，`isLowRamDevice` 的手機不做
 - **uBlock Origin 不打包進 APK**，跟 Firefox 一樣從 AMO 裝有 Mozilla 簽章的版本
   （`WebExtensionController.install`，`Ublock.AMO_URL`）：第一次打開瀏覽器時裝，`PromptDelegate` 只同意 uBO 自己的權限；
-  裝好的留在 GeckoView 的設定檔，之後用 `list()` 找到就好；一天最多 `update()` 一次。
+  裝好的留在 GeckoView 的設定檔，之後用 `list()` 找到就好，不會再下載。
   不用 `ensureBuiltIn` 載入自己打包的 uBO：有人回報 `menus` 權限不被接受、最後 "Extension is invalid"
+- **uBO 自己更新**（`Ublock.maybeUpdate`）：App 打開時（`start()`），距離上次問 AMO 超過 24 小時（跟 Firefox 桌面版一樣）才 `update()`，
+  有新版才下載。沒有背景排程：App 一直開著不會再檢查。失敗（沒網路）不記時間，下次打開 App 再試。
+  結果寫進 logcat（「已經是最新」「從 x 更新到 y」「檢查更新失敗」）；瀏覽器右上角選單的最下面顯示 uBO 的版本與上次檢查更新的時間。
+  過濾清單（廣告規則）是 uBO 自己每隔幾天更新，跟 Firefox 上的 uBO 一樣
 - uBO 的按鈕在網址列右邊：它自己的圖示（關掉過濾時變灰）＋這一頁擋了幾個（每個分頁一份 badge）。
   按下去的 popup（`ActionDelegate.onTogglePopup` 回傳的 GeckoSession）放在 BottomSheet 裡的 GeckoView（預設的 SurfaceView；
   TextureView 在模擬器上整塊是黑的）。BrowserTest 一直截圖到 popup 那一塊畫出東西（不是整片同一個顏色，模擬器上要好幾秒）。
@@ -171,7 +172,7 @@ JSON（UTF-8、縮排兩格、中文不跳脫；用 kotlinx.serialization 的 `@
 匯入、雲端同步、帳號、分類／標籤、搜尋、手動拖曳排順序、網址正規化、匯出時把網路上的縮圖也下載進 zip。
 瀏覽器的多分頁、歷史紀錄、無痕、下載、上傳。
 
-### 之後可能會做（2026-10-31 跟使用者討論過，使用者說之後可能實作；開工前先跟使用者確認）
+### 之後可能會做（跟使用者討論過，使用者說之後可能實作；開工前先跟使用者確認）
 
 起因：GeckoView 約每 4 週一版、帶安全修補，不升級的話會有這些問題：
 - 引擎的已知漏洞（惡意網頁、廣告就能利用）
@@ -200,7 +201,7 @@ JSON（UTF-8、縮排兩格、中文不跳脫；用 kotlinx.serialization 的 `@
 現在手上的試用版是雲端 session 的臨時金鑰簽的，跟正式版簽章對不上：第一次換正式版要先移除試用版，清單會一起刪掉，
 所以最好先做「匯入」，或先匯出備份。
 
-同一次也討論過、還沒決定要不要做的：
+也討論過、還沒決定要不要做的：
 - Baseline Profile：啟動與第一次捲動更順，要加一個在模擬器上產生 profile 的測試
 - APK 的 native library 要不要壓縮：目前壓縮（`useLegacyPackaging`），下載約 96 MB，但安裝時會解壓出來，
   手機上約佔 260 MB（推算）；不壓縮的話下載與佔用都約 198 MB
@@ -211,7 +212,7 @@ JSON（UTF-8、縮排兩格、中文不跳脫；用 kotlinx.serialization 的 `@
 使用者說「都不要做、記下來」的兩項（討論過的做法，開工前再跟使用者確認）：
 
 - **拖拉排序**：容量、效能都沒影響（自己寫約 200 行或小函式庫約 100 KB；拖完只改一筆的順序）。建議的做法：
-  - 每一列右邊加「≡」把手，按住把手才拖。長按其他地方維持「編輯」
+  - 每一列右邊加「≡」把手，按住把手才拖。長按其他地方維持原本的選單（編輯、複製網址）
   - 排序選單多一個「自訂」，只有自訂時能拖；新加的放最上面；匯出照畫面順序
   - `links` 加順序欄位（`ALTER TABLE ADD COLUMN`，舊資料照 rowid 排好；可以用介於前後兩筆之間的小數，拖一次只改一筆）
   - 拖到畫面邊緣要自動捲動。CI 用 UiAutomator 拖把手測
@@ -221,11 +222,12 @@ JSON（UTF-8、縮排兩格、中文不跳脫；用 kotlinx.serialization 的 `@
   - 記網址、標題、時間，同一頁只留最後一次；自動刪掉 90 天前的
   - 新的「瀏覽紀錄」頁，照日期分組；點了打開、長按「加到清單」；可以刪單筆或全部清掉
   - 網址列提示、紀錄內搜尋、連結變色之後再加
-  - 要決定：要不要「暫時不記錄」的開關；要不要跟清單一起走系統備份（`allowBackup`），或用 backup rules 排除
+  - 要決定：要不要「暫時不記錄」的開關；要不要跟著系統備份（backup rules 備份整個 `databases/`，
+    放在 `thumblinks.db` 就會跟著備份；不要的話另開一個資料庫檔、從 rules 排除）
 
 ## 程式的分層
 
-- 規則都在純 Kotlin、有 JVM 測試：`LinkStore`（已有）、`WebUrls`、`PageMeta`、`MetaFetcher`、`Export`、`BrowserInput`（含錯誤頁）。
+- 規則都在純 Kotlin、有 JVM 測試：`LinkStore`、`WebUrls`、`PageMeta`、`MetaFetcher`、`Export`、`BrowserInput`（含錯誤頁）。
   `MetaFetcher` 的測試用 `mockwebserver3`（轉址、`image/*`、逾時、超過 1 MB、Big5）
 - `LinkStore` 透過 `Sql` 介面存取資料庫：手機上是 `AndroidSql`（`databases/thumblinks.db`），
   JVM 測試是 `JdbcSql`（sqlite-jdbc 的記憶體資料庫，SQL 跑在真的 SQLite 上）。
@@ -236,7 +238,7 @@ JSON（UTF-8、縮排兩格、中文不跳脫；用 kotlinx.serialization 的 `@
   `favorite`（0／1）是後來加的：`LinkStore` 的 init 用 `PRAGMA table_info` 看有沒有，沒有就 `ALTER TABLE ADD COLUMN`（新裝的也走這條路）。
   改 schema 時用 `ALTER TABLE ... ADD COLUMN` 或在 `LinkStore` 的 init 裡判斷，手機上已經有的資料不能丟
 - 要碰 Android 的放在薄薄一層：`AndroidSql`、`ThumbPrep`（DeviceTest 測）、畫面 `*Screen.kt`、
-  整個 App 的導覽在 `ThumbLinksApp`（照 treesay 的 `TreeSayApp`：sealed interface 的 Route ＋ `rememberSaveable` 的 stack，
+  整個 App 的導覽在 `ThumbLinksApp`（sealed interface 的 Route ＋ `rememberSaveable` 的 stack，
   不另外引入 Navigation 套件），共用的東西在 `AppContainer`（`ThumbLinksApplication.container`）
 - 資料庫與網路一律在 `Dispatchers.IO`，不要在組畫面時讀資料庫
 - 整個 App 共用一個 `OkHttpClient`（放在 `AppContainer`）；Coil 也用它：
@@ -253,18 +255,13 @@ JSON（UTF-8、縮排兩格、中文不跳脫；用 kotlinx.serialization 的 `@
 - applicationId / namespace：`com.twtrubiks.thumblinks`（`scripts/ci/record.sh` 依賴這個值，改了要一起改）。
   不要改：applicationId 一變，手機會當成另一個 App，原本的清單就接不回來
 - 單一 module `app`，主畫面 `MainActivity`
-- **minSdk 28（Android 9）**，compileSdk 37.2（GeckoView 159 要求，`compileSdk { version = release(37) { minorApiLevel = 2 } }`；
+- **minSdk 28（Android 9）**，compileSdk 37.2（GeckoView 要求，`compileSdk { version = release(37) { minorApiLevel = 2 } }`；
   缺 `platforms;android-37.2` 時 AGP 會自動下載），targetSdk 36，Java / Kotlin target 17
   （`java.time` 在 API 26 就內建，不需要 core library desugaring；新增 API 29+ 的 API 前先跑 `./gradlew lintDebug` 看 NewApi）
-- 依賴版本集中在 `gradle/libs.versions.toml`
+- 依賴版本集中在 `gradle/libs.versions.toml`（GeckoView 也是）；build 報版本相容問題時，以錯誤訊息為準調整
 - AGP 9.x 使用 built-in Kotlin：**不要**套 `org.jetbrains.kotlin.android`；Compose 套 `org.jetbrains.kotlin.plugin.compose`，
   JSON 套 `org.jetbrains.kotlin.plugin.serialization`，版本都跟 Kotlin 一樣
-- 版本起點（2026-10 查的最新穩定版；Android 相關的照 treesay，2026-10-31 在 VM 上 build 過，都不用改）：
-  AGP 9.4.1、Kotlin 2.4.21、Gradle wrapper 9.8.2、Compose BOM 2026.09.00、activity-compose 1.13.0、core-ktx 1.19.1、
-  lifecycle-runtime-ktx 2.11.0、OkHttp / mockwebserver3 5.5.1、jsoup 1.23.2、Coil 3.6.3、kotlinx-serialization-json 1.12.0、
-  exifinterface 1.4.2、sqlite-jdbc 3.53.4.0（只給 JVM 測試）、androidx.test runner 1.7.0、core 1.7.0、ext:junit 1.3.0、uiautomator 2.4.0。
-  若 build 報版本相容問題，以錯誤訊息為準調整，並更新這段
-- **GeckoView**（`org.mozilla.geckoview:geckoview`，目前 159.0.20261022150525）只放在 `maven.mozilla.org`（`settings.gradle.kts` 只讓這個 group 從那裡拿）。
+- **GeckoView**（`org.mozilla.geckoview:geckoview`）只放在 `maven.mozilla.org`（`settings.gradle.kts` 只讓這個 group 從那裡拿）。
   它就是瀏覽器的引擎，約每 4 週一版、帶安全修補：**要跟著升**。最新版看
   `https://maven.mozilla.org/maven2/org/mozilla/geckoview/geckoview/maven-metadata.xml` 的 `<release>`，改 `libs.versions.toml` 再發一版
 - **APK 按 CPU 拆開**（`splits.abi`）：GeckoView 每種 CPU 一份引擎，整包 500 MB 以上，只出 `arm64-v8a`（手機，release.yml 發這份）
@@ -279,35 +276,29 @@ JSON（UTF-8、縮排兩格、中文不跳脫；用 kotlinx.serialization 的 `@
   上傳的縮圖一張約 100～300 KB，上傳的圖多到上百張時一樣會超過，到時候再考慮不備份縮圖（還原後那幾筆要重新選圖）
 - debug 版的 network security config（`app/src/debug/`）只對 127.0.0.1 放行明碼連線，給測試的假網站用；release 版不帶
 - 畫面用 Material 3，Android 12 以上用桌布取色（`Theme.kt`）。深淺預設跟系統，清單右上角的按鈕可以改成固定淺色／深色
-  （`ThemeSetting`，存在 SharedPreferences `settings`）：系統列圖示的深淺跟著 App（`enableEdgeToEdge` 帶自己的判斷），
+  （`EnumSetting`，存在 SharedPreferences `settings`）：系統列圖示的深淺跟著 App（`enableEdgeToEdge` 帶自己的判斷），
   內建瀏覽器的網頁也跟著（GeckoRuntime 的 `preferredColorScheme`，切換時馬上套用）。
   啟動那一瞬間的視窗底色（`values-night`）還是跟系統
 - release 版開 R8（minify + shrinkResources）。簽名看環境變數：有 `THUMBLINKS_KEYSTORE`、`THUMBLINKS_KEYSTORE_PASSWORD`
   就用發版金鑰（PKCS12，alias `thumblinks`）；沒有就用這台機器的 debug 金鑰（錄影的 CI、自己 build）
-- **給別人（包括使用者）裝的 APK 一律從 GitHub Release 來**，不要把 VM 裡 build 的 APK 傳給使用者：
-  VM 的 debug 金鑰每個 session 都不一樣，簽章對不上的 APK 不能直接更新，只能移除重裝——**移除就會刪掉手機上的清單和上傳的圖**
+- **給使用者裝的 APK**：正式版從 GitHub Release 來。VM 的 debug 金鑰每個 session 都不一樣，
+  簽章對不上的 APK 不能直接更新，只能移除重裝——**移除就會刪掉手機上的清單和上傳的圖**
   - 發版：`.github/workflows/release.yml`。把 `release-version` 改成新版本（例如 `2026.11.01`，同一天第二版寫 `2026.11.01.2`）推上去，
     就會 build、簽名、建 `v<版本>` 的 tag 並發 Release；那個版本已經發過的話跳過。
     雲端 session 的 git 只能推自己的 branch，推 tag 會斷線，所以用版本檔
   - **還沒有發版金鑰**：第一次發版前，使用者要在自己的電腦照 `docs/release-key.md` 產生金鑰、設 Secrets、
     把憑證 SHA-256 填進 `release.yml` 的 `EXPECTED_CERT`，再新增 `release-version`。不要在 VM 裡產生金鑰
-  - **2026-10-31 使用者要求先直接給一個 APK 試用**：給的是那個 session 的 VM debug 金鑰簽的 release 版（commit `884bc36`，
-    versionCode 1，憑證 SHA-256 `9adf6eb0…4ea897`）。那把金鑰已經跟著 session 消失，之後的 Release 簽章對不上，
-    使用者要移除這一版才能裝正式版，清單會一起刪掉（還沒有匯入）。發第一版 Release 時提醒使用者這件事。
-    同一個 session 後來又給了內建瀏覽器的試用版（`claude/browser-geckoview` 的 `534151d`，arm64，versionCode 2、
-    versionName `0.2-browser`），同一把金鑰，覆蓋安裝在上面那一版上；
-    再來是修了清單與瀏覽器一片白的 `97b3770`（versionCode 3、`0.3-browser`）、
-    修了 `window.open()` 不帶網址的 `1662901`（versionCode 4、`0.4-browser`）、
-    修了 uBO popup 整塊黑與網址列閃 `about:blank` 的 `74c64e1`（versionCode 5、`0.5-browser`）、
-    加了深色模式、排序、輸入框換行、瀏覽器預熱的 `9198703`（versionCode 6、`0.6-browser`）、
-    加了愛心、複製網址（清單長按選單）、修了編輯頁關錯頁與備份範圍的 `2e8657f`（versionCode 7、`0.7-browser`）
+  - **使用者手機上的試用版**：使用者要求直接給 APK 試用，裝的是雲端 session 的 VM debug 金鑰簽的 release 版（arm64），
+    憑證 SHA-256 `9adf6eb0…4ea897`，最新是 `0.7-browser`（versionCode 7）。要再給試用版時：
+    用 `THUMBLINKS_VERSION_CODE`（比上一版大）、`THUMBLINKS_VERSION_NAME` 帶版本 build，
+    先用 `apksigner verify --print-certs` 核對憑證跟上面一樣才給（一樣才能直接覆蓋安裝）；不一樣就先跟使用者講清楚只能移除重裝。
+    這把金鑰跟正式版對不上：發第一版 Release 時提醒使用者要先匯出備份、移除試用版才能裝（還沒有匯入，清單會一起刪掉）
   - versionCode 是 2026-01-01 起算的分鐘數（workflow 算好用環境變數帶進來），不管從哪個 branch 發都只會變大
   - README 的下載連結是 `releases/latest/download/thumblinks.apk`
 
 ## 雲端 VM 環境
 
 - Android SDK 由環境的 setup script（`scripts/cloud-setup.sh`）裝在 `/opt/android-sdk`，`ANDROID_HOME` 由環境變數提供。
-  跟 treesay 用同一個環境就可以
 - SDK 不存在時先看 `/var/log/android-sdk-setup.log`
 - 新 session 第一次 build 可能遇到 Maven Central 回 `429 Too Many Requests`（共用出口 IP 被限流），
   隔 20 秒左右重跑 `./gradlew` 即可，依賴進快取後就不會再遇到；不要為此改 repository 設定（CI 不受影響）。
@@ -365,7 +356,7 @@ CI 錄影前也會跑 `testDebugUnitTest`，沒過就不會錄影（失敗原因
 
 `app/src/androidTest/java/com/twtrubiks/thumblinks/DeviceTest.kt`，`record.sh` 在錄影前先跑、不錄影，輸出在 `device-test.txt`。
 只放模擬器才測得到的事：`LinkStore` 在 Android 9 的 SQLite 上跑一輪（含舊的表補上 `favorite` 欄位）；做了上傳之後，`ThumbPrep` 用真的 Bitmap 與 ExifInterface 縮圖轉正
-（直拍的 JPEG、手機拍的 HEIC；只看長寬的話轉錯方向也會過，要用上下兩色的圖核對轉正後顏色的位置，做法見 treesay 的 `DeviceTest`）。
+（直拍的 JPEG、手機拍的 HEIC；只看長寬的話轉錯方向也會過，要用上下兩色的圖核對轉正後顏色的位置）。
 
 ## 系統畫面的測試：SystemUiTest
 
@@ -378,8 +369,6 @@ CI 錄影前也會跑 `testDebugUnitTest`，沒過就不會錄影（失敗原因
   用 `uiAutomation.executeShellCommand("cat …")` 讀出原始 bytes 解開，核對 `links.md` 與 `images/<id>.jpg`。
   這個指令不經過 sh：不能用引號、萬用字元，檔名要確定（同名的會被系統存成「… (1).zip」，所以開始前先刪掉）
 
-寫法照 treesay 的 `SystemUiTest` 與 `android/scripts/ci/record.sh`。
-
 ## 內建瀏覽器的測試：BrowserTest
 
 `app/src/androidTest/java/com/twtrubiks/thumblinks/BrowserTest.kt`，不錄影。`record.sh` 最後才跑（release 冒煙測試之後，換回 debug 版、`pm clear`）。
@@ -391,6 +380,9 @@ logcat 邊跑邊存、測完先回桌面（`@After`）讓 GeckoView 停下來；
 - 新視窗與錯誤頁：`/opener` 上點（用座標點網頁）`window.open()` 再設 location 的按鈕 → 網址列變成 `/autumn` → 上一頁回到 `/opener`；
   點登入小視窗（`/popup` 改了開它的那頁的網址再 `window.close()`）→ 網址列變成 `/opener#done`；
   打開 `http://thumblinks.invalid/` → logcat 有 `onLoadError` 寫的「網頁載入失敗」（錯誤頁的樣子看 `browser-06-error-page.png`）
+- uBO 自己更新：等背景裝好 uBO → 從 AMO 的 API（`/api/v5/addons/addon/ublock-origin/versions/`，新的在前面）找前一版，
+  移除現在的、裝那一版（`WebExtensionController` 直接做，`await` 等 GeckoResult）→ 把 `Ublock.CHECKED_AT` 改成 0 →
+  `Ublock.restart()`（跟 App 打開時同一條路）→ logcat 出現「從 <前一版> 更新到 <新版>」→ 右上角選單顯示新版與上次檢查的時間（`browser-07-ublock-updated.png`）
 
 ## release 冒煙測試
 

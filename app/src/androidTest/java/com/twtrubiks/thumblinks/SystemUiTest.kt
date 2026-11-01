@@ -27,7 +27,7 @@ import java.util.zip.ZipInputStream
 /**
  * 系統的畫面：照片挑選器、存檔的檔案畫面。這些不是 App 畫的，每個 Android 版本長得不一樣
  * （Android 9、10 是檔案畫面，Android 11 以後是照片挑選器），只能在模擬器上點一次才知道接不接得上。
- * 不錄影（`record.sh` 在錄影之後、先清掉 App 資料再跑），截圖存成 `system-*.png`。寫法照 treesay 的 SystemUiTest。
+ * 不錄影（`record.sh` 在錄影之後、先清掉 App 資料再跑），截圖存成 `system-*.png`。
  */
 @RunWith(AndroidJUnit4::class)
 class SystemUiTest : UiTest() {
