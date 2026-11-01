@@ -7,6 +7,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -83,9 +84,10 @@ fun ThumbLinksApp(sharedText: String? = null, onSharedTextTaken: () -> Unit = {}
     val container = LocalContext.current.container
     var stack by rememberSaveable(stateSaver = StackSaver) { mutableStateOf(listOf<Route>(Route.Home)) }
     val holder = rememberSaveableStateHolder()
-    // 每換一頁（新增完、編輯完回來）重讀一次清單；讀的時候畫面上留著舊的，不會閃一下空白
+    // 每換一頁（新增完、編輯完回來）與匯入完重讀一次清單；讀的時候畫面上留著舊的，不會閃一下空白
     var links by remember { mutableStateOf<List<Link>?>(null) }
-    LaunchedEffect(stack) {
+    var imports by remember { mutableIntStateOf(0) }
+    LaunchedEffect(stack, imports) {
         links = withContext(Dispatchers.IO) { container.links.all() }
     }
     val scope = rememberCoroutineScope()
@@ -144,6 +146,7 @@ fun ThumbLinksApp(sharedText: String? = null, onSharedTextTaken: () -> Unit = {}
                             onEdit = { push(edit(it.id)) },
                             onFavorite = ::setFavorite,
                             onBrowse = { browse(null) },
+                            onImported = { imports++ },
                         )
                         is Route.Add -> AddScreen(
                             initialText = route.shared,

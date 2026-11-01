@@ -6,6 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContract
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
@@ -29,6 +30,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -52,14 +54,16 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
 import java.io.IOException
 import java.time.LocalDate
 import java.time.OffsetDateTime
 
 /**
  * 首頁就是清單，預設新加的在上面。點一筆用內建瀏覽器打開、長按跳選單（編輯、複製網址）、右邊的愛心切換喜歡的。
- * 右上角是深色模式、排序、只看愛心、空白的瀏覽器與匯出，右下角新增。
+ * 右上角是深色模式、排序、只看愛心、空白的瀏覽器，「更多」裡是匯入、匯出；右下角新增。
  * [links] 是 [LinkStore.all] 的順序（新的在上），null 表示還在讀；畫面上照使用者選的排序。
+ * 匯入完呼叫 [onImported] 重讀清單。
  */
 @Composable
 fun ListScreen(
@@ -69,6 +73,7 @@ fun ListScreen(
     onEdit: (Link) -> Unit,
     onFavorite: (Link, Boolean) -> Unit,
     onBrowse: () -> Unit,
+    onImported: () -> Unit,
 ) {
     val context = LocalContext.current
     val container = context.container
@@ -113,6 +118,30 @@ fun ListScreen(
         }
     }
 
+    // 匯入：選檔 → 先讀一遍、算好要加幾筆 → 確認後才加。對話框開著時 Activity 不會重建（轉螢幕不重建），用 remember 就好
+    var pendingImport by remember { mutableStateOf<PendingImport?>(null) }
+    var importing by remember { mutableStateOf(false) }
+    val openFile = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+        if (uri == null) return@rememberLauncherForActivityResult
+        scope.launch {
+            val failure = try {
+                pendingImport = withContext(Dispatchers.IO) { prepareImport(context, uri) }
+                null
+            } catch (e: ImportException) {
+                e.message
+            } catch (e: IOException) {
+                "讀不到這個檔案"
+            } catch (e: SecurityException) {
+                "沒有讀取這個檔案的權限"
+            }
+            failure?.let { snackbar.showSnackbar("匯入失敗：$it") }
+        }
+    }
+    fun closeImport() {
+        pendingImport?.let { pending -> scope.launch(Dispatchers.IO) { pending.discard() } }
+        pendingImport = null
+    }
+
     Screen(
         title = "ThumbLinks",
         actions = {
@@ -148,7 +177,22 @@ fun ListScreen(
                 modifier = Modifier.testTag("favorites_only"),
             )
             TextButton(onClick = onBrowse) { Text("瀏覽") }
-            TextButton(onClick = { choosingFormat = true }, enabled = !links.isNullOrEmpty()) { Text("匯出") }
+            Box {
+                var more by remember { mutableStateOf(false) }
+                IconButton(onClick = { more = true }, modifier = Modifier.testTag("more_button")) {
+                    Icon(painterResource(R.drawable.ic_more_vert), contentDescription = "更多")
+                }
+                DropdownMenu(expanded = more, onDismissRequest = { more = false }) {
+                    DropdownMenuItem(text = { Text("匯入") }, onClick = {
+                        more = false
+                        openFile.launch(IMPORT_TYPES)
+                    })
+                    DropdownMenuItem(text = { Text("匯出") }, enabled = !links.isNullOrEmpty(), onClick = {
+                        more = false
+                        choosingFormat = true
+                    })
+                }
+            }
         },
         fab = {
             // Material3 的 ExtendedFloatingActionButton 把 text 包在 clearAndSetSemantics 裡，「新增」不會給無障礙服務
@@ -164,7 +208,7 @@ fun ListScreen(
     ) { modifier ->
         when {
             shown == null -> Unit
-            links.isNullOrEmpty() -> EmptyList(modifier)
+            links.isNullOrEmpty() -> EmptyList(modifier, onImport = { openFile.launch(IMPORT_TYPES) })
             shown.isEmpty() -> NoFavorites(modifier)
             else -> LazyColumn(
                 modifier.fillMaxSize().testTag("link_list"),
@@ -222,7 +266,116 @@ fun ListScreen(
             confirmButton = { TextButton(onClick = { choosingFormat = false }) { Text("取消") } },
         )
     }
+
+    pendingImport?.let { pending ->
+        val plan = pending.plan
+        AlertDialog(
+            onDismissRequest = { if (!importing) closeImport() },
+            title = { Text(if (plan.toAdd.isEmpty()) "沒有可以匯入的" else "匯入 ${plan.toAdd.size} 筆") },
+            text = { Text(importSummary(plan)) },
+            confirmButton = {
+                if (plan.toAdd.isNotEmpty()) {
+                    TextButton(enabled = !importing, onClick = {
+                        importing = true
+                        scope.launch {
+                            val message = try {
+                                val result = withContext(Dispatchers.IO) {
+                                    Import.run(plan, pending.file, container.links, container.thumbsDir, ThumbPrep::saveImported)
+                                }
+                                importMessage(result)
+                            } catch (e: IOException) {
+                                // 磁碟滿了之類：已經加進去的留著
+                                "匯入到一半失敗：${e.message ?: e.javaClass.simpleName}"
+                            }
+                            withContext(Dispatchers.IO) { pending.discard() }
+                            pendingImport = null
+                            importing = false
+                            onImported()
+                            snackbar.showSnackbar(message)
+                        }
+                    }) { Text(if (importing) "匯入中…" else "匯入") }
+                }
+            },
+            dismissButton = {
+                TextButton(enabled = !importing, onClick = ::closeImport) { Text(if (plan.toAdd.isEmpty()) "關閉" else "取消") }
+            },
+        )
+    }
 }
+
+/** 讀好、還沒加的匯入：確認了才加，取消或加完都要 [discard]（關掉 zip、刪掉複製進來的檔案）。 */
+private class PendingImport(val file: ImportFile, val plan: ImportPlan, private val copy: File) {
+    fun discard() {
+        file.close()
+        copy.delete()
+    }
+}
+
+/**
+ * 系統的開檔畫面不限類型：Markdown 在 Android 9 常常是 `application/octet-stream`，限了就選不到。
+ * 選錯檔案由 [Import.read] 看內容擋下來。
+ */
+private val IMPORT_TYPES = arrayOf("*/*")
+
+/** 匯入的檔案最大多少：zip 裡的圖一張 100～300 KB，上千張也夠。 */
+private const val MAX_IMPORT = 1024L * 1024 * 1024
+
+/**
+ * 把選的檔案複製進 cache（zip 要能隨機讀，[java.util.zip.ZipFile] 只吃檔案），讀一遍、算好要加的。
+ * 上一次沒清掉的（App 在對話框開著時被系統收掉）一起刪。
+ */
+private fun prepareImport(context: Context, uri: Uri): PendingImport {
+    val dir = File(context.cacheDir, "import").apply {
+        deleteRecursively()
+        mkdirs()
+    }
+    val copy = File(dir, "import")
+    val input = context.contentResolver.openInputStream(uri) ?: throw IOException("打不開 $uri")
+    input.use { from ->
+        copy.outputStream().use { to ->
+            val buffer = ByteArray(64 * 1024)
+            var total = 0L
+            while (true) {
+                val n = from.read(buffer)
+                if (n < 0) break
+                total += n
+                if (total > MAX_IMPORT) {
+                    to.close()
+                    copy.delete()
+                    throw ImportException("檔案太大了，不像是 ThumbLinks 匯出的")
+                }
+                to.write(buffer, 0, n)
+            }
+        }
+    }
+    val file = try {
+        Import.read(copy)
+    } catch (e: Exception) {
+        copy.delete()
+        throw e
+    }
+    return try {
+        PendingImport(file, Import.plan(file) { context.container.links.findByUrl(it) != null }, copy)
+    } catch (e: Exception) {
+        file.close()
+        copy.delete()
+        throw e
+    }
+}
+
+/** 對話框裡的說明：檔案裡有幾筆、哪些會跳過。 */
+private fun importSummary(plan: ImportPlan) = buildList {
+    add("檔案裡有 ${plan.total} 筆。")
+    if (plan.duplicates > 0) add("${plan.duplicates} 筆已經在清單裡，會跳過（清單上的不會被改）。")
+    if (plan.broken > 0) add("${plan.broken} 筆讀不出來（少了網址或縮圖），會跳過。")
+}.joinToString("\n")
+
+/** 匯入完的結果。 */
+private fun importMessage(result: ImportResult) = buildList {
+    add("加入 ${result.added} 筆")
+    if (result.duplicates > 0) add("${result.duplicates} 筆已經在清單裡")
+    if (result.broken > 0) add("${result.broken} 筆讀不出來")
+}.joinToString("，")
 
 /** 匯出當下的清單（不是畫面上那份，避免中間又有變動），照畫面上的排序，寫進使用者選的位置。 */
 private fun export(context: Context, uri: Uri, format: ExportFormat) {
@@ -343,7 +496,7 @@ private val ThemeMode.icon: Int
     }
 
 @Composable
-private fun EmptyList(modifier: Modifier) {
+private fun EmptyList(modifier: Modifier, onImport: () -> Unit) {
     Box(modifier.fillMaxSize().padding(32.dp), contentAlignment = Alignment.Center) {
         Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(12.dp)) {
             Text("還沒有連結", style = MaterialTheme.typography.titleLarge)
@@ -352,6 +505,12 @@ private fun EmptyList(modifier: Modifier) {
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
+            Text(
+                "換了手機或重裝過，可以匯入之前匯出的檔案。",
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            OutlinedButton(onClick = onImport, modifier = Modifier.testTag("import_button")) { Text("從檔案匯入") }
         }
     }
 }

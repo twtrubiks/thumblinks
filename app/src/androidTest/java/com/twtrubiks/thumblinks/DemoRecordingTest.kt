@@ -19,7 +19,7 @@ import kotlin.math.abs
  *
  * 貼網址 → 抓到縮圖與標題 → 改標題 → 加入；分享同一個網址進來 → 已經在清單裡了 → 打開那一筆；
  * 貼沒有縮圖的網址 → 貼圖片網址 → 加入；點一筆用內建瀏覽器打開（已在清單）→ 網址列換一篇 → 加到清單；
- * 長按 → 編輯 → 刪除一筆；打開匯出；切成深色模式再切回來；排序換成舊的在上再換回來；按愛心、只看愛心；
+ * 長按 → 編輯 → 刪除一筆；右上角「更多」（匯入、匯出）→ 打開匯出；切成深色模式再切回來；排序換成舊的在上再換回來；按愛心、只看愛心；
  * 編輯頁與清單的長按選單複製網址。uBlock Origin 要連 AMO，不放在錄影裡（[BrowserTest]）。
  */
 @RunWith(AndroidJUnit4::class)
@@ -133,7 +133,10 @@ class DemoRecordingTest : UiTest() {
         waitGone(By.text("陽明山芒草"))
         pause(2000)
 
-        // 打開匯出：選格式（存檔畫面是系統的，在 SystemUiTest 測）
+        // 右上角「更多」裡是匯入、匯出；打開匯出：選格式（存檔、開檔畫面是系統的，匯出再匯入回來在 SystemUiTest 測）
+        find(By.res("more_button")).click()
+        waitFor(By.text("匯入"))
+        pause(1500)
         find(By.text("匯出")).click()
         waitFor(By.text("Markdown"))
         pause(2500)

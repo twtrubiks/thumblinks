@@ -23,6 +23,7 @@ class ExportTest {
         title = "標題",
         thumbnail = Thumbnail.Remote("https://example.com/og.jpg"),
         createdAt = OffsetDateTime.parse("2026-10-31T20:00:00+08:00"),
+        favorite = true,
     )
     private val uploaded = Link(
         id = "0b6c1c1e-4f1a-4b1e-9a0e-3f0f2d7c9a11",
@@ -70,7 +71,7 @@ class ExportTest {
         )
     }
 
-    /** CLAUDE.md 的範例原樣：縮排兩格、中文不跳脫、沒有標題寫 null、時間到秒。 */
+    /** CLAUDE.md 的範例原樣：縮排兩格、中文不跳脫、沒有標題寫 null、時間到秒、愛心 true／false 都寫。 */
     @Test
     fun jsonMatchesTheSpec() {
         assertEquals(
@@ -82,13 +83,15 @@ class ExportTest {
                   "url": "https://example.com/article",
                   "title": "標題",
                   "thumbnail": "https://example.com/og.jpg",
-                  "created_at": "2026-10-31T20:00:00+08:00"
+                  "created_at": "2026-10-31T20:00:00+08:00",
+                  "favorite": true
                 },
                 {
                   "url": "https://example.org/page",
                   "title": null,
                   "thumbnail": "images/0b6c1c1e-4f1a-4b1e-9a0e-3f0f2d7c9a11.jpg",
-                  "created_at": "2026-10-30T09:12:00+08:00"
+                  "created_at": "2026-10-30T09:12:00+08:00",
+                  "favorite": false
                 }
               ]
             }

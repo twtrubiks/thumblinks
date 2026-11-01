@@ -21,6 +21,7 @@ enum class ExportFormat(val extension: String, val mimeType: String, val label: 
 /**
  * 整份清單匯出成 Markdown 或 JSON，順序照 [links]（畫面上新的在上面）。純 Kotlin，有 JVM 測試。
  * 都是網路上的縮圖就是單一檔案；有任何一筆是上傳的縮圖，就打包成 zip：`links.md`／`links.json` ＋ `images/<id>.jpg`。
+ * 匯出的檔案可以再匯入回來（[Import]）：JSON 有時間與愛心，Markdown 只有網址、標題、縮圖。
  */
 object Export {
     const val ZIP_MIME = "application/zip"
@@ -75,7 +76,7 @@ object Export {
         ExportFile.serializer(),
         ExportFile(
             exportedAt = time(exportedAt),
-            links = links.map { ExportLink(it.url, it.title, thumbnailRef(it), time(it.createdAt)) },
+            links = links.map { ExportLink(it.url, it.title, thumbnailRef(it), time(it.createdAt), it.favorite) },
         ),
     ) + "\n"
 
@@ -125,4 +126,5 @@ private data class ExportLink(
     val title: String?,
     val thumbnail: String,
     @SerialName("created_at") val createdAt: String,
+    val favorite: Boolean,
 )

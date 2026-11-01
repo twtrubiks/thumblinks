@@ -1,6 +1,6 @@
 # ThumbLinks
 
-收集網址的 Android App：貼上網址 → 抓縮圖（必填）與標題（選填）→ 整份清單一次匯出成 Markdown 或 JSON。
+收集網址的 Android App：貼上網址 → 抓縮圖（必填）與標題（選填）→ 整份清單一次匯出成 Markdown 或 JSON（也能再匯入回來）。
 內建一個會擋廣告的瀏覽器（GeckoView ＋ uBlock Origin），看到喜歡的網頁直接「加到清單」。
 Kotlin + Jetpack Compose 原生 App，在 claude.ai/code 雲端 session 開發。
 雲端 VM 沒有模擬器，模擬器操作與錄影交給 GitHub Actions（`.github/workflows/record.yml`）。
@@ -10,8 +10,9 @@ Kotlin + Jetpack Compose 原生 App，在 claude.ai/code 雲端 session 開發�
 規格裡的功能都做了：
 
 - 規則（純 Kotlin、JVM 測試）：`WebUrls`（取網址、網域）、`PageMeta`（解析 meta、Big5）、`MetaFetcher`（OkHttp）、
-  `Export`（Markdown／JSON／zip）、`LinkStore`（新增、查重複、改、刪、愛心）、`sortLinks`／`visibleLinks`（排序、只看愛心）
-- 畫面：清單（`ListScreen`，含匯出）、新增（`AddScreen`）、編輯（`EditScreen`）、縮圖預覽與兩個補救（`Thumbnails.kt` 的
+  `Export`（Markdown／JSON／zip）、`Import`（讀回匯出的檔案）、`LinkStore`（新增、查重複、改、刪、愛心）、
+  `sortLinks`／`visibleLinks`（排序、只看愛心）
+- 畫面：清單（`ListScreen`，含匯入、匯出）、新增（`AddScreen`）、編輯（`EditScreen`）、縮圖預覽與兩個補救（`Thumbnails.kt` 的
   `ThumbnailEditor`／`ThumbDraft`）、上傳的圖（`ThumbPrep`）、分享進來（`MainActivity`，`singleTask` ＋ `onNewIntent`）
 - 內建瀏覽器：`BrowserScreen`、`BrowserTab`（一個 GeckoSession 與它的 delegate）、
   `Ublock`（從 AMO 安裝、更新、badge、popup）、`BrowserInput`（網址列的規則，JVM 測試）。還沒做：多分頁
@@ -59,12 +60,12 @@ Kotlin + Jetpack Compose 原生 App，在 claude.ai/code 雲端 session 開發�
 
 ### 清單
 
-- 右上角：深色模式（跟系統／淺色／深色）、排序、只看愛心、「瀏覽」、「匯出」
+- 右上角：深色模式（跟系統／淺色／深色）、排序、只看愛心、「瀏覽」、「更多」（`more_button`：匯入、匯出）
 - **愛心**（標記比較喜歡的）：每一筆右邊有愛心（`HeartToggle`，自己的 48dp 點擊範圍，點了不會打開網頁），
   編輯頁右上角也有，按了就存（不用按「儲存」）。清單上按的時候畫面先換、資料庫在背景寫（`ThumbLinksApp.setFavorite`）。
   右上角的愛心是「只看愛心」（`visibleLinks`，純 Kotlin、JVM 測），排序照用；一筆都沒有時說明怎麼按。
   「只看愛心」不存起來（`rememberSaveable`）：下次打開 App 看到的是全部，不會以為清單少了東西。
-  匯出還沒帶愛心（使用者說先不做；要做的話 JSON 加 `"favorite": true`，或加「只匯出愛心的」）
+  JSON 匯出帶愛心、匯入時接回來；Markdown 不帶
 - 首頁就是清單，預設新加的在上面。**排序**（右上角，`SortOrder`，`sortLinks` 純 Kotlin、JVM 測）：新的在上／舊的在上／標題／網域，
   記在 SharedPreferences `settings`；標題、網域一樣的照新的在上，標題不分大小寫、中文照語系（Collator），沒有標題的用網址。
   匯出的順序跟畫面一樣（`export()` 也照目前的排序）。換排序時捲回最上面每筆顯示縮圖、標題（沒有標題就顯示網址）、網域。
@@ -75,8 +76,8 @@ Kotlin + Jetpack Compose 原生 App，在 claude.ai/code 雲端 session 開發�
 - 編輯頁（長按選單的「編輯」）：改標題、換縮圖（重新抓、貼圖片網址、上傳）、用瀏覽器開、複製網址、刪除（要確認）。
   換掉或刪掉上傳的縮圖時，舊的檔案要刪（`LinkStore.update`、`LinkStore.delete` 會刪）。
   在這一頁上傳、還沒存的圖由 `ThumbDraft` 記著，放棄這一頁（返回鍵）或又換一張時刪掉
-- 空清單時說明怎麼加：貼網址，或從瀏覽器「分享」過來
-- 右上角「匯出」，清單是空的時候停用
+- 空清單時說明怎麼加：貼網址，或從瀏覽器「分享」過來；也有「從檔案匯入」（`import_button`，換手機、重裝後最常用）
+- 「更多」裡的「匯出」在清單是空的時候停用
 
 ### 匯出
 
@@ -110,13 +111,15 @@ JSON（UTF-8、縮排兩格、中文不跳脫；用 kotlinx.serialization 的 `@
       "url": "https://example.com/article",
       "title": "標題",
       "thumbnail": "https://example.com/og.jpg",
-      "created_at": "2026-10-31T20:00:00+08:00"
+      "created_at": "2026-10-31T20:00:00+08:00",
+      "favorite": true
     },
     {
       "url": "https://example.org/page",
       "title": null,
       "thumbnail": "images/0b6c1c1e-4f1a-4b1e-9a0e-3f0f2d7c9a11.jpg",
-      "created_at": "2026-10-30T09:12:00+08:00"
+      "created_at": "2026-10-30T09:12:00+08:00",
+      "favorite": false
     }
   ]
 }
@@ -125,6 +128,28 @@ JSON（UTF-8、縮排兩格、中文不跳脫；用 kotlinx.serialization 的 `@
 - 沒有標題寫 `null`，不省略欄位
 - `thumbnail` 是字串：`http(s)://` 開頭是網路上的圖，其餘是 zip 裡的相對路徑
 - 時間是當地時間＋時差，到秒（`LinkStore` 存的就是這個格式）
+- `favorite`（愛心）`true`／`false` 都寫
+
+### 匯入
+
+把自己匯出的檔案讀回來（換手機、重裝、從試用版換正式版）。規則在 `Import`（純 Kotlin、JVM 測），畫面在 `ListScreen`。
+
+- 入口：右上角「更多」→「匯入」，清單是空的時候畫面中間也有「從檔案匯入」
+- 選檔用系統的開檔畫面（`ActivityResultContracts.OpenDocument`），類型不限（`*/*`：Markdown 在 Android 9 常是 `application/octet-stream`）；
+  **看內容不看副檔名**：`PK` 開頭是 zip（找 `links.json`，沒有再找 `links.md`），`{` 開頭是 JSON，其他當 Markdown。
+  都不是（一筆都讀不到）就說「找不到連結」
+- 選的檔案先複製進 `cacheDir/import/`（`ZipFile` 要能隨機讀），最大 1 GB；文字檔最大 20 MB，zip 裡一張圖最大 20 MB
+- 先讀一遍、算好再問（`Import.plan`）：「匯入 N 筆」＋檔案裡有幾筆、幾筆已經在清單裡、幾筆讀不出來，按「匯入」才加。
+  加完 snackbar 寫「加入 N 筆，M 筆已經在清單裡，X 筆讀不出來」
+- **網址已經在清單裡就跳過**（照字串比對），手機上那筆的標題、縮圖、愛心都不動；同一個檔案裡重複的只算第一筆。再匯入同一個檔案不會多東西
+- 讀不出來（跳過、其他照加）：網址不是 `http(s)://`、少了網址或縮圖、縮圖指到 zip 裡沒有的圖、圖解不開
+- JSON：時間、愛心照檔案；少了時間（或寫錯）用匯入的時間，少了愛心當作沒有；多的欄位不理
+- Markdown：一行 `[![替代文字](縮圖)](網址)`，其他的行不理。替代文字去掉 `\` 跳脫，跟網址一樣就是沒有標題；
+  網址只解 `Export.linkTarget` 編的那五個（`%20`、`%28`、`%29`、`%3C`、`%3E`）。沒有時間與愛心：用匯入的時間、沒有愛心
+- 加的順序（清單「新的在上」用加入的順序）：照檔案裡的時間從舊到新加，匯出時用的是什麼排序都一樣；
+  時間一樣或沒有時間的，檔案裡下面的先加（匯出預設新的在上，加完順序跟原本一樣）
+- zip 裡的圖存進 `thumbs/<新的 uuid>.jpg`（`ThumbPrep.saveImported`）：已經是整理好的（JPEG、長邊 1024 以內、不用轉）原樣存，
+  不然每搬一次手機就重壓一次 JPEG；其他的照上傳的規則整理
 
 ### 內建瀏覽器
 
@@ -171,7 +196,7 @@ JSON（UTF-8、縮排兩格、中文不跳脫；用 kotlinx.serialization 的 `@
 
 ### 先不做（要做之前先問使用者）
 
-匯入、雲端同步、帳號、分類／標籤、搜尋、手動拖曳排順序、網址正規化、匯出時把網路上的縮圖也下載進 zip。
+雲端同步、帳號、分類／標籤、搜尋、手動拖曳排順序、網址正規化、匯出時把網路上的縮圖也下載進 zip、匯入時用檔案裡的覆蓋清單上的。
 瀏覽器的多分頁、歷史紀錄、無痕、下載、上傳。
 
 ### 之後可能會做
@@ -180,7 +205,7 @@ JSON（UTF-8、縮排兩格、中文不跳脫；用 kotlinx.serialization 的 `@
 
 ## 程式的分層
 
-- 規則都在純 Kotlin、有 JVM 測試：`LinkStore`、`WebUrls`、`PageMeta`、`MetaFetcher`、`Export`、`BrowserInput`（含錯誤頁）。
+- 規則都在純 Kotlin、有 JVM 測試：`LinkStore`、`WebUrls`、`PageMeta`、`MetaFetcher`、`Export`、`Import`、`BrowserInput`（含錯誤頁）。
   `MetaFetcher` 的測試用 `mockwebserver3`（轉址、`image/*`、逾時、超過 1 MB、Big5）
 - `LinkStore` 透過 `Sql` 介面存取資料庫：手機上是 `AndroidSql`（`databases/thumblinks.db`），
   JVM 測試是 `JdbcSql`（sqlite-jdbc 的記憶體資料庫，SQL 跑在真的 SQLite 上）。
@@ -245,7 +270,7 @@ JSON（UTF-8、縮排兩格、中文不跳脫；用 kotlinx.serialization 的 `@
     憑證 SHA-256 `9adf6eb0…4ea897`，最新是 `0.8-browser`（versionCode 8）。要再給試用版時：
     用 `THUMBLINKS_VERSION_CODE`（比上一版大）、`THUMBLINKS_VERSION_NAME` 帶版本 build，
     先用 `apksigner verify --print-certs` 核對憑證跟上面一樣才給（一樣才能直接覆蓋安裝）；不一樣就先跟使用者講清楚只能移除重裝。
-    這把金鑰跟正式版對不上：發第一版 Release 時提醒使用者要先匯出備份、移除試用版才能裝（還沒有匯入，清單會一起刪掉）
+    這把金鑰跟正式版對不上：發第一版 Release 時提醒使用者先匯出（JSON 或 zip，帶愛心）、移除試用版、裝正式版後再匯入
   - versionCode 是 2026-01-01 起算的分鐘數（workflow 算好用環境變數帶進來），不管從哪個 branch 發都只會變大
   - README 的下載連結是 `releases/latest/download/thumblinks.apk`
 
@@ -306,7 +331,8 @@ CI 錄影前也會跑 `testDebugUnitTest`，沒過就不會錄影（失敗原因
 
 `app/src/androidTest/java/com/twtrubiks/thumblinks/DeviceTest.kt`，`record.sh` 在錄影前先跑、不錄影，輸出在 `device-test.txt`。
 只放模擬器才測得到的事：`LinkStore` 在 Android 9 的 SQLite 上跑一輪（含舊的表補上 `favorite` 欄位）；做了上傳之後，`ThumbPrep` 用真的 Bitmap 與 ExifInterface 縮圖轉正
-（直拍的 JPEG、手機拍的 HEIC；只看長寬的話轉錯方向也會過，要用上下兩色的圖核對轉正後顏色的位置）。
+（直拍的 JPEG、手機拍的 HEIC；只看長寬的話轉錯方向也會過，要用上下兩色的圖核對轉正後顏色的位置）；
+匯入的圖（`ThumbPrep.saveImported`）整理好的原樣存、太大或要轉的照上傳的規則整理。
 
 ## 系統畫面的測試：SystemUiTest
 
@@ -318,6 +344,8 @@ CI 錄影前也會跑 `testDebugUnitTest`，沒過就不會錄影（失敗原因
 - 存檔的檔案畫面：有上傳的圖，匯出 Markdown 存到 Download 是 zip（先從左上角的選單切到 Downloads，停在「最近」的話不能存），
   用 `uiAutomation.executeShellCommand("cat …")` 讀出原始 bytes 解開，核對 `links.md` 與 `images/<id>.jpg`。
   這個指令不經過 sh：不能用引號、萬用字元，檔名要確定（同名的會被系統存成「… (1).zip」，所以開始前先刪掉）
+- 開檔的檔案畫面：接著從畫面刪掉那一筆，清單空了 →「從檔案匯入」→ 一樣切到 Downloads、點剛匯出的 zip →
+  確認對話框「匯入 1 筆」（`system-05-import-confirm.png`）→ 加回來（`system-06-imported.png`），上傳的圖跟 zip 裡的一模一樣
 
 ## 內建瀏覽器的測試：BrowserTest
 

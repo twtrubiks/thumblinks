@@ -9,6 +9,7 @@ import androidx.exifinterface.media.ExifInterface
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import org.junit.After
+import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
@@ -22,7 +23,7 @@ import java.io.File
 /**
  * 只有模擬器才測得到的事，`record.sh` 在錄影前先跑、不錄影：
  * [LinkStore] 的 SQL 在 Android 9 內建的 SQLite（3.22）上跑一輪——JVM 測試用的新版 SQLite 不會擋下新語法；
- * 上傳的縮圖用真的 Bitmap 與 ExifInterface 縮圖轉正（[ThumbPrep]）。
+ * 上傳的縮圖用真的 Bitmap 與 ExifInterface 縮圖轉正（[ThumbPrep]），匯入的圖整理好了就原樣存。
  */
 @RunWith(AndroidJUnit4::class)
 class DeviceTest {
@@ -152,6 +153,35 @@ class DeviceTest {
         val transparent = bitmap.getPixel(150, 50)
         assertTrue("透明的地方要是白的：${Integer.toHexString(transparent)}", Color.red(transparent) > 240 && Color.blue(transparent) > 240)
         assertTrue(Color.blue(bitmap.getPixel(50, 50)) > 150)
+    }
+
+    /**
+     * 匯入的 zip 裡的圖：App 自己整理過的（JPEG、長邊 1024 以內、沒有要轉）原樣存，搬幾次手機都不會越壓越糊；
+     * 別的（太大、要轉、不是 JPEG）照上傳的規則整理；解不開的不存。
+     */
+    @Test
+    fun importedImagesAreKeptAsIsWhenAlreadyPrepared() {
+        val ready = jpeg(1024, 768, topHalfRed = true)
+        assertArrayEquals(ready, File(thumbs, requireNotNull(ThumbPrep.saveImported(ready, thumbs))).readBytes())
+
+        val big = File(thumbs, requireNotNull(ThumbPrep.saveImported(jpeg(2048, 1024, topHalfRed = true), thumbs)))
+        val bounds = BitmapFactory.Options().apply { inJustDecodeBounds = true }
+        BitmapFactory.decodeFile(big.path, bounds)
+        assertEquals("1024x512", "${bounds.outWidth}x${bounds.outHeight}")
+
+        val rotated = File(context.cacheDir, "rotated.jpg")
+        rotated.writeBytes(jpeg(400, 300, topHalfRed = true))
+        ExifInterface(rotated).apply {
+            setAttribute(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_ROTATE_90.toString())
+            saveAttributes()
+        }
+        val upright = BitmapFactory.decodeFile(File(thumbs, requireNotNull(ThumbPrep.saveImported(rotated.readBytes(), thumbs))).path)
+        rotated.delete()
+        assertRedOnTheRight(upright)
+
+        val countBefore = thumbs.listFiles()!!.size
+        assertNull(ThumbPrep.saveImported("<html>不是圖</html>".toByteArray(), thumbs))
+        assertEquals(countBefore, thumbs.listFiles()!!.size)
     }
 
     @Test
