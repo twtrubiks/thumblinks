@@ -3,13 +3,13 @@ name: Android release
 # 發一版給別人下載的 APK：build、用發版金鑰簽名、放到 GitHub Release（tag 是 v<版本>）。
 # README 的下載連結指向 releases/latest/download/thumblinks.apk，永遠是最新的那一版。
 # 三種發法，版本已經發過的話就跳過（merge 進 main 時也不會重發）：
-#   - 改 release-version（例如 2026.11.01，同一天第二版寫 2026.11.01.2）推上去——
+#   - 改 release-version（例如 1.0.1）推上去——
 #     Claude 雲端 session 只能推自己的 branch、推不了 tag，用這個
-#   - 推一個 tag：git tag v2026.11.01 && git push origin v2026.11.01（版本就是 tag 後面那段）
+#   - 推一個 tag：git tag v1.0.1 && git push origin v1.0.1（版本就是 tag 後面那段）
 #   - 手動觸發：Actions → Android release → Run workflow，版本照 release-version
 #
 # 每一版都要用同一把金鑰簽，手機上的舊版才能直接更新；換了金鑰只能移除重裝，清單會一起刪掉。
-# 第一次發版前照 docs/release-key.md 產生金鑰、設好 Secrets、把憑證的 SHA-256 填進下面的 EXPECTED_CERT：
+# 金鑰放在 Secrets（怎麼產生、怎麼設見 docs/release-key.md），憑證的 SHA-256 寫在下面的 EXPECTED_CERT：
 #   ANDROID_SIGNING_KEYSTORE  PKCS12 金鑰檔的 base64（alias 是 thumblinks）
 #   ANDROID_SIGNING_PASSWORD  金鑰檔與金鑰的密碼
 # 簽完會核對憑證的 SHA-256 跟 EXPECTED_CERT 一樣，Secret 被換成別把金鑰的話就不發版。
@@ -29,8 +29,8 @@ permissions:
   contents: write
 
 env:
-  # 還沒有發版金鑰：照 docs/release-key.md 產生後填進來（64 碼小寫十六進位）
-  EXPECTED_CERT: ''
+  # 發版金鑰（thumblinks-release.p12）的憑證 SHA-256，64 碼小寫十六進位
+  EXPECTED_CERT: '31da42eafdc11db0ff013a606e9fa61db982502ca151cfa059a0ab5b8f1087a9'
 
 jobs:
   version:
@@ -82,7 +82,7 @@ jobs:
           PASSWORD: ${{ secrets.ANDROID_SIGNING_PASSWORD }}
         run: |
           if [ -z "$EXPECTED_CERT" ]; then
-            echo "::error::release.yml 的 EXPECTED_CERT 還是空的：第一次發版前照 docs/release-key.md 產生金鑰"
+            echo "::error::release.yml 的 EXPECTED_CERT 是空的：照 docs/release-key.md 填進發版金鑰的憑證 SHA-256"
             exit 1
           fi
           if [ -z "$KEYSTORE" ] || [ -z "$PASSWORD" ]; then
@@ -103,7 +103,8 @@ jobs:
         run: |
           ./gradlew testDebugUnitTest assembleRelease
           mkdir -p dist
-          cp app/build/outputs/apk/release/app-release.apk dist/thumblinks.apk
+          # APK 按 CPU 拆開（GeckoView 每種 CPU 一份引擎），手機是 arm64-v8a
+          cp app/build/outputs/apk/release/app-arm64-v8a-release.apk dist/thumblinks.apk
 
       - name: Verify signature
         shell: bash

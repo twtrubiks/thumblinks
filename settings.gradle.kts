@@ -17,6 +17,10 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        // GeckoView 只放在 Mozilla 自己的 Maven，其他東西不從這裡拿
+        maven("https://maven.mozilla.org/maven2/") {
+            content { includeGroup("org.mozilla.geckoview") }
+        }
     }
 }
 

@@ -1,60 +1,172 @@
 package com.twtrubiks.thumblinks
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.produceState
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.listSaver
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.saveable.rememberSaveableStateHolder
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
-import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.UUID
+
+/** 畫面。首頁是清單，新增、編輯、內建瀏覽器從它往裡走。[key] 用來分開每一頁的 rememberSaveable（瀏覽器的分頁也用它）。 */
+private sealed interface Route {
+    val key: String
+
+    data object Home : Route {
+        override val key = "home"
+    }
+
+    /**
+     * [shared]：別的 App 分享過來的文字，一打開就開始抓。
+     * [isUrl]：[shared] 是內建瀏覽器正在看的網址，照原樣用，不再從裡面「取網址」（那會把 `'`、結尾的 `.` 當成不是網址的一部分）。
+     */
+    data class Add(val nonce: String, val shared: String?, val isUrl: Boolean = false) : Route {
+        override val key get() = "add-$nonce"
+    }
+
+    /** 同一筆可以開兩頁（編輯 → 用瀏覽器開 → 已在清單 → 編輯），每一頁有自己的 [nonce]，關掉的才不會是另一頁。 */
+    data class Edit(val nonce: String, val id: String) : Route {
+        override val key get() = "edit-$nonce"
+    }
+
+    /** 內建瀏覽器的一個分頁。[url] 是一打開要載入的網址，null 是空白頁（網址列等著輸入）。 */
+    data class Browser(val nonce: String, val url: String?) : Route {
+        override val key get() = "browser-$nonce"
+    }
+}
+
+/** 轉螢幕、切到背景再回來時，走到哪一頁要留著。 */
+private val StackSaver = listSaver<List<Route>, String>(
+    save = { stack ->
+        stack.map {
+            when (it) {
+                Route.Home -> "home"
+                is Route.Add -> "${if (it.isUrl) "addurl" else "add"}|${it.nonce}|${it.shared ?: ""}"
+                is Route.Edit -> "edit|${it.nonce}|${it.id}"
+                is Route.Browser -> "browser|${it.nonce}|${it.url ?: ""}"
+            }
+        }
+    },
+    restore = { saved ->
+        saved.map {
+            val parts = it.split("|", limit = 3)
+            when (parts[0]) {
+                "add", "addurl" -> Route.Add(parts[1], parts[2].ifEmpty { null }, isUrl = parts[0] == "addurl")
+                "edit" -> Route.Edit(parts[1], parts[2])
+                "browser" -> Route.Browser(parts[1], parts[2].ifEmpty { null })
+                else -> Route.Home
+            }
+        }
+    },
+)
 
 /**
- * 整個 App。目前只有骨架：列出清單。加入連結、抓縮圖、上傳、匯出照 CLAUDE.md 的規格一步步長出來，
- * 頁面多了之後導覽也放在這裡（照 treesay 的 `TreeSayApp`：sealed interface 的 Route + rememberSaveable 的 stack）。
+ * 整個 App。導覽是 sealed interface 的 Route ＋ rememberSaveable 的 stack，不另外引入 Navigation 套件。
+ * [sharedText]：別的 App 分享進來的文字（[MainActivity] 接住的），收到就開一頁新增，處理完呼叫 [onSharedTextTaken]。
  */
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun ThumbLinksApp() {
+fun ThumbLinksApp(sharedText: String? = null, onSharedTextTaken: () -> Unit = {}) {
     val container = LocalContext.current.container
-    val links by produceState<List<Link>?>(null) {
-        value = withContext(Dispatchers.IO) { container.links.all() }
+    var stack by rememberSaveable(stateSaver = StackSaver) { mutableStateOf(listOf<Route>(Route.Home)) }
+    val holder = rememberSaveableStateHolder()
+    // 每換一頁（新增完、編輯完回來）與匯入完重讀一次清單；讀的時候畫面上留著舊的，不會閃一下空白
+    var links by remember { mutableStateOf<List<Link>?>(null) }
+    var imports by remember { mutableIntStateOf(0) }
+    LaunchedEffect(stack, imports) {
+        links = withContext(Dispatchers.IO) { container.links.all() }
+    }
+    val scope = rememberCoroutineScope()
+
+    // 按愛心：畫面上先換，不用等資料庫；寫進資料庫在背景
+    fun setFavorite(link: Link, favorite: Boolean) {
+        links = links?.map { if (it.id == link.id) it.copy(favorite = favorite) else it }
+        scope.launch(Dispatchers.IO) { container.links.setFavorite(link.id, favorite) }
     }
 
-    ThumbLinksTheme {
-        Surface(Modifier.fillMaxSize()) {
-            Column(
-                Modifier
-                    .fillMaxSize()
-                    .safeDrawingPadding()
-                    // 讓 UiAutomator 用 By.res(...) 找得到 testTag
-                    .semantics { testTagsAsResourceId = true }
-                    .padding(horizontal = 24.dp, vertical = 16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-            ) {
-                Text("ThumbLinks", style = MaterialTheme.typography.headlineMedium)
-                val list = links
-                when {
-                    list == null -> Unit
-                    list.isEmpty() -> Text(
-                        "還沒有連結。貼上網址，就會幫你抓縮圖。",
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                    else -> LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                        items(list, key = Link::id) { Text(it.title ?: it.url) }
+    fun push(route: Route) {
+        stack = stack + route
+    }
+    // 關掉「那一頁」而不是最上面那一頁：存檔的時候剛好又分享進來一個網址，關掉的不能是新開的那頁
+    fun close(route: Route) {
+        stack = (stack - route).ifEmpty { listOf(Route.Home) }
+        holder.removeState(route.key)
+        if (route is Route.Browser) container.closeTab(route.key)
+    }
+    fun browse(url: String?) = push(Route.Browser(UUID.randomUUID().toString(), url))
+    fun add(shared: String?, isUrl: Boolean = false) = push(Route.Add(UUID.randomUUID().toString(), shared, isUrl))
+    fun edit(id: String) = Route.Edit(UUID.randomUUID().toString(), id)
+    fun replace(route: Route, with: Route) {
+        stack = stack.map { if (it == route) with else it }
+        holder.removeState(route.key)
+    }
+
+    // 內建瀏覽器的引擎與 uBO 先在背景準備好，點進瀏覽器時不用再等引擎啟動、uBO 讀過濾清單
+    LaunchedEffect(Unit) { container.warmUpBrowser() }
+
+    LaunchedEffect(sharedText) {
+        if (sharedText != null) {
+            add(sharedText)
+            onSharedTextTaken()
+        }
+    }
+
+    ThumbLinksTheme(container.theme.value) {
+        // 底色畫到系統列後面（不然狀態列後面露出的是視窗底色，那是跟著系統的深淺，App 設成深色時狀態列的字會看不見），
+        // 內容再讓開系統列與鍵盤
+        Surface(
+            Modifier
+                .fillMaxSize()
+                // 讓 UiAutomator 用 By.res(...) 找得到 testTag
+                .semantics { testTagsAsResourceId = true },
+        ) {
+            Box(Modifier.fillMaxSize().safeDrawingPadding()) {
+                val route = stack.last()
+                // 新增、編輯頁自己接返回鍵：要先刪掉在那一頁上傳、還沒存的圖；瀏覽器的返回鍵先回上一頁
+                holder.SaveableStateProvider(route.key) {
+                    when (route) {
+                        Route.Home -> ListScreen(
+                            links = links,
+                            onAdd = { add(null) },
+                            onOpen = { browse(it.url) },
+                            onEdit = { push(edit(it.id)) },
+                            onFavorite = ::setFavorite,
+                            onBrowse = { browse(null) },
+                            onImported = { imports++ },
+                        )
+                        is Route.Add -> AddScreen(
+                            initialText = route.shared,
+                            initialIsUrl = route.isUrl,
+                            onBack = { close(route) },
+                            onAdded = { close(route) },
+                            onOpenExisting = { replace(route, edit(it)) },
+                        )
+                        is Route.Edit -> EditScreen(id = route.id, onBack = { close(route) }, onOpenBrowser = ::browse)
+                        is Route.Browser -> BrowserScreen(
+                            tabKey = route.key,
+                            initialUrl = route.url,
+                            links = links,
+                            onClose = { close(route) },
+                            onAdd = { add(it, isUrl = true) },
+                            onEdit = { push(edit(it)) },
+                        )
                     }
                 }
             }

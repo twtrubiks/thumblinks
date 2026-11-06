@@ -2,9 +2,10 @@
 
 給別人裝的 APK 一律從 GitHub Release 來，每一版都要用**同一把**金鑰簽：
 換了金鑰，手機上的舊版就不能直接更新，只能移除重裝，清單會一起刪掉。
-所以這把金鑰在自己的電腦上產生一次，備份好，之後永遠用它。
+所以這把金鑰只產生一次，備份好，之後永遠用它。
 
-**不要在雲端 session 裡產生**：VM 每個 session 都是新的，金鑰檔留不住。
+**金鑰已經有了**，Secrets 與 `release.yml` 的 `EXPECTED_CERT` 都設好了，**不要再產生新的**。
+下面的步驟只在金鑰真的弄丟、要重來時用（重來之後手機上的版本只能移除重裝）。
 
 ## 1. 產生 PKCS12 金鑰
 
@@ -37,7 +38,11 @@ keytool -list -v -keystore thumblinks-release.p12 -alias thumblinks \
 印出來的 64 碼填進 `.github/workflows/release.yml` 的 `EXPECTED_CERT`。
 workflow 簽完會核對這個值，Secret 被換成別把金鑰的話就不發版。
 
-## 4. 發第一版
+## 4. 發版
 
-在 repo 根目錄新增 `release-version`，內容是版本（例如 `2026.11.01`），推上去就會 build、簽名、發 Release（tag `v2026.11.01`）。
-之後要發新版就改這個檔案（同一天第二版寫 `2026.11.01.2`）。
+版本號用語意化版本（`1.0.0`、`1.0.1`、`1.1.0`…）。兩種發法：
+
+- 推一個 tag：`git tag v1.0.1 && git push origin v1.0.1`
+- repo 根目錄的 `release-version` 內容寫版本（例如 `1.0.1`），改了推上去（推不了 tag 的環境用這個）
+
+都會 build、簽名、發 Release（tag `v1.0.1`）。先確認 CI（`record.yml`）過了再發。

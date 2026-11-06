@@ -9,7 +9,10 @@ plugins {
 
 android {
     namespace = "com.twtrubiks.thumblinks"
-    compileSdk = 37
+    // GeckoView 159 要求 37.2（Android 17 的 minor SDK）以上
+    compileSdk {
+        version = release(37) { minorApiLevel = 2 }
+    }
 
     defaultConfig {
         applicationId = "com.twtrubiks.thumblinks"
@@ -45,6 +48,23 @@ android {
             // 沒有發版金鑰（自己 build、錄影的 CI）就用這台機器的 debug 金鑰簽，能直接安裝，也能覆蓋同一台機器打包的 debug 版
             signingConfig = signingConfigs.findByName("release") ?: signingConfigs.getByName("debug")
         }
+    }
+
+    // GeckoView 帶了四種 CPU 的引擎，整包 500 MB 以上。只出兩份：
+    // arm64-v8a 給手機（release.yml 發的就是這份），x86_64 給 CI 的模擬器（record.sh 裝的）
+    splits {
+        abi {
+            isEnable = true
+            reset()
+            include("arm64-v8a", "x86_64")
+            isUniversalApk = false
+        }
+    }
+
+    // native library 預設不壓縮（裝好之後直接從 APK 讀），GeckoView 的 libxul.so 光一個就 150 MB。
+    // 給手機的 APK 是從 GitHub Release 下載的，壓縮後 APK 小一半以上；代價是安裝時要解開到手機裡
+    packaging {
+        jniLibs.useLegacyPackaging = true
     }
 
     compileOptions {
@@ -85,6 +105,7 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.geckoview)
 
     testImplementation(libs.junit)
     testImplementation(libs.mockwebserver3)

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Android 9 起預設擋明碼 HTTP。清單收的是使用者自己貼的網址：`http://` 的網頁（多半會轉到 https）
+     與 `http://` 的縮圖都要抓得到，所以放行。內建瀏覽器（GeckoView）本來就不看這份設定 -->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true" />
+</network-security-config>

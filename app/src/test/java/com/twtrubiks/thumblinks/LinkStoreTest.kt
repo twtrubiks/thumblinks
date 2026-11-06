@@ -82,6 +82,95 @@ class LinkStoreTest {
     }
 
     @Test
+    fun findByUrlComparesTheExactString() {
+        val link = store.add("https://a.example/x", "A", Thumbnail.Remote("https://a.example/og.jpg"))
+
+        assertEquals(link, store.findByUrl("https://a.example/x"))
+        // 不做正規化：多一個斜線、換大小寫都當作不同的網址
+        assertNull(store.findByUrl("https://a.example/x/"))
+        assertNull(store.findByUrl("https://A.example/x"))
+    }
+
+    @Test
+    fun updateTitleAndThumbnailKeepsTheRest() {
+        val link = store.add("https://a.example/", "A", Thumbnail.Remote("https://a.example/og.jpg"))
+        store.add("https://b.example/", "B", Thumbnail.Remote("https://b.example/og.jpg"))
+
+        val updated = store.update(link.id, "  新標題 ", Thumbnail.Uploaded("a.jpg"))
+
+        assertEquals(link.copy(title = "新標題", thumbnail = Thumbnail.Uploaded("a.jpg")), updated)
+        assertEquals(updated, store.find(link.id))
+        // 排序還是加入的順序
+        assertEquals(listOf("https://b.example/", "https://a.example/"), store.all().map { it.url })
+        assertNull(store.update(link.id, "", Thumbnail.Remote("https://a.example/2.jpg"))!!.title)
+        assertNull(store.update("no-such-id", "x", Thumbnail.Remote("https://a.example/2.jpg")))
+    }
+
+    @Test
+    fun favoriteIsKeptWhenEditing() {
+        val link = store.add("https://a.example/", "A", Thumbnail.Remote("https://a.example/og.jpg"))
+        val other = store.add("https://b.example/", "B", Thumbnail.Remote("https://b.example/og.jpg"))
+        assertFalse(link.favorite)
+
+        store.setFavorite(link.id, true)
+        assertTrue(store.find(link.id)!!.favorite)
+        assertFalse(store.find(other.id)!!.favorite)
+
+        // 編輯頁存標題、縮圖時不能把愛心蓋掉
+        store.update(link.id, "新標題", Thumbnail.Remote("https://a.example/2.jpg"))
+        assertTrue(store.find(link.id)!!.favorite)
+
+        store.setFavorite(link.id, false)
+        assertFalse(store.find(link.id)!!.favorite)
+    }
+
+    /** 手機上已經有的清單（還沒有 favorite 欄位的表）：補上欄位，原本的每一筆都留著、都不是愛心。 */
+    @Test
+    fun oldTableGetsFavoriteColumn() {
+        sql.execute(
+            """
+            CREATE TABLE links (
+                id TEXT PRIMARY KEY,
+                url TEXT NOT NULL UNIQUE,
+                title TEXT,
+                thumbnail_url TEXT,
+                thumbnail_file TEXT,
+                created_at TEXT NOT NULL,
+                CHECK ((thumbnail_url IS NULL) <> (thumbnail_file IS NULL))
+            )
+            """.trimIndent(),
+        )
+        sql.execute(
+            "INSERT INTO links (id, url, title, thumbnail_url, created_at) VALUES ('old', 'https://old.example/', '舊的', 'https://old.example/og.jpg', '2026-10-30T09:12:00+08:00')",
+        )
+
+        val old = store.find("old")!!
+        assertEquals("舊的", old.title)
+        assertFalse(old.favorite)
+        store.setFavorite("old", true)
+        // 下次打開 App 再建一次 LinkStore：欄位已經有了，不能再加一次
+        assertTrue(LinkStore(sql, thumbs).find("old")!!.favorite)
+    }
+
+    /** 換掉上傳的縮圖時，舊的檔案要刪；換成同一張（只改標題）時不能刪。 */
+    @Test
+    fun replacingUploadedThumbnailDeletesTheOldFile() {
+        val old = thumbs.resolve("old.jpg").apply { writeText("jpeg") }
+        val new = thumbs.resolve("new.jpg").apply { writeText("jpeg") }
+        val link = store.add("https://a.example/", "A", Thumbnail.Uploaded("old.jpg"))
+
+        store.update(link.id, "只改標題", Thumbnail.Uploaded("old.jpg"))
+        assertTrue(old.exists())
+
+        store.update(link.id, "A", Thumbnail.Uploaded("new.jpg"))
+        assertFalse(old.exists())
+        assertTrue(new.exists())
+
+        store.update(link.id, "A", Thumbnail.Remote("https://a.example/og.jpg"))
+        assertFalse(new.exists())
+    }
+
+    @Test
     fun deletingRemovesUploadedThumbnail() {
         val file = thumbs.resolve("b.jpg").apply { writeText("jpeg") }
         val keep = thumbs.resolve("keep.jpg").apply { writeText("jpeg") }

@@ -1,5 +1,7 @@
 package com.twtrubiks.thumblinks
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Intent
 import android.os.SystemClock
 import androidx.test.platform.app.InstrumentationRegistry
@@ -43,6 +45,43 @@ abstract class UiTest {
         )
     }
 
+    /** 放一段文字進剪貼簿，給「貼上」按鈕讀。 */
+    protected fun setClipboard(text: String) {
+        instrumentation.runOnMainSync {
+            context.getSystemService(ClipboardManager::class.java).setPrimaryClip(ClipData.newPlainText("url", text))
+        }
+    }
+
+    /** 剪貼簿裡的文字（App 在前景才讀得到：Android 10 以後背景的 App 讀不到剪貼簿）。 */
+    protected fun clipboardText(): String? {
+        var text: String? = null
+        instrumentation.runOnMainSync {
+            text = context.getSystemService(ClipboardManager::class.java).primaryClip?.takeIf { it.itemCount > 0 }?.getItemAt(0)?.text?.toString()
+        }
+        return text
+    }
+
+    /** 假裝從別的 App（瀏覽器）分享一段文字進來；App 開著的話會走 onNewIntent。 */
+    protected fun share(text: String) {
+        context.startActivity(
+            Intent(Intent.ACTION_SEND)
+                .setClass(context, MainActivity::class.java)
+                .setType("text/plain")
+                .putExtra(Intent.EXTRA_TEXT, text)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+        )
+    }
+
+    /** 清單清空（上傳的圖一起刪），要用到的資料都在測試裡建。 */
+    protected fun clearLinks() {
+        container.links.all().forEach { container.links.delete(it.id) }
+    }
+
+    /** 等回到首頁的清單（不是空的）。新增頁、編輯頁的標題欄裡也有標題，不能拿標題的字來判斷。 */
+    protected fun backOnList() {
+        waitFor(By.res("link_list"))
+    }
+
     protected fun find(selector: BySelector): UiObject2 = waitFor(selector)
 
     // device.wait(Until...) 一秒才看一次，每一步都多等快一秒；自己每 0.1 秒看一次
@@ -62,8 +101,12 @@ abstract class UiTest {
         }
     }
 
-    /** 往 [direction] 捲，直到 [selector] 整個出現在畫面上。 */
+    /**
+     * 往 [direction] 捲，直到 [selector] 整個出現在畫面上。
+     * 先等畫面出來（例如編輯頁要先從資料庫讀那一筆），一頁放得下時沒有可以捲的元件，直接回傳。
+     */
     protected fun reveal(selector: BySelector, direction: Direction = Direction.DOWN): UiObject2 {
+        poll(10_000) { device.findObject(selector) ?: device.findObject(By.scrollable(true)) }
         repeat(8) {
             device.findObject(selector)?.takeIf { it.visibleBounds.height() > 0 }?.let { return it }
             find(By.scrollable(true)).scroll(direction, 0.5f)
@@ -95,6 +138,22 @@ abstract class UiTest {
 
     protected fun screenshot(name: String) {
         device.takeScreenshot(File(screenshotDir, "$name.png"), 0.5f, 90)
+    }
+
+    /**
+     * 內建瀏覽器載完 [url] 幾次：[BrowserTab] 每載完一頁在 logcat 寫一行「網頁載入完成 success=true <網址>」。
+     * 網頁的內容 UiAutomator 讀不到；工具列的「重新整理」在開始載入之前也是它，不能拿來判斷。
+     */
+    protected fun pageLoads(url: String): Int = device.executeShellCommand("logcat -d -s ThumbLinks:I")
+        .lineSequence()
+        .count { it.trimEnd().endsWith("網頁載入完成 success=true $url") }
+
+    /** 做 [action]（點一筆、按「前往」、點網頁…），等內建瀏覽器載完 [url]，再停一下讓 GeckoView 畫出來。 */
+    protected fun loadPage(url: String, timeout: Long = 60_000, action: () -> Unit) {
+        val before = pageLoads(url)
+        action()
+        checkNotNull(poll(timeout) { if (pageLoads(url) > before) Unit else null }) { "內建瀏覽器沒有載完 $url" }
+        pause(1000)
     }
 
     // 只是讓影片看得清楚的停頓

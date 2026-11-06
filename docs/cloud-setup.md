@@ -3,7 +3,7 @@
 全程在 [Claude Code 雲端 session](https://claude.ai/code) 開發，不需要在自己的電腦安裝 Android Studio、SDK 或模擬器。
 看畫面這一步交給 GitHub Actions 的模擬器錄影（`.github/workflows/record.yml`）。
 
-**已經有其他 Android 專案（例如 treesay）用的雲端環境，可以直接沿用**：`scripts/cloud-setup.sh` 裝的 SDK
+**已經有其他 Android 專案用的雲端環境，可以直接沿用**：`scripts/cloud-setup.sh` 裝的 SDK
 （`platform-tools`、`platforms;android-37.0`、`build-tools;36.0.0`）和網路設定都一樣，開 session 時選那個環境、再選這個 repo 就好。
 沒有的話，照下面三個步驟設定一次。
 
