@@ -1,0 +1,9 @@
+Starting: Intent { cmp=com.twtrubiks.thumblinks/.MainActivity }
+Status: ok
+Activity: com.twtrubiks.thumblinks/.MainActivity
+ThisTime: 763
+TotalTime: 763
+WaitTime: 967
+Complete
+04:48:59 用內建瀏覽器打開 https://github.com/git/git
+04:49:06 瀏覽器等完了 browsed=1

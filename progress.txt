@@ -1,0 +1,9 @@
+04:46:14 安裝 debug 版與測試 APK
+04:46:19 DeviceTest
+04:46:20 DemoRecordingTest（錄影）
+04:48:02 收回錄影
+04:48:03 SystemUiTest
+04:48:34 release 冒煙測試
+04:49:10 BrowserTest
+04:50:16 UblockUpdateTest
+04:50:49 瀏覽器的測試結束，收回截圖
