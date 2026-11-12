@@ -1,0 +1,8 @@
+
+com.twtrubiks.thumblinks.DemoRecordingTest:.
+
+Time: 98.488
+
+OK (1 test)
+
+
