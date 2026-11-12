@@ -56,4 +56,49 @@ class LinkSortTest {
         assertEquals(listOf("a", "d"), visibleLinks(marked, SortOrder.TITLE, favoritesOnly = true).map { it.id })
         assertEquals(emptyList<String>(), visibleLinks(links, SortOrder.NEWEST, favoritesOnly = true).map { it.id })
     }
+
+    private fun search(query: String, order: SortOrder = SortOrder.NEWEST, favoritesOnly: Boolean = false, from: List<Link> = links) =
+        visibleLinks(from, order, favoritesOnly, query).map { it.id }
+
+    @Test
+    fun searchLooksAtTheTitleAndTheUrlIgnoringCase() {
+        // 標題：Apple 與 apple
+        assertEquals(listOf("b", "a"), search("APPLE"))
+        // 網址（網域也在裡面）
+        assertEquals(listOf("d", "a"), search("github"))
+        assertEquals(listOf("e", "b"), search("YouTube.com/watch"))
+        // 沒有標題的只看網址
+        assertEquals(listOf("c"), search("no-title"))
+        assertEquals(emptyList<String>(), search("找不到的字"))
+    }
+
+    @Test
+    fun blankSearchShowsEverything() {
+        assertEquals(listOf("e", "d", "c", "b", "a"), search(""))
+        assertEquals(listOf("e", "d", "c", "b", "a"), search("  　 "))
+    }
+
+    @Test
+    fun everySearchTermHasToMatch() {
+        // 一段在標題、一段在網址也可以
+        assertEquals(listOf("a"), search("apple github"))
+        assertEquals(listOf("a"), search(" github　apple "))
+        assertEquals(emptyList<String>(), search("apple example"))
+    }
+
+    @Test
+    fun searchKeepsTheOrderAndFavoritesOnly() {
+        val marked = links.map { if (it.id in setOf("a", "d")) it.copy(favorite = true) else it }
+
+        assertEquals(listOf("a", "b"), search("apple", order = SortOrder.OLDEST))
+        assertEquals(listOf("a"), search("apple", favoritesOnly = true, from = marked))
+        assertEquals(listOf("a", "d"), search("github", order = SortOrder.TITLE, favoritesOnly = true, from = marked))
+    }
+
+    @Test
+    fun searchFindsChinese() {
+        val chinese = links + link("z", "https://example.com/taipei", "陽明山芒草")
+
+        assertEquals(listOf("z"), search("芒草", from = chinese))
+    }
 }

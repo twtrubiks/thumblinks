@@ -101,6 +101,12 @@ fun ThumbLinksApp(sharedText: String? = null, onSharedTextTaken: () -> Unit = {}
         scope.launch(Dispatchers.IO) { container.links.setFavorite(link.id, favorite) }
     }
 
+    // 清單上刪除（長按選單）：一樣畫面上先拿掉，資料庫與上傳的圖在背景刪
+    fun delete(link: Link) {
+        links = links?.filterNot { it.id == link.id }
+        scope.launch(Dispatchers.IO) { container.links.delete(link.id) }
+    }
+
     fun push(route: Route) {
         stack = stack + route
     }
@@ -148,6 +154,7 @@ fun ThumbLinksApp(sharedText: String? = null, onSharedTextTaken: () -> Unit = {}
                             onOpen = { browse(it.url) },
                             onEdit = { push(edit(it.id)) },
                             onFavorite = ::setFavorite,
+                            onDelete = ::delete,
                             onBrowse = { browse(null) },
                             onImported = { imports++ },
                         )

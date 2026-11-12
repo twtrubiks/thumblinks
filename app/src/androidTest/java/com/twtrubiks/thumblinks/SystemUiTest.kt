@@ -97,7 +97,7 @@ class SystemUiTest : UiTest() {
         // 刪掉那一筆（從畫面，清單才會跟著空）
         find(By.text(FakeSite.PLAIN_TITLE)).longClick()
         find(By.text("編輯")).click()
-        reveal(By.text("刪除這一筆")).click()
+        find(By.desc("刪除這一筆")).click()
         find(By.text("刪除")).click()
         waitFor(By.text("還沒有連結"))
         assertEquals(emptyList<Link>(), container.links.all())

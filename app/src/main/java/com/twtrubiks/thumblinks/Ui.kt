@@ -8,7 +8,11 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconToggleButton
@@ -104,6 +108,23 @@ fun HeartToggle(checked: Boolean, onCheckedChange: (Boolean) -> Unit, descriptio
             tint = if (checked) HeartRed else LocalContentColor.current,
         )
     }
+}
+
+/** 刪除前的確認（清單的長按選單、編輯頁的垃圾桶都用這個）。 */
+@Composable
+fun ConfirmDelete(link: Link, onConfirm: () -> Unit, onDismiss: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("刪除這一筆？") },
+        text = { Text(link.title ?: link.url) },
+        confirmButton = {
+            TextButton(
+                onClick = onConfirm,
+                colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.error),
+            ) { Text("刪除") }
+        },
+        dismissButton = { TextButton(onClick = onDismiss) { Text("取消") } },
+    )
 }
 
 // 淺色、深色底都看得清楚的紅

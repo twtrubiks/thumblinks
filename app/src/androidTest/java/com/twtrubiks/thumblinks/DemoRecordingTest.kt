@@ -124,7 +124,7 @@ class DemoRecordingTest : UiTest() {
         // 長按跳選單 → 編輯 → 刪除一筆（要確認）
         find(By.text("陽明山芒草")).longClick()
         find(By.text("編輯")).click()
-        reveal(By.text("刪除這一筆")).click()
+        find(By.desc("刪除這一筆")).click()
         waitFor(By.text("刪除這一筆？"))
         pause(1500)
         screenshot("11-confirm-delete")

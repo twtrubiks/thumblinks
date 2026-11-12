@@ -26,6 +26,21 @@ fun sortLinks(links: List<Link>, order: SortOrder): List<Link> {
     }
 }
 
-/** 清單上看得到的：[favoritesOnly]（右上角的「只看愛心」）時只留按了愛心的，再照 [order] 排。 */
-fun visibleLinks(links: List<Link>, order: SortOrder, favoritesOnly: Boolean): List<Link> =
-    sortLinks(if (favoritesOnly) links.filter(Link::favorite) else links, order)
+/**
+ * 清單上看得到的：[favoritesOnly]（右上角的「只看愛心」）時只留按了愛心的、[query]（清單上面的搜尋框）有字時只留找得到的，
+ * 再照 [order] 排。
+ */
+fun visibleLinks(links: List<Link>, order: SortOrder, favoritesOnly: Boolean, query: String = ""): List<Link> {
+    val terms = searchTerms(query)
+    return sortLinks(links.filter { (!favoritesOnly || it.favorite) && matchesSearch(it, terms) }, order)
+}
+
+/** 搜尋框裡的字用空白（含全形空白）切開，每一段都要找得到。 */
+fun searchTerms(query: String): List<String> = query.split(SPACES).filter { it.isNotEmpty() }
+
+/** 每一段都出現在標題或網址裡（網域是網址的一部分），不分大小寫。[terms] 是空的就都算找得到。 */
+fun matchesSearch(link: Link, terms: List<String>): Boolean = terms.all { term ->
+    link.title?.contains(term, ignoreCase = true) == true || link.url.contains(term, ignoreCase = true)
+}
+
+private val SPACES = Regex("[\\s\\u3000]+")

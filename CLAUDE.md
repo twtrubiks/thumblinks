@@ -11,8 +11,8 @@ Kotlin + Jetpack Compose 原生 App，在 claude.ai/code 雲端 session 開發�
 
 - 規則（純 Kotlin、JVM 測試）：`WebUrls`（取網址、網域）、`PageMeta`（解析 meta、Big5）、`MetaFetcher`（OkHttp）、
   `Export`（Markdown／JSON／zip）、`Import`（讀回匯出的檔案）、`LinkStore`（新增、查重複、改、刪、愛心）、
-  `sortLinks`／`visibleLinks`（排序、只看愛心）
-- 畫面：清單（`ListScreen`，含匯入、匯出）、新增（`AddScreen`）、編輯（`EditScreen`）、縮圖預覽與兩個補救（`Thumbnails.kt` 的
+  `sortLinks`／`visibleLinks`（排序、只看愛心、搜尋）
+- 畫面：清單（`ListScreen`，含搜尋、匯入、匯出）、新增（`AddScreen`）、編輯（`EditScreen`）、縮圖預覽與兩個補救（`Thumbnails.kt` 的
   `ThumbnailEditor`／`ThumbDraft`）、上傳的圖（`ThumbPrep`）、分享進來（`MainActivity`，`singleTask` ＋ `onNewIntent`）
 - 內建瀏覽器：`BrowserScreen`、`BrowserTab`（一個 GeckoSession 與它的 delegate）、
   `Ublock`（從 AMO 安裝、更新、badge、popup）、`BrowserInput`（網址列的規則，JVM 測試）。還沒做：多分頁
@@ -27,7 +27,7 @@ Kotlin + Jetpack Compose 原生 App，在 claude.ai/code 雲端 session 開發�
 
 ### 先不做（要做之前先問使用者）
 
-雲端同步、帳號、分類／標籤、搜尋、手動拖曳排順序、網址正規化、匯出時把網路上的縮圖也下載進 zip、匯入時用檔案裡的覆蓋清單上的。
+雲端同步、帳號、分類／標籤、手動拖曳排順序、網址正規化、匯出時把網路上的縮圖也下載進 zip、匯入時用檔案裡的覆蓋清單上的。
 瀏覽器的多分頁、歷史紀錄、無痕、下載、上傳。
 
 ### 之後可能會做

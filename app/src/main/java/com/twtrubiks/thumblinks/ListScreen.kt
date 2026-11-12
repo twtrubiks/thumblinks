@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
@@ -22,6 +23,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -31,6 +34,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -46,8 +50,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -60,7 +66,8 @@ import java.time.LocalDate
 import java.time.OffsetDateTime
 
 /**
- * 首頁就是清單，預設新加的在上面。點一筆用內建瀏覽器打開、長按跳選單（編輯、複製網址）、右邊的愛心切換喜歡的。
+ * 首頁就是清單，預設新加的在上面。點一筆用內建瀏覽器打開、長按跳選單（編輯、複製網址、刪除）、右邊的愛心切換喜歡的。
+ * 清單上面是搜尋框（找標題、網址）。
  * 右上角是深色模式、排序、只看愛心、空白的瀏覽器，「更多」裡是匯入、匯出；右下角新增。
  * [links] 是 [LinkStore.all] 的順序（新的在上），null 表示還在讀；畫面上照使用者選的排序。
  * 匯入完呼叫 [onImported] 重讀清單。
@@ -72,6 +79,7 @@ fun ListScreen(
     onOpen: (Link) -> Unit,
     onEdit: (Link) -> Unit,
     onFavorite: (Link, Boolean) -> Unit,
+    onDelete: (Link) -> Unit,
     onBrowse: () -> Unit,
     onImported: () -> Unit,
 ) {
@@ -85,7 +93,13 @@ fun ListScreen(
     val order = container.sort.value
     // 只看愛心不存起來：下次打開 App 一樣看到全部，不會以為清單少了東西
     var favoritesOnly by rememberSaveable { mutableStateOf(false) }
-    val shown = remember(links, order, favoritesOnly) { links?.let { visibleLinks(it, order, favoritesOnly) } }
+    // 搜尋的字也不存：進編輯頁、瀏覽器再回來還在（rememberSaveable），重開 App 就清掉
+    var query by rememberSaveable { mutableStateOf("") }
+    val shown = remember(links, order, favoritesOnly, query) { links?.let { visibleLinks(it, order, favoritesOnly, query) } }
+    // 長按選單按了「刪除」、等確認的那一筆
+    var deleting by rememberSaveable { mutableStateOf<String?>(null) }
+    // 搜尋框有字時，返回鍵先清掉搜尋，不是直接離開 App
+    BackHandler(enabled = query.isNotEmpty()) { query = "" }
     val listState = rememberLazyListState()
     // 回到清單時先畫的是舊的那份，新的讀進來時 LazyColumn 會跟著原本的第一筆走，新加的那筆可能被擠到畫面外、
     // 看起來像沒加進來：多了新的一筆（links 的第一筆換了、原本的還在）就捲到它
@@ -96,7 +110,7 @@ fun ListScreen(
         val added = links.first().id
         newest = added
         if (previous != null && previous != added && links.any { it.id == previous }) {
-            val index = visibleLinks(links, order, favoritesOnly).indexOfFirst { it.id == added }
+            val index = visibleLinks(links, order, favoritesOnly, query).indexOfFirst { it.id == added }
             if (index >= 0) listState.scrollToItem(index)
         }
     }
@@ -209,26 +223,48 @@ fun ListScreen(
         when {
             shown == null -> Unit
             links.isNullOrEmpty() -> EmptyList(modifier, onImport = { openFile.launch(IMPORT_TYPES) })
-            shown.isEmpty() -> NoFavorites(modifier)
-            else -> LazyColumn(
-                modifier.fillMaxSize().testTag("link_list"),
-                state = listState,
-                // 最後一筆不要被右下角的「新增」蓋住
-                contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 96.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp),
-            ) {
-                items(shown, key = Link::id) {
-                    LinkRow(
-                        it,
-                        container.thumbsDir,
-                        onClick = { onOpen(it) },
-                        onEdit = { onEdit(it) },
-                        onCopy = { copyUrl(context, it.url) { message -> scope.launch { snackbar.showSnackbar(message) } } },
-                        onFavorite = { favorite -> onFavorite(it, favorite) },
-                    )
+            else -> Column(modifier.fillMaxSize()) {
+                // 搜尋框固定在清單上面，不跟著捲走
+                SearchField(query, onQueryChange = {
+                    query = it
+                    scope.launch { listState.scrollToItem(0) }
+                })
+                when {
+                    shown.isEmpty() && query.isNotBlank() -> NoMatches(query.trim(), favoritesOnly)
+                    shown.isEmpty() -> NoFavorites(Modifier)
+                    else -> LazyColumn(
+                        Modifier.fillMaxSize().testTag("link_list"),
+                        state = listState,
+                        // 最後一筆不要被右下角的「新增」蓋住
+                        contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 96.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp),
+                    ) {
+                        items(shown, key = Link::id) {
+                            LinkRow(
+                                it,
+                                container.thumbsDir,
+                                onClick = { onOpen(it) },
+                                onEdit = { onEdit(it) },
+                                onCopy = { copyUrl(context, it.url) { message -> scope.launch { snackbar.showSnackbar(message) } } },
+                                onDelete = { deleting = it.id },
+                                onFavorite = { favorite -> onFavorite(it, favorite) },
+                            )
+                        }
+                    }
                 }
             }
         }
+    }
+
+    links?.firstOrNull { it.id == deleting }?.let { link ->
+        ConfirmDelete(
+            link,
+            onConfirm = {
+                deleting = null
+                onDelete(link)
+            },
+            onDismiss = { deleting = null },
+        )
     }
 
     if (choosingFormat && !links.isNullOrEmpty()) {
@@ -405,6 +441,7 @@ private fun LinkRow(
     onClick: () -> Unit,
     onEdit: () -> Unit,
     onCopy: () -> Unit,
+    onDelete: () -> Unit,
     onFavorite: (Boolean) -> Unit,
 ) {
     // 長按跳的選單，之後要加的動作（分享…）也放這裡
@@ -418,6 +455,11 @@ private fun LinkRow(
             DropdownMenuItem(text = { Text("複製網址") }, onClick = {
                 menu = false
                 onCopy()
+            })
+            // 按了還要確認（ConfirmDelete）
+            DropdownMenuItem(text = { Text("刪除", color = MaterialTheme.colorScheme.error) }, onClick = {
+                menu = false
+                onDelete()
             })
         }
         LinkRowContent(link, thumbsDir, onClick, onLongClick = { menu = true }, onFavorite)
@@ -511,6 +553,45 @@ private fun EmptyList(modifier: Modifier, onImport: () -> Unit) {
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
             OutlinedButton(onClick = onImport, modifier = Modifier.testTag("import_button")) { Text("從檔案匯入") }
+        }
+    }
+}
+
+/** 清單上面的搜尋框：找標題、網址。有字時右邊有清除鈕；鍵盤的「搜尋」只是收起鍵盤（打字時清單就跟著篩了）。 */
+@Composable
+private fun SearchField(query: String, onQueryChange: (String) -> Unit) {
+    val focus = LocalFocusManager.current
+    OutlinedTextField(
+        value = query,
+        onValueChange = { onQueryChange(it.oneLine()) },
+        modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, bottom = 4.dp).testTag("search_input"),
+        placeholder = { Text("搜尋標題或網址") },
+        leadingIcon = { Icon(painterResource(R.drawable.ic_search), contentDescription = null) },
+        trailingIcon = {
+            if (query.isNotEmpty()) {
+                IconButton(onClick = { onQueryChange("") }, modifier = Modifier.testTag("search_clear")) {
+                    Icon(painterResource(R.drawable.ic_close), contentDescription = "清除搜尋")
+                }
+            }
+        },
+        singleLine = true,
+        shape = MaterialTheme.shapes.extraLarge,
+        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+        keyboardActions = KeyboardActions(onSearch = { focus.clearFocus() }),
+    )
+}
+
+/** 搜尋找不到。 */
+@Composable
+private fun NoMatches(query: String, favoritesOnly: Boolean) {
+    Box(Modifier.fillMaxSize().padding(32.dp), contentAlignment = Alignment.Center) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            Text("找不到「$query」", style = MaterialTheme.typography.titleLarge, textAlign = TextAlign.Center)
+            Text(
+                if (favoritesOnly) "現在只看愛心。再按一次右上角的愛心，從全部的清單裡找。" else "搜尋會找標題和網址，換個字試試看。",
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
         }
     }
 }

@@ -12,16 +12,15 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -36,6 +35,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -43,7 +43,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-/** 編輯一筆：改標題、換縮圖（重新抓、貼圖片網址、上傳）、用瀏覽器開、複製網址、刪除、右上角的愛心。網址不能改。 */
+/** 編輯一筆：改標題、換縮圖（重新抓、貼圖片網址、上傳）、用瀏覽器開、複製網址、右上角的愛心與刪除（垃圾桶）。網址不能改。 */
 @Composable
 fun EditScreen(id: String, onBack: () -> Unit, onOpenBrowser: (String) -> Unit) {
     val container = LocalContext.current.container
@@ -113,6 +113,10 @@ private fun EditLink(link: Link, onBack: () -> Unit, onOpenBrowser: (String) -> 
                 description = "愛心",
                 modifier = Modifier.testTag("favorite_button"),
             )
+            // 刪除是垃圾桶圖示（按了要確認）；名字放在 contentDescription，測試用 By.desc 找
+            IconButton(onClick = { confirmDelete = true }, modifier = Modifier.testTag("delete_button")) {
+                Icon(painterResource(R.drawable.ic_delete), contentDescription = "刪除這一筆", tint = MaterialTheme.colorScheme.error)
+            }
         },
         snackbar = snackbar,
     ) { modifier ->
@@ -186,33 +190,21 @@ private fun EditLink(link: Link, onBack: () -> Unit, onOpenBrowser: (String) -> 
                 modifier = Modifier.fillMaxWidth(),
                 enabled = canSave,
             ) { Text("儲存") }
-
-            TextButton(
-                onClick = { confirmDelete = true },
-                colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.error),
-            ) { Text("刪除這一筆") }
         }
     }
 
     if (confirmDelete) {
-        AlertDialog(
-            onDismissRequest = { confirmDelete = false },
-            title = { Text("刪除這一筆？") },
-            text = { Text(link.title ?: link.url) },
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                        confirmDelete = false
-                        scope.launch {
-                            withContext(Dispatchers.IO) { container.links.delete(link.id) }
-                            draft.discard(container.thumbsDir)
-                            onBack()
-                        }
-                    },
-                    colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.error),
-                ) { Text("刪除") }
+        ConfirmDelete(
+            link,
+            onConfirm = {
+                confirmDelete = false
+                scope.launch {
+                    withContext(Dispatchers.IO) { container.links.delete(link.id) }
+                    draft.discard(container.thumbsDir)
+                    onBack()
+                }
             },
-            dismissButton = { TextButton(onClick = { confirmDelete = false }) { Text("取消") } },
+            onDismiss = { confirmDelete = false },
         )
     }
 }
