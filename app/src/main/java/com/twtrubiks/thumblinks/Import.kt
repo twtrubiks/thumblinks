@@ -110,7 +110,7 @@ object Import {
 
     private fun text(input: InputStream): String {
         val bytes = input.use { it.readAtMost(MAX_TEXT) } ?: throw ImportException("檔案太大了，不像是 ThumbLinks 匯出的")
-        return bytes.toString(Charsets.UTF_8).removePrefix("﻿")
+        return bytes.toString(Charsets.UTF_8).removePrefix("\uFEFF")
     }
 
     private fun json(text: String, zip: ZipFile?): ImportFile {

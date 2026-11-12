@@ -19,7 +19,7 @@ import kotlin.math.abs
  *
  * 貼網址 → 抓到縮圖與標題 → 改標題 → 加入；分享同一個網址進來 → 已經在清單裡了 → 打開那一筆；
  * 貼沒有縮圖的網址 → 貼圖片網址 → 加入；點一筆用內建瀏覽器打開（已在清單）→ 網址列換一篇 → 加到清單；
- * 長按 → 編輯 → 刪除一筆；右上角「更多」（匯入、匯出）→ 打開匯出；切成深色模式再切回來；排序換成舊的在上再換回來；按愛心、只看愛心；
+ * 搜尋 → 清除 → 再搜尋 → 長按選單刪除一筆 → 返回鍵清掉搜尋；右上角「更多」（匯入、匯出）→ 打開匯出；切成深色模式再切回來；排序換成舊的在上再換回來；按愛心、只看愛心；
  * 編輯頁與清單的長按選單複製網址。uBlock Origin 要連 AMO，不放在錄影裡（[BrowserTest]）。
  */
 @RunWith(AndroidJUnit4::class)
@@ -121,17 +121,42 @@ class DemoRecordingTest : UiTest() {
         pause(2000)
         assertEquals(listOf(FakeSite.AUTUMN_TITLE, FakeSite.PLAIN_TITLE, "陽明山芒草"), container.links.all().map { it.title })
 
-        // 長按跳選單 → 編輯 → 刪除一筆（要確認）
+        // 搜尋：打字就篩，只剩找得到的那一筆；按清除鈕看回全部
+        find(By.res("search_input")).click()
+        pause(800)
+        find(By.res("search_input")).text = "芒草"
+        waitGone(By.text(FakeSite.AUTUMN_TITLE))
+        waitFor(By.text("陽明山芒草"))
+        assertNull(device.findObject(By.text(FakeSite.PLAIN_TITLE)))
+        hideKeyboard()
+        pause(1500)
+        screenshot("11-search")
+        find(By.res("search_clear")).click()
+        waitFor(By.text(FakeSite.AUTUMN_TITLE))
+        waitFor(By.text(FakeSite.PLAIN_TITLE))
+        pause(1200)
+
+        // 再搜尋一次，長按那一筆 → 選單的「刪除」（要確認）→ 刪掉之後搜尋找不到了 → 返回鍵清掉搜尋，看回全部
+        find(By.res("search_input")).text = "芒草"
+        waitGone(By.text(FakeSite.AUTUMN_TITLE))
+        hideKeyboard()
         find(By.text("陽明山芒草")).longClick()
-        find(By.text("編輯")).click()
-        find(By.desc("刪除這一筆")).click()
+        waitFor(By.text("刪除"))
+        pause(1200)
+        find(By.text("刪除")).click()
         waitFor(By.text("刪除這一筆？"))
         pause(1500)
         screenshot("11-confirm-delete")
         find(By.text("刪除")).click()
+        waitFor(By.text("找不到「芒草」"))
+        pause(1500)
+        screenshot("11-search-no-match")
+        hideKeyboard()
+        device.pressBack()
         backOnList()
-        waitGone(By.text("陽明山芒草"))
-        pause(2000)
+        waitFor(By.text(FakeSite.AUTUMN_TITLE))
+        assertNull(device.findObject(By.text("陽明山芒草")))
+        pause(1500)
 
         // 右上角「更多」裡是匯入、匯出；打開匯出：選格式（存檔、開檔畫面是系統的，匯出再匯入回來在 SystemUiTest 測）
         find(By.res("more_button")).click()

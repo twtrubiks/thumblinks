@@ -105,11 +105,18 @@ fun ListScreen(
     // 看起來像沒加進來：多了新的一筆（links 的第一筆換了、原本的還在）就捲到它
     var newest by rememberSaveable { mutableStateOf<String?>(null) }
     LaunchedEffect(links) {
-        if (links.isNullOrEmpty()) return@LaunchedEffect
+        if (links == null) return@LaunchedEffect
+        if (links.isEmpty()) {
+            // 清單刪光了，搜尋框跟著不見：搜尋的字一起清掉，不然返回鍵清的是看不到的字，之後加了新的一筆又冒出來
+            query = ""
+            return@LaunchedEffect
+        }
         val previous = newest
         val added = links.first().id
         newest = added
         if (previous != null && previous != added && links.any { it.id == previous }) {
+            // 新的那筆被搜尋篩掉了（例如搜尋到一半，從別的 App 分享一個網址進來）：清掉搜尋，才看得到它
+            if (!matchesSearch(links.first(), searchTerms(query))) query = ""
             val index = visibleLinks(links, order, favoritesOnly, query).indexOfFirst { it.id == added }
             if (index >= 0) listState.scrollToItem(index)
         }

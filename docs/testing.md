@@ -44,6 +44,8 @@ classpath 用 init script 印出 `testDebugUnitTest` 的 `classpath.files`，把
 - BottomSheet、Dialog 是另一個視窗，App 根部開的 `testTagsAsResourceId` 管不到：要在裡面再開一次（uBO 的 popup 有開），或用 `By.text` 找
 - uBO 的 badge 一直在更新（換頁時先清掉再重算），讀字時元件可能已經舊了（`StaleObjectException`）
 - 開始前清空清單（`container.links`），要用到的資料都在測試裡建
+- 清單的搜尋框是 `search_input`（清除鈕 `search_clear`）。搜尋找不到時清單（`link_list`）不在畫面上，`backOnList()` 會等不到，
+  改等「找不到「…」」。確認刪除的對話框按鈕跟長按選單的「刪除」同字：先等對話框的標題出來再按
 - 鍵盤開著才按返回鍵收起（`hideKeyboard()`）——沒開的時候按返回鍵會離開那一頁
 
 ## 模擬器上的測試：DeviceTest

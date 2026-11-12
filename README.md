@@ -11,7 +11,7 @@
 
 | 清單 | 新增 | 匯出 |
 | :-: | :-: | :-: |
-| <img src="docs/screenshots/list.png" width="240" alt="清單，長按一筆跳出選單"> | <img src="docs/screenshots/add.png" width="240" alt="新增頁，抓到縮圖和標題"> | <img src="docs/screenshots/export.png" width="240" alt="匯出，選 Markdown 或 JSON"> |
+| <img src="docs/screenshots/list.png" width="240" alt="清單，上面是搜尋框，長按一筆跳出選單（編輯、複製網址、刪除）"> | <img src="docs/screenshots/add.png" width="240" alt="新增頁，抓到縮圖和標題"> | <img src="docs/screenshots/export.png" width="240" alt="匯出，選 Markdown 或 JSON"> |
 
 | 內建瀏覽器 | uBlock Origin | 深色模式 |
 | :-: | :-: | :-: |
