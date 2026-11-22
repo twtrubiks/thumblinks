@@ -99,7 +99,18 @@ Kotlin + Jetpack Compose 原生 App，在 claude.ai/code 雲端 session 開發�
     雲端 session 的 git 只能推自己的 branch，推 tag 會斷線，所以用版本檔
   - **發版金鑰**在 GitHub Secrets（`ANDROID_SIGNING_KEYSTORE`、`ANDROID_SIGNING_PASSWORD`），金鑰檔與密碼由使用者保管；
     憑證 SHA-256 在 `release.yml` 的 `EXPECTED_CERT`。**不要再產生新的**：換了金鑰，手機上的正式版就不能直接更新
-  - 不是發版金鑰簽的 APK（自己 build 的、試用版）跟正式版簽章對不上：換成正式版前先匯出（JSON 或 zip，帶愛心）、
+  - **給使用者試的 APK 也要能直接覆蓋**（使用者的要求）：不要傳 VM 自己 build 的，用 `.github/workflows/test-apk.yml`。
+    推到 main 以外的 branch、改到 App 的程式碼時自動跑，用發版金鑰簽、不發 Release，上傳成 artifact `thumblinks-test-apk`（留 7 天）。
+    versionName 是「最新正式版+test.<commit>」，versionCode 跟正式版同一套，蓋得上正式版，之後的正式版也蓋得回去。
+    跑完用 `gh api` 下載再用 SendUserFile 傳給使用者（先核對 commit 是這次的）：
+
+    ```bash
+    gh api "repos/{owner}/{repo}/actions/runs?branch=<branch>&per_page=10" \
+      --jq '.workflow_runs[] | select(.name=="Android test APK") | {id, status, conclusion, head_sha}'
+    gh api "repos/{owner}/{repo}/actions/runs/<id>/artifacts" --jq '.artifacts[] | {id, name}'
+    gh api "repos/{owner}/{repo}/actions/artifacts/<artifact id>/zip" > apk.zip   # zip 裡是 thumblinks-test-<commit>.apk
+    ```
+  - 不是發版金鑰簽的 APK（VM 自己 build 的）跟正式版簽章對不上：換成正式版前先匯出（JSON 或 zip，帶愛心）、
     移除舊的、裝正式版後再匯入
   - versionCode 是 2026-01-01 起算的分鐘數（workflow 算好用環境變數帶進來），不管從哪個 branch 發都只會變大
   - README 的下載連結是 `releases/latest/download/thumblinks.apk`
