@@ -1,0 +1,918 @@
+--------- beginning of system
+11-22 03:39:55.878  1943  1955 I ActivityManager: START u0 {flg=0x10000000 cmp=com.twtrubiks.thumblinks/.MainActivity} from uid 2000
+--------- beginning of main
+11-22 03:39:55.929  4612  4612 W biks.thumblink: Unexpected CPU variant for X86 using defaults: x86_64
+11-22 03:39:55.933  1943  1960 I ActivityManager: Start proc 4612:com.twtrubiks.thumblinks/u0a67 for activity com.twtrubiks.thumblinks/.MainActivity
+11-22 03:39:55.942  1563  1563 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 17973248
+11-22 03:39:56.004  4612  4612 D OpenGLRenderer: Skia GL Pipeline
+11-22 03:39:56.005  1895  2010 E SurfaceFlinger: ro.sf.lcd_density must be defined as a build property
+11-22 03:39:56.128  1563  1563 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 17973248
+11-22 03:39:56.209  4612  4612 W biks.thumblink: Accessing hidden method Landroid/view/RenderNode;->getScaleX()F (dark greylist, linking)
+11-22 03:39:56.209  4612  4612 W biks.thumblink: Accessing hidden method Landroid/view/RenderNode;->setScaleY(F)Z (dark greylist, linking)
+11-22 03:39:56.209  4612  4612 W biks.thumblink: Accessing hidden method Landroid/view/RenderNode;->getMatrix(Landroid/graphics/Matrix;)V (dark greylist, linking)
+11-22 03:39:56.209  4612  4612 W biks.thumblink: Accessing hidden method Landroid/view/RenderNode;->setPivotX(F)Z (dark greylist, linking)
+11-22 03:39:56.209  4612  4612 W biks.thumblink: Accessing hidden method Landroid/view/RenderNode;->setLayerPaint(Landroid/graphics/Paint;)Z (dark greylist, linking)
+11-22 03:39:56.209  4612  4612 W biks.thumblink: Accessing hidden method Landroid/view/RenderNode;->setCameraDistance(F)Z (dark greylist, linking)
+11-22 03:39:56.209  4612  4612 W biks.thumblink: Accessing hidden method Landroid/view/RenderNode;->setRotationX(F)Z (dark greylist, linking)
+11-22 03:39:56.209  4612  4612 W biks.thumblink: Accessing hidden method Landroid/view/RenderNode;->setClipToOutline(Z)Z (dark greylist, linking)
+11-22 03:39:56.209  4612  4612 W biks.thumblink: Accessing hidden method Landroid/view/RenderNode;->setClipToOutline(Z)Z (dark greylist, linking)
+11-22 03:39:56.209  4612  4612 W biks.thumblink: Accessing hidden method Landroid/view/RenderNode;->setLayerType(I)Z (dark greylist, linking)
+11-22 03:39:56.209  4612  4612 I chatty  : uid=10067(com.twtrubiks.thumblinks) AndroidUI identical 1 line
+11-22 03:39:56.209  4612  4612 W biks.thumblink: Accessing hidden method Landroid/view/RenderNode;->setLayerType(I)Z (dark greylist, linking)
+11-22 03:39:56.209  4612  4612 W biks.thumblink: Accessing hidden method Landroid/view/RenderNode;->setPivotX(F)Z (dark greylist, linking)
+11-22 03:39:56.209  4612  4612 W biks.thumblink: Accessing hidden method Landroid/view/RenderNode;->setPivotX(F)Z (dark greylist, linking)
+11-22 03:39:56.209  4612  4612 W biks.thumblink: Accessing hidden method Landroid/view/RenderNode;->setRotationY(F)Z (dark greylist, linking)
+11-22 03:39:56.209  4612  4612 W biks.thumblink: Accessing hidden method Landroid/view/RenderNode;->setAlpha(F)Z (dark greylist, linking)
+11-22 03:39:56.209  4612  4612 W biks.thumblink: Accessing hidden method Landroid/view/RenderNode;->setElevation(F)Z (dark greylist, linking)
+11-22 03:39:56.209  4612  4612 W biks.thumblink: Accessing hidden method Landroid/view/RenderNode;->setRotation(F)Z (dark greylist, linking)
+11-22 03:39:56.209  4612  4612 W biks.thumblink: Accessing hidden method Landroid/view/RenderNode;->setTranslationY(F)Z (dark greylist, linking)
+11-22 03:39:56.209  4612  4612 W biks.thumblink: Accessing hidden method Landroid/view/RenderNode;->setOutline(Landroid/graphics/Outline;)Z (dark greylist, linking)
+11-22 03:39:56.209  4612  4612 W biks.thumblink: Accessing hidden method Landroid/view/RenderNode;->setScaleX(F)Z (dark greylist, linking)
+11-22 03:39:56.209  4612  4612 W biks.thumblink: Accessing hidden method Landroid/view/RenderNode;->setTranslationX(F)Z (dark greylist, linking)
+11-22 03:39:56.209  4612  4612 W biks.thumblink: Accessing hidden method Landroid/view/RenderNode;->getScaleX()F (dark greylist, linking)
+11-22 03:39:56.218  2556  2803 D EGL_emulation: eglMakeCurrent: 0x7cbb86c3e3a0: ver 3 0 (tinfo 0x7cbb86c0dca0)
+11-22 03:39:56.239  2085  2301 D EGL_emulation: eglMakeCurrent: 0x7cbb86c3e6c0: ver 3 0 (tinfo 0x7cbb86cd0160)
+11-22 03:39:56.250  1563  1563 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 17973248
+11-22 03:39:56.254  4612  4629 D         : HostConnection::get() New Host Connection established 0x7cbb907c0a20, tid 4629
+11-22 03:39:56.270  1563  2292 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 17973248
+11-22 03:39:56.298  1563  2292 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 17973248
+11-22 03:39:56.333  4612  4629 I ConfigStore: android::hardware::configstore::V1_0::ISurfaceFlingerConfigs::hasWideColorDisplay retrieved: 0
+11-22 03:39:56.333  4612  4629 I ConfigStore: android::hardware::configstore::V1_0::ISurfaceFlingerConfigs::hasHDRDisplay retrieved: 0
+11-22 03:39:56.333  4612  4629 I OpenGLRenderer: Initialized EGL, version 1.4
+11-22 03:39:56.334  4612  4629 D OpenGLRenderer: Swap behavior 1
+11-22 03:39:56.334  4612  4629 D EGL_emulation: eglCreateContext: 0x7cbb8886bf80: maj 3 min 0 rcv 3
+11-22 03:39:56.335  4612  4629 D EGL_emulation: eglMakeCurrent: 0x7cbb8886bf80: ver 3 0 (tinfo 0x7cbb907ffda0)
+11-22 03:39:56.337  1895  2010 E SurfaceFlinger: ro.sf.lcd_density must be defined as a build property
+11-22 03:39:56.356  4612  4629 D EGL_emulation: eglMakeCurrent: 0x7cbb8886bf80: ver 3 0 (tinfo 0x7cbb907ffda0)
+11-22 03:39:56.425  1943  2053 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@578cab1)
+11-22 03:39:56.425  1943  1957 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@578cab1)
+11-22 03:39:56.697  1895  2010 W SurfaceFlinger: Attempting to set client state on removed layer: Splash Screen com.twtrubiks.thumblinks#0
+11-22 03:39:56.697  1895  2010 W SurfaceFlinger: Attempting to destroy on removed layer: Splash Screen com.twtrubiks.thumblinks#0
+11-22 03:39:56.700  1943  1966 I ActivityManager: Displayed com.twtrubiks.thumblinks/.MainActivity: +733ms
+11-22 03:39:56.711  2085  2301 D EGL_emulation: eglMakeCurrent: 0x7cbb86c3e6c0: ver 3 0 (tinfo 0x7cbb86cd0160)
+11-22 03:39:57.425  1943  2053 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@a37576e)
+11-22 03:39:57.425  1943  1957 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@a37576e)
+11-22 03:39:58.293  1943  2531 V BackupManagerConstants: getFullBackupRequiredNetworkType(...) returns 2
+11-22 03:39:58.293  1943  2531 V BackupManagerConstants: getFullBackupRequireCharging(...) returns true
+11-22 03:39:58.348  4612  4612 I ThumbLinks: 先把內建瀏覽器的引擎開起來
+11-22 03:39:58.351  4612  4612 D GeckoThread: State changed to LAUNCHED
+11-22 03:39:58.355  4612  4612 D GeckoRuntime: Lifecycle: onCreate
+11-22 03:39:58.355  4612  4612 D GeckoRuntime: Lifecycle: onStart
+11-22 03:39:58.355  4612  4612 D GeckoRuntime: Lifecycle: onResume
+11-22 03:39:58.355  4612  4636 I GeckoThread: preparing to run Gecko
+11-22 03:39:58.355  4612  4612 D GeckoNetworkManager: Incoming event start for state OffNoListeners -> OnNoListeners
+11-22 03:39:58.356  4612  4612 D GeckoNetworkManager: New network state: UP, WIFI, WIFI
+11-22 03:39:58.358  4637  4637 W able_art_image: Unexpected CPU variant for X86 using defaults: x86_64
+11-22 03:39:58.360  1943  2605 I ActivityManager: Start proc 4637:com.twtrubiks.thumblinks:crashhelper_disable_art_image_/u0a67 for service com.twtrubiks.thumblinks/org.mozilla.gecko.crashhelper.CrashHelper
+11-22 03:39:58.362  4612  4636 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libmozglue.so" unused DT entry: unknown (type 0x24 arg 0x3c3e8) (ignoring)
+11-22 03:39:58.362  4612  4636 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libmozglue.so" unused DT entry: unknown (type 0x23 arg 0x150) (ignoring)
+11-22 03:39:58.362  4612  4636 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libmozglue.so" unused DT entry: unknown (type 0x25 arg 0x8) (ignoring)
+11-22 03:39:58.362  1943  2605 D ConnectivityService: requestNetwork for uid/pid:10067/4612 NetworkRequest [ TRACK_DEFAULT id=16, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Unwanted:  Uid: 10067] ]
+11-22 03:39:58.363  1943  2036 D WIFI    : got request NetworkRequest [ TRACK_DEFAULT id=16, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Unwanted:  Uid: 10067] ] with score 60
+11-22 03:39:58.363  1943  2036 D WIFI_UT : got request NetworkRequest [ TRACK_DEFAULT id=16, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Unwanted:  Uid: 10067] ] with score 60
+11-22 03:39:58.363  2171  2171 D PhoneSwitcherNetworkRequstListener: got request NetworkRequest [ TRACK_DEFAULT id=16, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Unwanted:  Uid: 10067] ] with score 60
+11-22 03:39:58.365  4612  4612 D GeckoNetworkManager: Incoming event receivedUpdate for state OnNoListeners -> OnNoListeners
+11-22 03:39:58.365  4612  4612 D GeckoNetworkManager: New network state: UP, WIFI, WIFI
+11-22 03:39:58.366  4612  4636 D GeckoThread: State changed to MOZGLUE_READY
+11-22 03:39:58.372  4637  4637 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libcrashhelper.so" unused DT entry: unknown (type 0x24 arg 0x98958) (ignoring)
+11-22 03:39:58.372  4637  4637 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libcrashhelper.so" unused DT entry: unknown (type 0x23 arg 0x758) (ignoring)
+11-22 03:39:58.372  4637  4637 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libcrashhelper.so" unused DT entry: unknown (type 0x25 arg 0x8) (ignoring)
+11-22 03:39:58.372  4637  4637 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libmozglue.so" unused DT entry: unknown (type 0x24 arg 0x3c3e8) (ignoring)
+11-22 03:39:58.372  4637  4637 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libmozglue.so" unused DT entry: unknown (type 0x23 arg 0x150) (ignoring)
+11-22 03:39:58.372  4637  4637 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libmozglue.so" unused DT entry: unknown (type 0x25 arg 0x8) (ignoring)
+11-22 03:39:58.397  4612  4636 D GeckoLoader: Library base=/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64
+11-22 03:39:58.398  4612  4636 W Settings: Setting animator_duration_scale has moved from android.provider.Settings.System to android.provider.Settings.Global, returning read-only global URI.
+11-22 03:39:58.398  4612  4636 D GeckoLoader: Library base=/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64
+11-22 03:39:58.399  4612  4636 E GeckoLibLoad: Load sqlite start
+11-22 03:39:58.399  4612  4636 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libnss3.so" unused DT entry: unknown (type 0x24 arg 0x15538) (ignoring)
+11-22 03:39:58.399  4612  4636 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libnss3.so" unused DT entry: unknown (type 0x23 arg 0x628) (ignoring)
+11-22 03:39:58.399  4612  4636 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libnss3.so" unused DT entry: unknown (type 0x25 arg 0x8) (ignoring)
+11-22 03:39:58.399  4612  4636 E GeckoLibLoad: Load sqlite done
+11-22 03:39:58.399  4612  4636 D GeckoLoader: Library base=/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64
+11-22 03:39:58.399  4612  4636 E GeckoLibLoad: Load nss start
+11-22 03:39:58.399  4612  4636 E GeckoLibLoad: Load nss done
+11-22 03:39:58.399  4612  4636 D GeckoLoader: Library base=/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64
+11-22 03:39:58.400  4612  4636 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libxul.so" unused DT entry: unknown (type 0x24 arg 0x69428) (ignoring)
+11-22 03:39:58.400  4612  4636 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libxul.so" unused DT entry: unknown (type 0x23 arg 0x192a8) (ignoring)
+11-22 03:39:58.400  4612  4636 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libxul.so" unused DT entry: unknown (type 0x25 arg 0x8) (ignoring)
+11-22 03:39:58.400  4612  4636 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libgkcodecs.so" unused DT entry: unknown (type 0x24 arg 0x3150) (ignoring)
+11-22 03:39:58.400  4612  4636 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libgkcodecs.so" unused DT entry: unknown (type 0x23 arg 0xa90) (ignoring)
+11-22 03:39:58.400  4612  4636 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libgkcodecs.so" unused DT entry: unknown (type 0x25 arg 0x8) (ignoring)
+11-22 03:39:58.404  4612  4636 E GeckoLibLoad: Loaded libs in 4.778191ms total, 0ms(0ms) user, 0ms(0ms) system, 0(0) faults
+11-22 03:39:58.404  4612  4636 D GeckoThread: State changed to LIBS_READY
+11-22 03:39:58.404  4612  4636 W GeckoThread: zerdatime 164227 - runGecko
+11-22 03:39:58.425  1943  2053 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@99320d2)
+11-22 03:39:58.425  1943  1957 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@99320d2)
+11-22 03:39:58.445  4612  4636 I Gecko:DumpUtils: Fifo watcher disabled via pref.
+11-22 03:39:58.451  4612  4636 D GeckoThread: State changed to JNI_READY
+11-22 03:39:58.479  4612  4636 I GeckoConsole: No chrome package registered for chrome://browser/content/built_in_addons.json
+11-22 03:39:58.483  4612  4636 D GeckoThread: State changed to PROFILE_READY
+11-22 03:39:58.487  4612  4636 D GeckoThread: State changed to RUNNING
+11-22 03:39:58.531  4612  4612 W Gecko   : type=1400 audit(0.0:14): avc: denied { read } for name="product_name" dev="sysfs" ino=195 scontext=u:r:untrusted_app:s0:c67,c256,c512,c768 tcontext=u:object_r:sysfs:s0 tclass=file permissive=0
+11-22 03:39:58.532  4612  4612 I ThumbLinks: 從 AMO 安裝 uBlock Origin
+11-22 03:39:58.538  4612  4636 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libsoftokn3.so" unused DT entry: unknown (type 0x24 arg 0x2350) (ignoring)
+11-22 03:39:58.538  4612  4636 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libsoftokn3.so" unused DT entry: unknown (type 0x23 arg 0x80) (ignoring)
+11-22 03:39:58.538  4612  4636 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libsoftokn3.so" unused DT entry: unknown (type 0x25 arg 0x8) (ignoring)
+11-22 03:39:58.538  4612  4636 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libfreebl3.so" unused DT entry: unknown (type 0x24 arg 0xc78) (ignoring)
+11-22 03:39:58.538  4612  4636 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libfreebl3.so" unused DT entry: unknown (type 0x23 arg 0x68) (ignoring)
+11-22 03:39:58.538  4612  4636 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libfreebl3.so" unused DT entry: unknown (type 0x25 arg 0x8) (ignoring)
+11-22 03:39:58.545  4612  4612 D GeckoNetworkManager: Incoming event enableNotifications for state OnNoListeners -> OnWithListeners
+11-22 03:39:58.553  4612  4612 D GeckoNetworkManager: New network state: UP, WIFI, WIFI
+11-22 03:39:58.553  1943  1955 W ActivityManager: Receiver with filter android.content.IntentFilter@c1125a3 already registered for pid 4612, callerPackage is com.twtrubiks.thumblinks
+11-22 03:39:58.554  4612  4612 D GeckoNetworkManager: Incoming event receivedUpdate for state OnWithListeners -> OnWithListeners
+11-22 03:39:58.554  4612  4612 D GeckoNetworkManager: New network state: UP, WIFI, WIFI
+11-22 03:39:59.298  4612  4636 I GeckoConsole: 1795318799298	addons.webextension.uBlock0@raymondhill.net	WARN	Loading extension 'uBlock0@raymondhill.net': Reading manifest: Warning processing permissions: Error processing permissions.2: Value "menus" must either: must either [must either [must either [be one of ["idle"], be one of ["activeTab"], be one of ["cookies"], be one of ["publicSuffix"], be one of ["scripting"], or be one of ["webRequest", "webRequestAuthProvider", "webRequestBlocking", "webRequestFilterResponse", "webRequestFilterResponse.serviceWorkerScript"]], must either [be one of ["mozillaAddons"], be one of ["geckoViewAddons", "nativeMessagingFromContent"], be one of ["activityLog"], be one of ["networkStatus"], or be one of ["telemetry"]], be one of ["alarms", "storage", "unlimitedStorage"], be one of ["declarativeNetRequestWithHostAccess"], be one of ["dns"], or be one of ["theme"]], must either [must either [be one of ["idle"], be one of ["activeTab"], be one of ["cookies"], be one of ["publicSuffix"], be one of ["scripting"], or be one
+11-22 03:39:59.298  4612  4636 I GeckoConsole: 1795318799298	addons.webextension.uBlock0@raymondhill.net	WARN	Loading extension 'uBlock0@raymondhill.net': Reading manifest: Warning processing commands: An unexpected property was found in the WebExtension manifest.
+11-22 03:39:59.425  1943  2053 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@bd6e0a0)
+11-22 03:39:59.425  1943  1957 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@bd6e0a0)
+11-22 03:39:59.459  1943  2062 E TaskPersister: File error accessing recents directory (directory doesn't exist?).
+11-22 03:39:59.622  4612  4612 D WebExtension: handleMessage GeckoView:WebExtension:InstallPrompt
+11-22 03:39:59.623  4612  4636 W GeckoEventDispatcher: No listener for GeckoView:WebExtension:OnInstalling
+11-22 03:39:59.647  4612  4636 W GeckoEventDispatcher: No listener for GeckoView:WebExtension:OnInstalled
+11-22 03:39:59.654  4612  4612 I ThumbLinks: uBlock Origin 1.76.6 可以用了
+11-22 03:39:59.657  4612  4636 I GeckoConsole: 1795318799657	addons.webextension.uBlock0@raymondhill.net	WARN	Loading extension 'uBlock0@raymondhill.net': Reading manifest: Warning processing permissions: Error processing permissions.2: Value "menus" must either: must either [must either [must either [be one of ["idle"], be one of ["activeTab"], be one of ["cookies"], be one of ["publicSuffix"], be one of ["scripting"], or be one of ["webRequest", "webRequestAuthProvider", "webRequestBlocking", "webRequestFilterResponse", "webRequestFilterResponse.serviceWorkerScript"]], must either [be one of ["mozillaAddons"], be one of ["geckoViewAddons", "nativeMessagingFromContent"], be one of ["activityLog"], be one of ["networkStatus"], or be one of ["telemetry"]], be one of ["alarms", "storage", "unlimitedStorage"], be one of ["declarativeNetRequestWithHostAccess"], be one of ["dns"], or be one of ["theme"]], must either [must either [be one of ["idle"], be one of ["activeTab"], be one of ["cookies"], be one of ["publicSuffix"], be one of ["scripting"], or be one
+11-22 03:39:59.657  4612  4636 I GeckoConsole: 1795318799657	addons.webextension.uBlock0@raymondhill.net	WARN	Loading extension 'uBlock0@raymondhill.net': Reading manifest: Warning processing commands: An unexpected property was found in the WebExtension manifest.
+11-22 03:39:59.669  4612  4636 D         : HostConnection::get() New Host Connection established 0x7cbb86d48bc0, tid 4636
+11-22 03:39:59.670  4612  4636 D EGL_emulation: eglCreateContext: 0x7cbb86d70a20: maj 3 min 0 rcv 3
+11-22 03:39:59.671  4612  4636 D EGL_emulation: eglMakeCurrent: 0x7cbb86d70a20: ver 3 0 (tinfo 0x7cbb86dbc720)
+11-22 03:39:59.680  4612  4636 W VideoCapabilities: Unrecognized profile 4 for video/hevc
+11-22 03:39:59.682  4612  4636 I VideoCapabilities: Unsupported profile 4 for video/mp4v-es
+11-22 03:39:59.682  4612  4636 D HardwareCodecCapability: MIME support: SW audio/g711-mlaw
+11-22 03:39:59.682  4612  4636 D HardwareCodecCapability: MIME support: SW audio/mp4a-latm
+11-22 03:39:59.682  4612  4636 D HardwareCodecCapability: MIME support: SWE video/mp4v-es
+11-22 03:39:59.682  4612  4636 D HardwareCodecCapability: MIME support: SW audio/raw
+11-22 03:39:59.682  4612  4636 D HardwareCodecCapability: MIME support: SWE video/x-vnd.on2.vp8
+11-22 03:39:59.682  4612  4636 D HardwareCodecCapability: MIME support: SWE audio/amr-wb
+11-22 03:39:59.682  4612  4636 D HardwareCodecCapability: MIME support: SW audio/amr-wb
+11-22 03:39:59.682  4612  4636 D HardwareCodecCapability: MIME support: SW video/avc
+11-22 03:39:59.682  4612  4636 D HardwareCodecCapability: MIME support: SW audio/3gpp
+11-22 03:39:59.682  4612  4636 D HardwareCodecCapability: MIME support: SW audio/flac
+11-22 03:39:59.682  4612  4636 D HardwareCodecCapability: MIME support: SW video/hevc
+11-22 03:39:59.682  4612  4636 D HardwareCodecCapability: MIME support: SW video/3gpp
+11-22 03:39:59.682  4612  4636 D HardwareCodecCapability: MIME support: SW10B video/x-vnd.on2.vp9
+11-22 03:39:59.682  4612  4636 D HardwareCodecCapability: MIME support: SW video/mp4v-es
+11-22 03:39:59.682  4612  4636 D HardwareCodecCapability: MIME support: SW audio/vorbis
+11-22 03:39:59.682  4612  4636 D HardwareCodecCapability: MIME support: SW audio/gsm
+11-22 03:39:59.682  4612  4636 D HardwareCodecCapability: MIME support: SWE video/3gpp
+11-22 03:39:59.682  4612  4636 D HardwareCodecCapability: MIME support: SWE audio/3gpp
+11-22 03:39:59.682  4612  4636 D HardwareCodecCapability: MIME support: SWE video/avc
+11-22 03:39:59.682  4612  4636 D HardwareCodecCapability: MIME support: SWE audio/flac
+11-22 03:39:59.682  4612  4636 D HardwareCodecCapability: MIME support: SW audio/opus
+11-22 03:39:59.682  4612  4636 D HardwareCodecCapability: MIME support: SWE audio/mp4a-latm
+11-22 03:39:59.682  4612  4636 D HardwareCodecCapability: MIME support: SW audio/mpeg
+11-22 03:39:59.682  4612  4636 D HardwareCodecCapability: MIME support: SW audio/g711-alaw
+11-22 03:39:59.683  4612  4636 D HardwareCodecCapability: MIME support: SW video/x-vnd.on2.vp8
+11-22 03:39:59.683  4612  4636 D HardwareCodecCapability: MIME support: SW video/x-vnd.on2.vp9
+11-22 03:39:59.683  4612  4636 D HardwareCodecCapability: Found candidate encoder OMX.google.h264.encoder
+11-22 03:39:59.683  4612  4636 D HardwareCodecCapability: MIME support: SW audio/g711-mlaw
+11-22 03:39:59.683  4612  4636 D HardwareCodecCapability: MIME support: SW audio/mp4a-latm
+11-22 03:39:59.683  4612  4636 D HardwareCodecCapability: MIME support: SWE video/mp4v-es
+11-22 03:39:59.683  4612  4636 D HardwareCodecCapability: MIME support: SW audio/raw
+11-22 03:39:59.683  4612  4636 D HardwareCodecCapability: MIME support: SWE video/x-vnd.on2.vp8
+11-22 03:39:59.683  4612  4636 D HardwareCodecCapability: MIME support: SWE audio/amr-wb
+11-22 03:39:59.683  4612  4636 D HardwareCodecCapability: MIME support: SW audio/amr-wb
+11-22 03:39:59.683  4612  4636 D HardwareCodecCapability: MIME support: SW video/avc
+11-22 03:39:59.683  4612  4636 D HardwareCodecCapability: MIME support: SW audio/3gpp
+11-22 03:39:59.683  4612  4636 D HardwareCodecCapability: MIME support: SW audio/flac
+11-22 03:39:59.683  4612  4636 D HardwareCodecCapability: MIME support: SW video/hevc
+11-22 03:39:59.683  4612  4636 D HardwareCodecCapability: MIME support: SW video/3gpp
+11-22 03:39:59.683  4612  4636 D HardwareCodecCapability: MIME support: SW10B video/x-vnd.on2.vp9
+11-22 03:39:59.683  4612  4636 D HardwareCodecCapability: MIME support: SW video/mp4v-es
+11-22 03:39:59.683  4612  4636 D HardwareCodecCapability: MIME support: SW audio/vorbis
+11-22 03:39:59.683  4612  4636 D HardwareCodecCapability: MIME support: SW audio/gsm
+11-22 03:39:59.683  4612  4636 D HardwareCodecCapability: MIME support: SWE video/3gpp
+11-22 03:39:59.683  4612  4636 D HardwareCodecCapability: MIME support: SWE audio/3gpp
+11-22 03:39:59.683  4612  4636 D HardwareCodecCapability: MIME support: SWE video/avc
+11-22 03:39:59.683  4612  4636 D HardwareCodecCapability: MIME support: SWE audio/flac
+11-22 03:39:59.683  4612  4636 D HardwareCodecCapability: MIME support: SW audio/opus
+11-22 03:39:59.683  4612  4636 D HardwareCodecCapability: MIME support: SWE audio/mp4a-latm
+11-22 03:39:59.683  4612  4636 D HardwareCodecCapability: MIME support: SW audio/mpeg
+11-22 03:39:59.683  4612  4636 D HardwareCodecCapability: MIME support: SW audio/g711-alaw
+11-22 03:39:59.683  4612  4636 D HardwareCodecCapability: MIME support: SW video/x-vnd.on2.vp8
+11-22 03:39:59.683  4612  4636 D HardwareCodecCapability: MIME support: SW video/x-vnd.on2.vp9
+11-22 03:39:59.683  4612  4636 D HardwareCodecCapability: MIME support: SW audio/g711-mlaw
+11-22 03:39:59.683  4612  4636 D HardwareCodecCapability: MIME support: SW audio/mp4a-latm
+11-22 03:39:59.683  4612  4636 D HardwareCodecCapability: MIME support: SWE video/mp4v-es
+11-22 03:39:59.683  4612  4636 D HardwareCodecCapability: MIME support: SW audio/raw
+11-22 03:39:59.683  4612  4636 D HardwareCodecCapability: MIME support: SWE video/x-vnd.on2.vp8
+11-22 03:39:59.683  4612  4636 D HardwareCodecCapability: MIME support: SWE audio/amr-wb
+11-22 03:39:59.683  4612  4636 D HardwareCodecCapability: MIME support: SW audio/amr-wb
+11-22 03:39:59.683  4612  4636 D HardwareCodecCapability: MIME support: SW video/avc
+11-22 03:39:59.683  4612  4636 D HardwareCodecCapability: MIME support: SW audio/3gpp
+11-22 03:39:59.683  4612  4636 D HardwareCodecCapability: MIME support: SW audio/flac
+11-22 03:39:59.683  4612  4636 D HardwareCodecCapability: MIME support: SW video/hevc
+11-22 03:39:59.683  4612  4636 D HardwareCodecCapability: MIME support: SW video/3gpp
+11-22 03:39:59.683  4612  4636 D HardwareCodecCapability: MIME support: SW10B video/x-vnd.on2.vp9
+11-22 03:39:59.683  4612  4636 D HardwareCodecCapability: MIME support: SW video/mp4v-es
+11-22 03:39:59.684  4612  4636 D HardwareCodecCapability: MIME support: SW audio/vorbis
+11-22 03:39:59.684  4612  4636 D HardwareCodecCapability: MIME support: SW audio/gsm
+11-22 03:39:59.684  4612  4636 D HardwareCodecCapability: MIME support: SWE video/3gpp
+11-22 03:39:59.684  4612  4636 D HardwareCodecCapability: MIME support: SWE audio/3gpp
+11-22 03:39:59.684  4612  4636 D HardwareCodecCapability: MIME support: SWE video/avc
+11-22 03:39:59.684  4612  4636 D HardwareCodecCapability: MIME support: SWE audio/flac
+11-22 03:39:59.684  4612  4636 D HardwareCodecCapability: MIME support: SW audio/opus
+11-22 03:39:59.684  4612  4636 D HardwareCodecCapability: MIME support: SWE audio/mp4a-latm
+11-22 03:39:59.684  4612  4636 D HardwareCodecCapability: MIME support: SW audio/mpeg
+11-22 03:39:59.684  4612  4636 D HardwareCodecCapability: MIME support: SW audio/g711-alaw
+11-22 03:39:59.684  4612  4636 D HardwareCodecCapability: MIME support: SW video/x-vnd.on2.vp8
+11-22 03:39:59.684  4612  4636 D HardwareCodecCapability: MIME support: SW video/x-vnd.on2.vp9
+11-22 03:39:59.692  4612  4667 D ServiceAllocator: org.mozilla.gecko.process.GeckoChildProcessServices$gpu updateBindings: FOREGROUND priority, 0 importance, not connected pid, 3 successful binds, 0 failed binds, 0 successful unbinds
+11-22 03:39:59.693  4722  4722 W able_art_image: Unexpected CPU variant for X86 using defaults: x86_64
+11-22 03:39:59.695  1943  1955 I ActivityManager: Start proc 4722:com.twtrubiks.thumblinks:gpu_disable_art_image_/u0a67 for service com.twtrubiks.thumblinks/org.mozilla.gecko.process.GeckoChildProcessServices$gpu
+11-22 03:39:59.705  4612  4612 D WebExtension: handleMessage GeckoView:BrowserAction:Update
+11-22 03:39:59.710  4722  4722 I ServiceChildProcess: onCreate, process name: com.twtrubiks.thumblinks:gpu_disable_art_image_
+11-22 03:39:59.710  4722  4722 D GeckoThread: State changed to LAUNCHED
+11-22 03:39:59.711  4722  4737 I GeckoThread: preparing to run Gecko
+11-22 03:39:59.712  4722  4737 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libmozglue.so" unused DT entry: unknown (type 0x24 arg 0x3c3e8) (ignoring)
+11-22 03:39:59.712  4722  4737 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libmozglue.so" unused DT entry: unknown (type 0x23 arg 0x150) (ignoring)
+11-22 03:39:59.712  4722  4737 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libmozglue.so" unused DT entry: unknown (type 0x25 arg 0x8) (ignoring)
+11-22 03:39:59.713  4722  4737 D GeckoThread: State changed to MOZGLUE_READY
+11-22 03:39:59.716  4722  4737 D GeckoLoader: Library base=/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64
+11-22 03:39:59.717  4722  4737 D GeckoLoader: Library base=/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64
+11-22 03:39:59.721  4722  4737 E GeckoLibLoad: Load sqlite start
+11-22 03:39:59.721  4722  4737 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libnss3.so" unused DT entry: unknown (type 0x24 arg 0x15538) (ignoring)
+11-22 03:39:59.721  4722  4737 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libnss3.so" unused DT entry: unknown (type 0x23 arg 0x628) (ignoring)
+11-22 03:39:59.721  4722  4737 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libnss3.so" unused DT entry: unknown (type 0x25 arg 0x8) (ignoring)
+11-22 03:39:59.721  4722  4737 E GeckoLibLoad: Load sqlite done
+11-22 03:39:59.722  4722  4737 D GeckoLoader: Library base=/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64
+11-22 03:39:59.722  4722  4737 E GeckoLibLoad: Load nss start
+11-22 03:39:59.722  4722  4737 E GeckoLibLoad: Load nss done
+11-22 03:39:59.722  4722  4737 D GeckoLoader: Library base=/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64
+11-22 03:39:59.722  4722  4737 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libxul.so" unused DT entry: unknown (type 0x24 arg 0x69428) (ignoring)
+11-22 03:39:59.722  4722  4737 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libxul.so" unused DT entry: unknown (type 0x23 arg 0x192a8) (ignoring)
+11-22 03:39:59.722  4722  4737 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libxul.so" unused DT entry: unknown (type 0x25 arg 0x8) (ignoring)
+11-22 03:39:59.722  4722  4737 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libgkcodecs.so" unused DT entry: unknown (type 0x24 arg 0x3150) (ignoring)
+11-22 03:39:59.722  4722  4737 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libgkcodecs.so" unused DT entry: unknown (type 0x23 arg 0xa90) (ignoring)
+11-22 03:39:59.722  4722  4737 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libgkcodecs.so" unused DT entry: unknown (type 0x25 arg 0x8) (ignoring)
+11-22 03:39:59.727  4722  4737 E GeckoLibLoad: Loaded libs in 4.975455ms total, 0ms(0ms) user, 0ms(0ms) system, 0(0) faults
+11-22 03:39:59.727  4722  4737 D GeckoThread: State changed to LIBS_READY
+11-22 03:39:59.727  4722  4737 W GeckoThread: zerdatime 165550 - runGecko
+11-22 03:39:59.739  4612  4636 D HardwareCodecCapability: Found candidate encoder OMX.google.vp8.encoder
+11-22 03:39:59.739  4612  4636 D HardwareCodecCapability: Found candidate decoder OMX.google.vp8.decoder
+11-22 03:39:59.740  4722  4737 D GeckoThread: State changed to RUNNING
+11-22 03:39:59.743  4722  4745 D         : HostConnection::get() New Host Connection established 0x7cbb86c41300, tid 4745
+11-22 03:39:59.744  4722  4745 I ConfigStore: android::hardware::configstore::V1_0::ISurfaceFlingerConfigs::hasWideColorDisplay retrieved: 0
+11-22 03:39:59.744  4722  4745 I ConfigStore: android::hardware::configstore::V1_0::ISurfaceFlingerConfigs::hasHDRDisplay retrieved: 0
+11-22 03:39:59.745  4722  4745 D EGL_emulation: eglCreateContext: 0x7cbb86c3d7c0: maj 3 min 0 rcv 3
+11-22 03:39:59.746  4722  4745 D EGL_emulation: eglMakeCurrent: 0x7cbb86c3d7c0: ver 3 0 (tinfo 0x7cbb86c0dca0)
+11-22 03:39:59.750  1895  1897 E SurfaceFlinger: ro.sf.lcd_density must be defined as a build property
+11-22 03:39:59.750  1563  2292 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 17973248
+11-22 03:39:59.766  4722  4745 E eglCodecCommon: glUtilsParamSize: unknow param 0x00008caa
+11-22 03:39:59.768  4722  4745 E eglCodecCommon: glUtilsParamSize: unknow param 0x00008caa
+11-22 03:39:59.770  4741  4741 D         : HostConnection::get() New Host Connection established 0x7448d322ee40, tid 4741
+11-22 03:39:59.857  4612  4612 D WebExtension: handleMessage GeckoView:BrowserAction:Update
+11-22 03:39:59.866  4612  4612 I chatty  : uid=10067(com.twtrubiks.thumblinks) AndroidUI identical 3 lines
+11-22 03:39:59.866  4612  4612 D WebExtension: handleMessage GeckoView:BrowserAction:Update
+11-22 03:39:59.876  4612  4636 W GeckoEventDispatcher: No listener for GeckoView:WebExtension:OnReady
+11-22 03:39:59.885  4612  4636 E GeckoConsole: [JavaScript Error: "Native manifests are not supported on android" {file: "resource://gre/modules/NativeManifests.sys.mjs" line: 44}]
+11-22 03:39:59.885  4612  4636 E GeckoConsole: init@resource://gre/modules/NativeManifests.sys.mjs:44:15
+11-22 03:39:59.885  4612  4636 E GeckoConsole: lookupManifest@resource://gre/modules/NativeManifests.sys.mjs:205:17
+11-22 03:39:59.885  4612  4636 E GeckoConsole: lookupManagedStorage@chrome://extensions/content/parent/ext-storage.js:89:36
+11-22 03:39:59.885  4612  4636 E GeckoConsole: getManagedStorageManifestData@chrome://extensions/content/parent/ext-storage.js:104:20
+11-22 03:39:59.885  4612  4636 E GeckoConsole: get@chrome://extensions/content/parent/ext-storage.js:414:30
+11-22 03:39:59.885  4612  4636 E GeckoConsole: recvAPICall/result</</<@resource://gre/modules/ExtensionParent.sys.mjs:1315:16
+11-22 03:39:59.885  4612  4636 E GeckoConsole: withCallContextData@resource://gre/modules/ExtensionParent.sys.mjs:746:14
+11-22 03:39:59.885  4612  4636 E GeckoConsole: recvAPICall/result</<@resource://gre/modules/ExtensionParent.sys.mjs:1314:19
+11-22 03:39:59.885  4612  4636 E GeckoConsole: withPendingBrowser@resource://gre/modules/ExtensionParent.sys.mjs:756:26
+11-22 03:39:59.885  4612  4636 E GeckoConsole: recvAPICall/result<@resource://gre/modules/ExtensionParent.sys.mjs:1313:24
+11-22 03:39:59.885  4612  4636 E GeckoConsole: callAndLog@resource://gre/modules/ExtensionParent.sys.mjs:1266:14
+11-22 03:39:59.885  4612  4636 E GeckoConsole: recvAPICall@resource://gre/modules/ExtensionParent.sys.mjs:1312:25
+11-22 03:39:59.890  4612  4636 I chatty  : uid=10067(com.twtrubiks.thumblinks) Gecko identical 4 lines
+11-22 03:39:59.899  4612  4636 E GeckoConsole: [JavaScript Error: "Native manifests are not supported on android" {file: "resource://gre/modules/NativeManifests.sys.mjs" line: 44}]
+11-22 03:39:59.899  4612  4636 E GeckoConsole: init@resource://gre/modules/NativeManifests.sys.mjs:44:15
+11-22 03:39:59.899  4612  4636 E GeckoConsole: lookupManifest@resource://gre/modules/NativeManifests.sys.mjs:205:17
+11-22 03:39:59.899  4612  4636 E GeckoConsole: lookupManagedStorage@chrome://extensions/content/parent/ext-storage.js:89:36
+11-22 03:39:59.899  4612  4636 E GeckoConsole: getManagedStorageManifestData@chrome://extensions/content/parent/ext-storage.js:104:20
+11-22 03:39:59.899  4612  4636 E GeckoConsole: get@chrome://extensions/content/parent/ext-storage.js:414:30
+11-22 03:39:59.899  4612  4636 E GeckoConsole: recvAPICall/result</</<@resource://gre/modules/ExtensionParent.sys.mjs:1315:16
+11-22 03:39:59.899  4612  4636 E GeckoConsole: withCallContextData@resource://gre/modules/ExtensionParent.sys.mjs:746:14
+11-22 03:39:59.899  4612  4636 E GeckoConsole: recvAPICall/result</<@resource://gre/modules/ExtensionParent.sys.mjs:1314:19
+11-22 03:39:59.899  4612  4636 E GeckoConsole: withPendingBrowser@resource://gre/modules/ExtensionParent.sys.mjs:756:26
+11-22 03:39:59.899  4612  4636 E GeckoConsole: recvAPICall/result<@resource://gre/modules/ExtensionParent.sys.mjs:1313:24
+11-22 03:39:59.899  4612  4636 E GeckoConsole: callAndLog@resource://gre/modules/ExtensionParent.sys.mjs:1266:14
+11-22 03:39:59.899  4612  4636 E GeckoConsole: recvAPICall@resource://gre/modules/ExtensionParent.sys.mjs:1312:25
+11-22 03:40:00.010  2085  2301 D EGL_emulation: eglMakeCurrent: 0x7cbb86c3e6c0: ver 3 0 (tinfo 0x7cbb86cd0160)
+11-22 03:40:00.105  4764  4764 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-22 03:40:00.107  4764  4764 I app_process: RelocateImage: /system/bin/patchoat --input-image-location=/system/framework/boot.art --output-image-directory=/data/local/tmp/dalvik-cache/x86_64 --instruction-set=x86_64 --base-offset-delta=-11493376
+11-22 03:40:00.425  1943  2053 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@cad7591)
+11-22 03:40:00.426  1943  1957 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@cad7591)
+11-22 03:40:00.467  4764  4764 W app_process: Unexpected CPU variant for X86 using defaults: x86_64
+11-22 03:40:00.468  4764  4764 I app_process: The ClassLoaderContext is a special shared library.
+11-22 03:40:00.468  4764  4764 I app_process: The ClassLoaderContext is a special shared library.
+11-22 03:40:00.482  4764  4764 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+11-22 03:40:00.488  1943  1943 V SettingsProvider: Notifying for 0: content://settings/secure/accessibility_enabled
+11-22 03:40:01.249  4612  4612 D GeckoNetworkManager: Incoming event enableNotifications for state OnWithListeners -> null
+11-22 03:40:01.249  4612  4612 W GeckoNetworkManager: Invalid event enableNotifications for state OnWithListeners
+11-22 03:40:01.403  4612  4781 D ProfileInstaller: Installing profile for com.twtrubiks.thumblinks
+11-22 03:40:01.426  1943  2053 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@7cbc364)
+11-22 03:40:01.426  1943  1957 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@7cbc364)
+11-22 03:40:01.506  4764  4764 W AccessibilityNodeInfoDumper: Fetch time: 1ms
+11-22 03:40:01.508  1943  2605 W WindowManager: removeWindowToken: Attempted to remove non-existing token: android.os.Binder@ed36cf6
+11-22 03:40:01.508  1943  1943 V SettingsProvider: Notifying for 0: content://settings/secure/accessibility_enabled
+11-22 03:40:01.514  4764  4764 D AndroidRuntime: Shutting down VM
+11-22 03:40:01.556  4612  4617 I biks.thumblink: Compiler allocated 4MB to compile p2 t7.q(int)
+11-22 03:40:01.654  4784  4784 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-22 03:40:01.672  4784  4784 W app_process: Unexpected CPU variant for X86 using defaults: x86_64
+11-22 03:40:01.673  4784  4784 I app_process: The ClassLoaderContext is a special shared library.
+11-22 03:40:01.683  4784  4784 D AndroidRuntime: Calling main entry com.android.commands.input.Input
+11-22 03:40:01.684  4784  4784 I Input   : injectMotionEvent: MotionEvent { action=ACTION_DOWN, actionButton=0, id[0]=0, x[0]=1208.0, y[0]=2798.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=167507, downTime=167507, deviceId=0, source=0x1002 }
+11-22 03:40:01.687  4784  4784 I Input   : injectMotionEvent: MotionEvent { action=ACTION_UP, actionButton=0, id[0]=0, x[0]=1208.0, y[0]=2798.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=167507, downTime=167507, deviceId=0, source=0x1002 }
+11-22 03:40:01.690  4784  4784 D AndroidRuntime: Shutting down VM
+11-22 03:40:01.693  1871  2612 W audio_hw_generic: Not supplying enough data to HAL, expected position 4847192 , only wrote 4847040
+11-22 03:40:02.426  1943  2053 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@f8effa6)
+11-22 03:40:02.426  1943  1957 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@f8effa6)
+11-22 03:40:02.556  4612  4612 D WebExtension: handleMessage GeckoView:BrowserAction:Update
+11-22 03:40:02.556  4612  4612 I chatty  : uid=10067(com.twtrubiks.thumblinks) AndroidUI identical 1 line
+11-22 03:40:02.557  4612  4612 D WebExtension: handleMessage GeckoView:BrowserAction:Update
+11-22 03:40:03.426  1943  2053 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@22b9de7)
+11-22 03:40:03.426  1943  1957 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@22b9de7)
+11-22 03:40:03.798  4795  4795 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-22 03:40:03.817  4795  4795 W app_process: Unexpected CPU variant for X86 using defaults: x86_64
+11-22 03:40:03.818  4795  4795 I app_process: The ClassLoaderContext is a special shared library.
+11-22 03:40:03.818  4795  4795 I app_process: The ClassLoaderContext is a special shared library.
+11-22 03:40:03.826  4795  4795 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+11-22 03:40:03.829  1943  1943 V SettingsProvider: Notifying for 0: content://settings/secure/accessibility_enabled
+11-22 03:40:04.426  1943  2053 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@19b7032)
+11-22 03:40:04.426  1943  1957 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@19b7032)
+11-22 03:40:04.841  4795  4795 W AccessibilityNodeInfoDumper: Fetch time: 2ms
+11-22 03:40:04.844  1943  1955 W WindowManager: removeWindowToken: Attempted to remove non-existing token: android.os.Binder@e58cd94
+11-22 03:40:04.844  1943  1943 V SettingsProvider: Notifying for 0: content://settings/secure/accessibility_enabled
+11-22 03:40:04.850  4795  4795 D AndroidRuntime: Shutting down VM
+11-22 03:40:04.918  1871  1874 W audio_hw_generic: Not supplying enough data to HAL, expected position 5154533 , only wrote 5001840
+11-22 03:40:04.950  4811  4811 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-22 03:40:04.968  4811  4811 W app_process: Unexpected CPU variant for X86 using defaults: x86_64
+11-22 03:40:04.969  4811  4811 I app_process: The ClassLoaderContext is a special shared library.
+11-22 03:40:04.976  4811  4811 D AndroidRuntime: Calling main entry com.android.commands.input.Input
+11-22 03:40:04.977  4811  4811 I Input   : injectMotionEvent: MotionEvent { action=ACTION_DOWN, actionButton=0, id[0]=0, x[0]=572.0, y[0]=462.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=170800, downTime=170800, deviceId=0, source=0x1002 }
+11-22 03:40:04.981  4811  4811 I Input   : injectMotionEvent: MotionEvent { action=ACTION_UP, actionButton=0, id[0]=0, x[0]=572.0, y[0]=462.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=170800, downTime=170800, deviceId=0, source=0x1002 }
+11-22 03:40:04.982  1943  1955 D AutofillManagerServiceImpl: Reset component for user 0 ()
+11-22 03:40:04.984  4811  4811 D AndroidRuntime: Shutting down VM
+11-22 03:40:05.001  1943  1957 E memtrack: Couldn't load memtrack module
+11-22 03:40:05.001  1943  1957 W android.os.Debug: failed to get memory consumption info: -1
+11-22 03:40:05.006  1943  1957 E memtrack: Couldn't load memtrack module
+11-22 03:40:05.006  1943  1957 W android.os.Debug: failed to get memory consumption info: -1
+11-22 03:40:05.070  4822  4822 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-22 03:40:05.079  2063  2063 I LatinIME: Starting input. Cursor position = 0,0
+11-22 03:40:05.106  4822  4822 W app_process: Unexpected CPU variant for X86 using defaults: x86_64
+11-22 03:40:05.109  4822  4822 I app_process: The ClassLoaderContext is a special shared library.
+11-22 03:40:05.118  4822  4822 D AndroidRuntime: Calling main entry com.android.commands.input.Input
+11-22 03:40:05.119  4822  4822 I Input   : injectKeyEvent: KeyEvent { action=ACTION_DOWN, keyCode=KEYCODE_H, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=170942, downTime=170942, deviceId=-1, source=0x101 }
+11-22 03:40:05.272  4822  4822 I Input   : injectKeyEvent: KeyEvent { action=ACTION_UP, keyCode=KEYCODE_H, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=170942, downTime=170942, deviceId=-1, source=0x101 }
+11-22 03:40:05.281  1563  2292 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 40960
+11-22 03:40:05.322  1563  2292 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 17489920
+11-22 03:40:05.380  1563  1563 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 40960
+11-22 03:40:05.395  1563  1563 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 17489920
+11-22 03:40:05.413  1563  1563 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 17489920
+11-22 03:40:05.422  4822  4822 I Input   : injectKeyEvent: KeyEvent { action=ACTION_DOWN, keyCode=KEYCODE_T, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=170942, downTime=170942, deviceId=-1, source=0x101 }
+11-22 03:40:05.425  4822  4822 I Input   : injectKeyEvent: KeyEvent { action=ACTION_UP, keyCode=KEYCODE_T, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=170942, downTime=170942, deviceId=-1, source=0x101 }
+11-22 03:40:05.426  4822  4822 I Input   : injectKeyEvent: KeyEvent { action=ACTION_DOWN, keyCode=KEYCODE_T, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=170942, downTime=170942, deviceId=-1, source=0x101 }
+11-22 03:40:05.426  1943  2053 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@20cd38a)
+11-22 03:40:05.426  1943  1957 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@20cd38a)
+11-22 03:40:05.427  4822  4822 I Input   : injectKeyEvent: KeyEvent { action=ACTION_UP, keyCode=KEYCODE_T, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=170942, downTime=170942, deviceId=-1, source=0x101 }
+11-22 03:40:05.427  4822  4822 I Input   : injectKeyEvent: KeyEvent { action=ACTION_DOWN, keyCode=KEYCODE_P, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=170942, downTime=170942, deviceId=-1, source=0x101 }
+11-22 03:40:05.428  4822  4822 I Input   : injectKeyEvent: KeyEvent { action=ACTION_UP, keyCode=KEYCODE_P, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=170942, downTime=170942, deviceId=-1, source=0x101 }
+11-22 03:40:05.428  4822  4822 I Input   : injectKeyEvent: KeyEvent { action=ACTION_DOWN, keyCode=KEYCODE_S, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=170942, downTime=170942, deviceId=-1, source=0x101 }
+11-22 03:40:05.429  4822  4822 I Input   : injectKeyEvent: KeyEvent { action=ACTION_UP, keyCode=KEYCODE_S, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=170942, downTime=170942, deviceId=-1, source=0x101 }
+11-22 03:40:05.429  4822  4822 I Input   : injectKeyEvent: KeyEvent { action=ACTION_DOWN, keyCode=KEYCODE_SHIFT_LEFT, scanCode=0, metaState=META_SHIFT_ON|META_SHIFT_LEFT_ON, flags=0x0, repeatCount=0, eventTime=170942, downTime=170942, deviceId=-1, source=0x101 }
+11-22 03:40:05.430  4822  4822 I Input   : injectKeyEvent: KeyEvent { action=ACTION_DOWN, keyCode=KEYCODE_SEMICOLON, scanCode=0, metaState=META_SHIFT_ON|META_SHIFT_LEFT_ON, flags=0x0, repeatCount=0, eventTime=170942, downTime=170942, deviceId=-1, source=0x101 }
+11-22 03:40:05.436  4822  4822 I Input   : injectKeyEvent: KeyEvent { action=ACTION_UP, keyCode=KEYCODE_SEMICOLON, scanCode=0, metaState=META_SHIFT_ON|META_SHIFT_LEFT_ON, flags=0x0, repeatCount=0, eventTime=170942, downTime=170942, deviceId=-1, source=0x101 }
+11-22 03:40:05.450  2085  2301 D EGL_emulation: eglMakeCurrent: 0x7cbb86c3e6c0: ver 3 0 (tinfo 0x7cbb86cd0160)
+11-22 03:40:05.456  2063  3739 D EGL_emulation: eglMakeCurrent: 0x7cbb7a93ec40: ver 3 0 (tinfo 0x7cbb7a9ff640)
+11-22 03:40:05.633  1895  2010 W SurfaceFlinger: Attempting to set client state on removed layer: Surface(name=ef598fa InputMethod)/@0xfee1823 - animation-leash#0
+11-22 03:40:05.633  1895  2010 W SurfaceFlinger: Attempting to destroy on removed layer: Surface(name=ef598fa InputMethod)/@0xfee1823 - animation-leash#0
+11-22 03:40:05.636  4822  4822 I Input   : injectKeyEvent: KeyEvent { action=ACTION_UP, keyCode=KEYCODE_SHIFT_LEFT, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=170942, downTime=170942, deviceId=-1, source=0x101 }
+11-22 03:40:05.637  4822  4822 I Input   : injectKeyEvent: KeyEvent { action=ACTION_DOWN, keyCode=KEYCODE_SLASH, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=170942, downTime=170942, deviceId=-1, source=0x101 }
+11-22 03:40:05.639  4822  4822 I Input   : injectKeyEvent: KeyEvent { action=ACTION_UP, keyCode=KEYCODE_SLASH, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=170942, downTime=170942, deviceId=-1, source=0x101 }
+11-22 03:40:05.639  4822  4822 I Input   : injectKeyEvent: KeyEvent { action=ACTION_DOWN, keyCode=KEYCODE_SLASH, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=170942, downTime=170942, deviceId=-1, source=0x101 }
+11-22 03:40:05.640  4822  4822 I Input   : injectKeyEvent: KeyEvent { action=ACTION_UP, keyCode=KEYCODE_SLASH, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=170942, downTime=170942, deviceId=-1, source=0x101 }
+11-22 03:40:05.640  4822  4822 I Input   : injectKeyEvent: KeyEvent { action=ACTION_DOWN, keyCode=KEYCODE_G, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=170942, downTime=170942, deviceId=-1, source=0x101 }
+11-22 03:40:05.643  4822  4822 I Input   : injectKeyEvent: KeyEvent { action=ACTION_UP, keyCode=KEYCODE_G, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=170942, downTime=170942, deviceId=-1, source=0x101 }
+11-22 03:40:05.647  4822  4822 I Input   : injectKeyEvent: KeyEvent { action=ACTION_DOWN, keyCode=KEYCODE_I, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=170942, downTime=170942, deviceId=-1, source=0x101 }
+11-22 03:40:05.648  4822  4822 I Input   : injectKeyEvent: KeyEvent { action=ACTION_UP, keyCode=KEYCODE_I, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=170942, downTime=170942, deviceId=-1, source=0x101 }
+11-22 03:40:05.648  4822  4822 I Input   : injectKeyEvent: KeyEvent { action=ACTION_DOWN, keyCode=KEYCODE_T, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=170942, downTime=170942, deviceId=-1, source=0x101 }
+11-22 03:40:05.650  4822  4822 I Input   : injectKeyEvent: KeyEvent { action=ACTION_UP, keyCode=KEYCODE_T, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=170942, downTime=170942, deviceId=-1, source=0x101 }
+11-22 03:40:05.701  4822  4822 I Input   : injectKeyEvent: KeyEvent { action=ACTION_DOWN, keyCode=KEYCODE_H, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=170942, downTime=170942, deviceId=-1, source=0x101 }
+11-22 03:40:05.759  4822  4822 I Input   : injectKeyEvent: KeyEvent { action=ACTION_UP, keyCode=KEYCODE_H, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=170942, downTime=170942, deviceId=-1, source=0x101 }
+11-22 03:40:05.826  4822  4822 I Input   : injectKeyEvent: KeyEvent { action=ACTION_DOWN, keyCode=KEYCODE_U, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=170942, downTime=170942, deviceId=-1, source=0x101 }
+11-22 03:40:05.876  4822  4822 I Input   : injectKeyEvent: KeyEvent { action=ACTION_UP, keyCode=KEYCODE_U, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=170942, downTime=170942, deviceId=-1, source=0x101 }
+11-22 03:40:06.002  4822  4822 I Input   : injectKeyEvent: KeyEvent { action=ACTION_DOWN, keyCode=KEYCODE_B, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=170942, downTime=170942, deviceId=-1, source=0x101 }
+11-22 03:40:06.084  4822  4822 I Input   : injectKeyEvent: KeyEvent { action=ACTION_UP, keyCode=KEYCODE_B, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=170942, downTime=170942, deviceId=-1, source=0x101 }
+11-22 03:40:06.084  4822  4822 I Input   : injectKeyEvent: KeyEvent { action=ACTION_DOWN, keyCode=KEYCODE_PERIOD, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=170942, downTime=170942, deviceId=-1, source=0x101 }
+11-22 03:40:06.085  4822  4822 I Input   : injectKeyEvent: KeyEvent { action=ACTION_UP, keyCode=KEYCODE_PERIOD, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=170942, downTime=170942, deviceId=-1, source=0x101 }
+11-22 03:40:06.088  4822  4822 I Input   : injectKeyEvent: KeyEvent { action=ACTION_DOWN, keyCode=KEYCODE_C, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=170942, downTime=170942, deviceId=-1, source=0x101 }
+11-22 03:40:06.150  4822  4822 I Input   : injectKeyEvent: KeyEvent { action=ACTION_UP, keyCode=KEYCODE_C, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=170942, downTime=170942, deviceId=-1, source=0x101 }
+11-22 03:40:06.212  4822  4822 I Input   : injectKeyEvent: KeyEvent { action=ACTION_DOWN, keyCode=KEYCODE_O, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=170942, downTime=170942, deviceId=-1, source=0x101 }
+11-22 03:40:06.326  4822  4822 I Input   : injectKeyEvent: KeyEvent { action=ACTION_UP, keyCode=KEYCODE_O, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=170942, downTime=170942, deviceId=-1, source=0x101 }
+11-22 03:40:06.335  4822  4822 I Input   : injectKeyEvent: KeyEvent { action=ACTION_DOWN, keyCode=KEYCODE_M, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=170942, downTime=170942, deviceId=-1, source=0x101 }
+11-22 03:40:06.335  4822  4822 I Input   : injectKeyEvent: KeyEvent { action=ACTION_UP, keyCode=KEYCODE_M, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=170942, downTime=170942, deviceId=-1, source=0x101 }
+11-22 03:40:06.336  4822  4822 I Input   : injectKeyEvent: KeyEvent { action=ACTION_DOWN, keyCode=KEYCODE_SLASH, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=170942, downTime=170942, deviceId=-1, source=0x101 }
+11-22 03:40:06.336  4822  4822 I Input   : injectKeyEvent: KeyEvent { action=ACTION_UP, keyCode=KEYCODE_SLASH, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=170942, downTime=170942, deviceId=-1, source=0x101 }
+11-22 03:40:06.337  4822  4822 I Input   : injectKeyEvent: KeyEvent { action=ACTION_DOWN, keyCode=KEYCODE_G, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=170942, downTime=170942, deviceId=-1, source=0x101 }
+11-22 03:40:06.337  4822  4822 I Input   : injectKeyEvent: KeyEvent { action=ACTION_UP, keyCode=KEYCODE_G, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=170942, downTime=170942, deviceId=-1, source=0x101 }
+11-22 03:40:06.343  4822  4822 I Input   : injectKeyEvent: KeyEvent { action=ACTION_DOWN, keyCode=KEYCODE_I, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=170942, downTime=170942, deviceId=-1, source=0x101 }
+11-22 03:40:06.427  4822  4822 I Input   : injectKeyEvent: KeyEvent { action=ACTION_UP, keyCode=KEYCODE_I, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=170942, downTime=170942, deviceId=-1, source=0x101 }
+11-22 03:40:06.431  1943  2053 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@b1542ad)
+11-22 03:40:06.431  1943  1957 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@b1542ad)
+11-22 03:40:06.622  4822  4822 I Input   : injectKeyEvent: KeyEvent { action=ACTION_DOWN, keyCode=KEYCODE_T, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=170942, downTime=170942, deviceId=-1, source=0x101 }
+11-22 03:40:06.626  4822  4822 I Input   : injectKeyEvent: KeyEvent { action=ACTION_UP, keyCode=KEYCODE_T, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=170942, downTime=170942, deviceId=-1, source=0x101 }
+11-22 03:40:06.635  4822  4822 I Input   : injectKeyEvent: KeyEvent { action=ACTION_DOWN, keyCode=KEYCODE_SLASH, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=170942, downTime=170942, deviceId=-1, source=0x101 }
+11-22 03:40:06.638  4822  4822 I Input   : injectKeyEvent: KeyEvent { action=ACTION_UP, keyCode=KEYCODE_SLASH, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=170942, downTime=170942, deviceId=-1, source=0x101 }
+11-22 03:40:06.639  4822  4822 I Input   : injectKeyEvent: KeyEvent { action=ACTION_DOWN, keyCode=KEYCODE_G, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=170942, downTime=170942, deviceId=-1, source=0x101 }
+11-22 03:40:06.691  4822  4822 I Input   : injectKeyEvent: KeyEvent { action=ACTION_UP, keyCode=KEYCODE_G, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=170942, downTime=170942, deviceId=-1, source=0x101 }
+11-22 03:40:06.760  4822  4822 I Input   : injectKeyEvent: KeyEvent { action=ACTION_DOWN, keyCode=KEYCODE_I, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=170942, downTime=170942, deviceId=-1, source=0x101 }
+11-22 03:40:06.891  4822  4822 I Input   : injectKeyEvent: KeyEvent { action=ACTION_UP, keyCode=KEYCODE_I, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=170942, downTime=170942, deviceId=-1, source=0x101 }
+11-22 03:40:06.892  4822  4822 I Input   : injectKeyEvent: KeyEvent { action=ACTION_DOWN, keyCode=KEYCODE_T, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=170942, downTime=170942, deviceId=-1, source=0x101 }
+11-22 03:40:06.892  4822  4822 I Input   : injectKeyEvent: KeyEvent { action=ACTION_UP, keyCode=KEYCODE_T, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=170942, downTime=170942, deviceId=-1, source=0x101 }
+11-22 03:40:06.893  4822  4822 D AndroidRuntime: Shutting down VM
+11-22 03:40:07.238  4839  4839 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-22 03:40:07.267  4839  4839 W app_process: Unexpected CPU variant for X86 using defaults: x86_64
+11-22 03:40:07.268  4839  4839 I app_process: The ClassLoaderContext is a special shared library.
+11-22 03:40:07.286  4839  4839 D AndroidRuntime: Calling main entry com.android.commands.input.Input
+11-22 03:40:07.286  4839  4839 I Input   : injectKeyEvent: KeyEvent { action=ACTION_DOWN, keyCode=KEYCODE_BACK, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=173110, downTime=173110, deviceId=-1, source=0x101 }
+11-22 03:40:07.287  4839  4839 I Input   : injectKeyEvent: KeyEvent { action=ACTION_UP, keyCode=KEYCODE_BACK, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=173110, downTime=173110, deviceId=-1, source=0x101 }
+11-22 03:40:07.288  1943  1959 D AutofillManagerService: onBackKeyPressed()
+11-22 03:40:07.289  1943  1957 E memtrack: Couldn't load memtrack module
+11-22 03:40:07.289  1943  1957 W android.os.Debug: failed to get memory consumption info: -1
+11-22 03:40:07.291  4839  4839 D AndroidRuntime: Shutting down VM
+11-22 03:40:07.305  1563  1563 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 40960
+11-22 03:40:07.314  2063  3739 D EGL_emulation: eglMakeCurrent: 0x7cbb7a93ec40: ver 3 0 (tinfo 0x7cbb7a9ff640)
+11-22 03:40:07.391  1563  1563 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 40960
+11-22 03:40:07.428  1943  2053 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@9074906)
+11-22 03:40:07.430  1943  1957 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@9074906)
+11-22 03:40:08.373  4851  4851 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-22 03:40:08.402  4851  4851 W app_process: Unexpected CPU variant for X86 using defaults: x86_64
+11-22 03:40:08.402  4851  4851 I app_process: The ClassLoaderContext is a special shared library.
+11-22 03:40:08.411  4851  4851 D AndroidRuntime: Calling main entry com.android.commands.input.Input
+11-22 03:40:08.412  4851  4851 I Input   : injectMotionEvent: MotionEvent { action=ACTION_DOWN, actionButton=0, id[0]=0, x[0]=228.0, y[0]=714.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=174235, downTime=174235, deviceId=0, source=0x1002 }
+11-22 03:40:08.414  4851  4851 I Input   : injectMotionEvent: MotionEvent { action=ACTION_UP, actionButton=0, id[0]=0, x[0]=228.0, y[0]=714.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=174235, downTime=174235, deviceId=0, source=0x1002 }
+11-22 03:40:08.416  4851  4851 D AndroidRuntime: Shutting down VM
+11-22 03:40:08.418  1871  2612 W audio_hw_generic: Not supplying enough data to HAL, expected position 5001992 , only wrote 5001840
+11-22 03:40:08.431  1943  2053 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@fe1bc7)
+11-22 03:40:08.431  1943  1957 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@fe1bc7)
+11-22 03:40:08.440  4612  4612 D NetworkSecurityConfig: Using Network Security Config from resource network_security_config debugBuild: false
+11-22 03:40:09.150  1563  2292 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 2883584
+11-22 03:40:09.429  1943  2053 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@ab9311d)
+11-22 03:40:09.429  1943  1957 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@ab9311d)
+11-22 03:40:10.429  1943  2053 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@73eef92)
+11-22 03:40:10.429  1943  1957 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@73eef92)
+11-22 03:40:10.481  4870  4870 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-22 03:40:10.511  4870  4870 W app_process: Unexpected CPU variant for X86 using defaults: x86_64
+11-22 03:40:10.512  4870  4870 I app_process: The ClassLoaderContext is a special shared library.
+11-22 03:40:10.512  4870  4870 I app_process: The ClassLoaderContext is a special shared library.
+11-22 03:40:10.519  4870  4870 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+11-22 03:40:10.522  1943  1943 V SettingsProvider: Notifying for 0: content://settings/secure/accessibility_enabled
+11-22 03:40:11.263  1943  1957 E memtrack: Couldn't load memtrack module
+11-22 03:40:11.263  1943  1957 W android.os.Debug: failed to get memory consumption info: -1
+11-22 03:40:11.269  1943  1957 E memtrack: Couldn't load memtrack module
+11-22 03:40:11.269  1943  1957 W android.os.Debug: failed to get memory consumption info: -1
+11-22 03:40:11.274  1943  1957 E memtrack: Couldn't load memtrack module
+11-22 03:40:11.274  1943  1957 W android.os.Debug: failed to get memory consumption info: -1
+11-22 03:40:11.429  1943  2053 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@bdcbcbf)
+11-22 03:40:11.429  1943  1957 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@bdcbcbf)
+11-22 03:40:11.542  4870  4870 W AccessibilityNodeInfoDumper: Fetch time: 4ms
+11-22 03:40:11.542  1943  2605 W WindowManager: removeWindowToken: Attempted to remove non-existing token: android.os.Binder@fb6ad63
+11-22 03:40:11.543  1943  1943 V SettingsProvider: Notifying for 0: content://settings/secure/accessibility_enabled
+11-22 03:40:11.545  4870  4870 D AndroidRuntime: Shutting down VM
+11-22 03:40:11.621  4612  4617 I biks.thumblink: Compiler allocated 4MB to compile p2 t7.q(int)
+11-22 03:40:11.629  1871  1874 W audio_hw_generic: Not supplying enough data to HAL, expected position 5307946 , only wrote 5155920
+11-22 03:40:11.634  1895  2010 E SurfaceFlinger: ro.sf.lcd_density must be defined as a build property
+11-22 03:40:11.634  1563  2292 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 17973248
+11-22 03:40:11.650  4890  4890 D         : HostConnection::get() New Host Connection established 0x77d950a2ee40, tid 4890
+11-22 03:40:11.863  4892  4892 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-22 03:40:11.882  4892  4892 W app_process: Unexpected CPU variant for X86 using defaults: x86_64
+11-22 03:40:11.883  4892  4892 I app_process: The ClassLoaderContext is a special shared library.
+11-22 03:40:11.890  4892  4892 D AndroidRuntime: Calling main entry com.android.commands.input.Input
+11-22 03:40:11.892  4892  4892 I Input   : injectMotionEvent: MotionEvent { action=ACTION_DOWN, actionButton=0, id[0]=0, x[0]=720.0, y[0]=2109.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=177714, downTime=177714, deviceId=0, source=0x1002 }
+11-22 03:40:11.894  4892  4892 I Input   : injectMotionEvent: MotionEvent { action=ACTION_UP, actionButton=0, id[0]=0, x[0]=720.0, y[0]=2109.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=177714, downTime=177714, deviceId=0, source=0x1002 }
+11-22 03:40:11.897  4892  4892 D AndroidRuntime: Shutting down VM
+11-22 03:40:11.898  1871  2612 W audio_hw_generic: Not supplying enough data to HAL, expected position 5156070 , only wrote 5155920
+11-22 03:40:12.429  1943  2053 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@9ce66d5)
+11-22 03:40:12.429  1943  1957 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@9ce66d5)
+11-22 03:40:12.966  4905  4905 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-22 03:40:12.986  4905  4905 W app_process: Unexpected CPU variant for X86 using defaults: x86_64
+11-22 03:40:12.987  4905  4905 I app_process: The ClassLoaderContext is a special shared library.
+11-22 03:40:12.987  4905  4905 I app_process: The ClassLoaderContext is a special shared library.
+11-22 03:40:12.994  4905  4905 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+11-22 03:40:12.997  1943  1943 V SettingsProvider: Notifying for 0: content://settings/secure/accessibility_enabled
+11-22 03:40:13.429  1943  2053 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@f784878)
+11-22 03:40:13.429  1943  1957 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@f784878)
+11-22 03:40:14.013  4905  4905 W AccessibilityNodeInfoDumper: Fetch time: 2ms
+11-22 03:40:14.014  1943  1996 W WindowManager: removeWindowToken: Attempted to remove non-existing token: android.os.Binder@df4deea
+11-22 03:40:14.014  1943  1943 V SettingsProvider: Notifying for 0: content://settings/secure/accessibility_enabled
+11-22 03:40:14.018  4905  4905 D AndroidRuntime: Shutting down VM
+11-22 03:40:14.039  4612  4617 I biks.thumblink: Compiler allocated 4MB to compile p2 t7.q(int)
+11-22 03:40:14.092  1895  1897 E SurfaceFlinger: ro.sf.lcd_density must be defined as a build property
+11-22 03:40:14.092  1563  2292 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 17973248
+11-22 03:40:14.113  4923  4923 D         : HostConnection::get() New Host Connection established 0x730fd5c2ee40, tid 4923
+11-22 03:40:14.319  4925  4925 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-22 03:40:14.338  4925  4925 W app_process: Unexpected CPU variant for X86 using defaults: x86_64
+11-22 03:40:14.339  4925  4925 I app_process: The ClassLoaderContext is a special shared library.
+11-22 03:40:14.346  4925  4925 D AndroidRuntime: Calling main entry com.android.commands.input.Input
+11-22 03:40:14.348  4925  4925 I Input   : injectMotionEvent: MotionEvent { action=ACTION_DOWN, actionButton=0, id[0]=0, x[0]=664.0, y[0]=755.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=180170, downTime=180170, deviceId=0, source=0x1002 }
+11-22 03:40:14.350  4925  4925 I Input   : injectMotionEvent: MotionEvent { action=ACTION_UP, actionButton=0, id[0]=0, x[0]=664.0, y[0]=755.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=180170, downTime=180170, deviceId=0, source=0x1002 }
+11-22 03:40:14.352  4925  4925 D AndroidRuntime: Shutting down VM
+11-22 03:40:14.354  4612  4612 D ThumbLinks: onLoadRequest target=1 gesture=false redirect=false https://github.com/git/git
+11-22 03:40:14.392  4612  4667 D ServiceAllocator: org.mozilla.gecko.process.GeckoChildProcessServices$tab11 updateBindings: FOREGROUND priority, 0 importance, not connected pid, 3 successful binds, 0 failed binds, 0 successful unbinds
+11-22 03:40:14.397  4937  4937 W le_art_image_1: Unexpected CPU variant for X86 using defaults: x86_64
+11-22 03:40:14.400  1943  3021 I ActivityManager: Start proc 4937:com.twtrubiks.thumblinks:sandboxed_tab_disable_art_image_11/u0a67 for service com.twtrubiks.thumblinks/org.mozilla.gecko.process.GeckoChildProcessServices$tab11
+11-22 03:40:14.419  4937  4937 I ServiceChildProcess: onCreate, process name: com.twtrubiks.thumblinks:sandboxed_tab_disable_art_image_11
+11-22 03:40:14.419  4937  4937 D GeckoThread: State changed to LAUNCHED
+11-22 03:40:14.420  4937  4952 I GeckoThread: preparing to run Gecko
+11-22 03:40:14.433  1943  2053 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@1e56389)
+11-22 03:40:14.435  1943  1957 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@1e56389)
+11-22 03:40:14.714  4937  4952 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libmozglue.so" unused DT entry: unknown (type 0x24 arg 0x3c3e8) (ignoring)
+11-22 03:40:14.714  4937  4952 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libmozglue.so" unused DT entry: unknown (type 0x23 arg 0x150) (ignoring)
+11-22 03:40:14.714  4937  4952 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libmozglue.so" unused DT entry: unknown (type 0x25 arg 0x8) (ignoring)
+11-22 03:40:14.718  4612  4667 D ServiceAllocator: org.mozilla.gecko.process.GeckoChildProcessServices$tab11 updateBindings: FOREGROUND priority, 2 importance, 4937 pid, 0 successful binds, 0 failed binds, 0 successful unbinds
+11-22 03:40:14.720  1699  1713 D DrmHal  : found drm@1.0 IDrmFactory clearkey
+11-22 03:40:14.720  1699  1713 D DrmHal  : found drm@1.0 IDrmFactory default
+11-22 03:40:14.720  1699  1713 D DrmHal  : found drm@1.0 IDrmFactory widevine
+11-22 03:40:14.720  1699  1713 D DrmHal  : found drm@1.1 IDrmFactory clearkey
+11-22 03:40:14.721  1699  1713 D DrmHal  : found drm@1.1 IDrmFactory widevine
+11-22 03:40:14.722  4937  4952 D GeckoThread: State changed to MOZGLUE_READY
+11-22 03:40:14.723  4937  4952 D GeckoLoader: Library base=/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64
+11-22 03:40:14.723  4937  4952 D GeckoLoader: Library base=/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64
+11-22 03:40:14.723  4937  4952 E GeckoLibLoad: Load sqlite start
+11-22 03:40:14.723  4937  4952 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libnss3.so" unused DT entry: unknown (type 0x24 arg 0x15538) (ignoring)
+11-22 03:40:14.723  4937  4952 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libnss3.so" unused DT entry: unknown (type 0x23 arg 0x628) (ignoring)
+11-22 03:40:14.723  4937  4952 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libnss3.so" unused DT entry: unknown (type 0x25 arg 0x8) (ignoring)
+11-22 03:40:14.724  4937  4952 E GeckoLibLoad: Load sqlite done
+11-22 03:40:14.724  4937  4952 D GeckoLoader: Library base=/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64
+11-22 03:40:14.724  4937  4952 E GeckoLibLoad: Load nss start
+11-22 03:40:14.724  4937  4952 E GeckoLibLoad: Load nss done
+11-22 03:40:14.724  4937  4952 D GeckoLoader: Library base=/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64
+11-22 03:40:14.725  1699  1713 D CryptoHal: found drm@1.0 ICryptoFactory clearkey
+11-22 03:40:14.725  1699  1713 D CryptoHal: found drm@1.0 ICryptoFactory default
+11-22 03:40:14.725  1699  1713 D CryptoHal: found drm@1.0 ICryptoFactory widevine
+11-22 03:40:14.725  1699  1713 D CryptoHal: found drm@1.1 ICryptoFactory clearkey
+11-22 03:40:14.725  1699  1713 D CryptoHal: found drm@1.1 ICryptoFactory widevine
+11-22 03:40:14.728  4937  4952 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libxul.so" unused DT entry: unknown (type 0x24 arg 0x69428) (ignoring)
+11-22 03:40:14.728  4937  4952 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libxul.so" unused DT entry: unknown (type 0x23 arg 0x192a8) (ignoring)
+11-22 03:40:14.728  4937  4952 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libxul.so" unused DT entry: unknown (type 0x25 arg 0x8) (ignoring)
+11-22 03:40:14.728  4937  4952 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libgkcodecs.so" unused DT entry: unknown (type 0x24 arg 0x3150) (ignoring)
+11-22 03:40:14.728  4937  4952 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libgkcodecs.so" unused DT entry: unknown (type 0x23 arg 0xa90) (ignoring)
+11-22 03:40:14.728  4937  4952 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libgkcodecs.so" unused DT entry: unknown (type 0x25 arg 0x8) (ignoring)
+11-22 03:40:14.736  4937  4952 E GeckoLibLoad: Loaded libs in 12.711301ms total, 0ms(0ms) user, 10ms(10ms) system, 0(0) faults
+11-22 03:40:14.736  4937  4952 D GeckoThread: State changed to LIBS_READY
+11-22 03:40:14.737  4937  4952 W GeckoThread: zerdatime 180560 - runGecko
+11-22 03:40:14.754  4722  4745 E eglCodecCommon: glUtilsParamSize: unknow param 0x00008caa
+11-22 03:40:14.757  4722  4745 E eglCodecCommon: glUtilsParamSize: unknow param 0x00008caa
+11-22 03:40:14.821  4937  4952 D GeckoThread: State changed to RUNNING
+11-22 03:40:14.834  4722  4745 E eglCodecCommon: glUtilsParamSize: unknow param 0x00008caa
+11-22 03:40:14.836  4722  4745 I chatty  : uid=10067(com.twtrubiks.thumblinks) Renderer identical 2 lines
+11-22 03:40:14.836  4722  4745 E eglCodecCommon: glUtilsParamSize: unknow param 0x00008caa
+11-22 03:40:14.836  4722  4735 D OpenGLRenderer: Skia GL Pipeline
+11-22 03:40:14.836  1943  4903 D WificondControl: Scan result ready event
+11-22 03:40:14.837  4722  4745 E eglCodecCommon: glUtilsParamSize: unknow param 0x00008caa
+11-22 03:40:14.838  4722  4745 I chatty  : uid=10067(com.twtrubiks.thumblinks) Renderer identical 4 lines
+11-22 03:40:14.838  4722  4745 E eglCodecCommon: glUtilsParamSize: unknow param 0x00008caa
+11-22 03:40:14.841  4937  4937 W com.twtrubiks.thumblinks:sandboxed_tab_disable_art_image_11: type=1400 audit(0.0:15): avc: denied { read } for comm=57656220436F6E74656E74 name="product_name" dev="sysfs" ino=195 scontext=u:r:untrusted_app:s0:c67,c256,c512,c768 tcontext=u:object_r:sysfs:s0 tclass=file permissive=0
+11-22 03:40:14.842  4612  4636 I GeckoSession: zerdatime 180665 - chrome startup finished
+11-22 03:40:14.843  1563  2292 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 14118912
+11-22 03:40:14.851  4722  4745 D EGL_emulation: eglMakeCurrent: 0x7cbb86c3d7c0: ver 3 0 (tinfo 0x7cbb86c0dca0)
+11-22 03:40:14.851  4722  4745 E eglCodecCommon: glUtilsParamSize: unknow param 0x00008caa
+11-22 03:40:14.851  4722  4745 E eglCodecCommon: glUtilsParamSize: unknow param 0x00008caa
+11-22 03:40:14.852  4612  4612 D GeckoSession: handleMessage GeckoView:PageStart uri=about:blank
+11-22 03:40:14.852  4612  4612 D GeckoSession: handleMessage GeckoView:LocationChange uri=about:blank
+11-22 03:40:14.852  4612  4612 D GeckoSession: handleMessage GeckoView:PageStop uri=null
+11-22 03:40:14.852  4722  4745 E eglCodecCommon: glUtilsParamSize: unknow param 0x00008caa
+11-22 03:40:14.870  4722  4745 I chatty  : uid=10067(com.twtrubiks.thumblinks) Renderer identical 64 lines
+11-22 03:40:14.870  4722  4745 E eglCodecCommon: glUtilsParamSize: unknow param 0x00008caa
+11-22 03:40:14.872  4612  4612 D GeckoSession: handleMessage GeckoView:ProgressChanged uri=null
+11-22 03:40:14.879  4937  4952 W GeckoEditableChild: No editable parent
+11-22 03:40:14.906  4612  4612 D GeckoSession: handleMessage GeckoView:PageStart uri=https://github.com/git/git
+11-22 03:40:14.916  4722  4745 E eglCodecCommon: glUtilsParamSize: unknow param 0x00008caa
+11-22 03:40:14.917  4722  4745 E eglCodecCommon: glUtilsParamSize: unknow param 0x00008caa
+11-22 03:40:15.016  4612  4636 D GeckoIdleService: Registering Idle observer callback
+11-22 03:40:15.016  4612  4636 D GeckoIdleService: Register idle observer 0x7cbb5fab2ea0 for 180 seconds
+11-22 03:40:15.016  4612  4636 D GeckoIdleService: Register: adjusting next switch from -1 to 180 seconds
+11-22 03:40:15.016  4612  4636 D GeckoIdleService: next timeout 180000 msec from now
+11-22 03:40:15.016  4612  4636 D GeckoIdleService: SetTimerExpiryIfBefore: next timeout 180000 msec from now
+11-22 03:40:15.016  4612  4636 D GeckoIdleService: reset timer expiry to 180010 msec from now
+11-22 03:40:15.022  4612  4636 D GeckoIdleService: Get idle time: time since reset 6 msec
+11-22 03:40:15.022  4612  4612 D WebExtension: handleMessage GeckoView:BrowserAction:Update
+11-22 03:40:15.022  4612  4612 I chatty  : uid=10067(com.twtrubiks.thumblinks) AndroidUI identical 2 lines
+11-22 03:40:15.022  4612  4612 D WebExtension: handleMessage GeckoView:BrowserAction:Update
+11-22 03:40:15.141  4612  4636 D GeckoIdleService: Register idle observer 0x7cbb6274c9f8 for 5 seconds
+11-22 03:40:15.141  4612  4636 D GeckoIdleService: Register: adjusting next switch from 180 to 5 seconds
+11-22 03:40:15.141  4612  4636 D GeckoIdleService: next timeout 4874 msec from now
+11-22 03:40:15.141  4612  4636 D GeckoIdleService: SetTimerExpiryIfBefore: next timeout 4874 msec from now
+11-22 03:40:15.141  4612  4636 D GeckoIdleService: reset timer expiry to 4884 msec from now
+11-22 03:40:15.261  1563  2292 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 14118912
+11-22 03:40:15.432  1943  2053 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@78453af)
+11-22 03:40:15.433  1943  1957 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@78453af)
+11-22 03:40:15.758  4612  4612 D WebExtension: handleMessage GeckoView:BrowserAction:Update
+11-22 03:40:15.758  4612  4612 I chatty  : uid=10067(com.twtrubiks.thumblinks) AndroidUI identical 2 lines
+11-22 03:40:15.758  4612  4612 D WebExtension: handleMessage GeckoView:BrowserAction:Update
+11-22 03:40:15.759  4612  4667 D ServiceAllocator: org.mozilla.gecko.process.GeckoChildProcessServices$tab7 updateBindings: FOREGROUND priority, 0 importance, not connected pid, 3 successful binds, 0 failed binds, 0 successful unbinds
+11-22 03:40:15.762  5000  5000 W ble_art_image_: Unexpected CPU variant for X86 using defaults: x86_64
+11-22 03:40:15.765  1943  4903 I ActivityManager: Start proc 5000:com.twtrubiks.thumblinks:sandboxed_tab_disable_art_image_7/u0a67 for service com.twtrubiks.thumblinks/org.mozilla.gecko.process.GeckoChildProcessServices$tab7
+11-22 03:40:15.791  5000  5000 I ServiceChildProcess: onCreate, process name: com.twtrubiks.thumblinks:sandboxed_tab_disable_art_image_7
+11-22 03:40:15.792  5000  5000 D GeckoThread: State changed to LAUNCHED
+11-22 03:40:15.800  5000  5017 I GeckoThread: preparing to run Gecko
+11-22 03:40:15.809  5000  5017 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libmozglue.so" unused DT entry: unknown (type 0x24 arg 0x3c3e8) (ignoring)
+11-22 03:40:15.809  5000  5017 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libmozglue.so" unused DT entry: unknown (type 0x23 arg 0x150) (ignoring)
+11-22 03:40:15.809  5000  5017 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libmozglue.so" unused DT entry: unknown (type 0x25 arg 0x8) (ignoring)
+11-22 03:40:15.810  5000  5017 D GeckoThread: State changed to MOZGLUE_READY
+11-22 03:40:15.811  5000  5017 D GeckoLoader: Library base=/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64
+11-22 03:40:15.811  5000  5017 D GeckoLoader: Library base=/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64
+11-22 03:40:15.823  5000  5017 E GeckoLibLoad: Load sqlite start
+11-22 03:40:15.823  5000  5017 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libnss3.so" unused DT entry: unknown (type 0x24 arg 0x15538) (ignoring)
+11-22 03:40:15.823  5000  5017 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libnss3.so" unused DT entry: unknown (type 0x23 arg 0x628) (ignoring)
+11-22 03:40:15.823  5000  5017 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libnss3.so" unused DT entry: unknown (type 0x25 arg 0x8) (ignoring)
+11-22 03:40:15.824  5000  5017 E GeckoLibLoad: Load sqlite done
+11-22 03:40:15.824  5000  5017 D GeckoLoader: Library base=/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64
+11-22 03:40:15.824  5000  5017 E GeckoLibLoad: Load nss start
+11-22 03:40:15.824  5000  5017 E GeckoLibLoad: Load nss done
+11-22 03:40:15.824  5000  5017 D GeckoLoader: Library base=/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64
+11-22 03:40:15.824  5000  5017 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libxul.so" unused DT entry: unknown (type 0x24 arg 0x69428) (ignoring)
+11-22 03:40:15.824  5000  5017 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libxul.so" unused DT entry: unknown (type 0x23 arg 0x192a8) (ignoring)
+11-22 03:40:15.824  5000  5017 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libxul.so" unused DT entry: unknown (type 0x25 arg 0x8) (ignoring)
+11-22 03:40:15.825  5000  5017 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libgkcodecs.so" unused DT entry: unknown (type 0x24 arg 0x3150) (ignoring)
+11-22 03:40:15.825  5000  5017 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libgkcodecs.so" unused DT entry: unknown (type 0x23 arg 0xa90) (ignoring)
+11-22 03:40:15.825  5000  5017 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libgkcodecs.so" unused DT entry: unknown (type 0x25 arg 0x8) (ignoring)
+11-22 03:40:15.834  4612  4667 D ServiceAllocator: org.mozilla.gecko.process.GeckoChildProcessServices$tab7 updateBindings: FOREGROUND priority, 2 importance, 5000 pid, 0 successful binds, 0 failed binds, 0 successful unbinds
+11-22 03:40:15.869  5000  5017 E GeckoLibLoad: Loaded libs in 44.708298ms total, 10ms(0ms) user, 0ms(10ms) system, 0(0) faults
+11-22 03:40:15.869  5000  5017 D GeckoThread: State changed to LIBS_READY
+11-22 03:40:15.869  5000  5017 W GeckoThread: zerdatime 181692 - runGecko
+11-22 03:40:15.990  5000  5017 D GeckoThread: State changed to RUNNING
+11-22 03:40:16.001  5000  5000 W com.twtrubiks.thumblinks:sandboxed_tab_disable_art_image_7: type=1400 audit(0.0:16): avc: denied { read } for comm=49736F6C617465642057656220436F name="product_name" dev="sysfs" ino=195 scontext=u:r:untrusted_app:s0:c67,c256,c512,c768 tcontext=u:object_r:sysfs:s0 tclass=file permissive=0
+11-22 03:40:16.060  5000  5017 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libsoftokn3.so" unused DT entry: unknown (type 0x24 arg 0x2350) (ignoring)
+11-22 03:40:16.060  5000  5017 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libsoftokn3.so" unused DT entry: unknown (type 0x23 arg 0x80) (ignoring)
+11-22 03:40:16.060  5000  5017 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libsoftokn3.so" unused DT entry: unknown (type 0x25 arg 0x8) (ignoring)
+11-22 03:40:16.061  5000  5017 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libfreebl3.so" unused DT entry: unknown (type 0x24 arg 0xc78) (ignoring)
+11-22 03:40:16.061  5000  5017 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libfreebl3.so" unused DT entry: unknown (type 0x23 arg 0x68) (ignoring)
+11-22 03:40:16.061  5000  5017 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libfreebl3.so" unused DT entry: unknown (type 0x25 arg 0x8) (ignoring)
+11-22 03:40:16.069  4722  4745 E eglCodecCommon: glUtilsParamSize: unknow param 0x00008caa
+11-22 03:40:16.069  4722  4745 E eglCodecCommon: glUtilsParamSize: unknow param 0x00008caa
+11-22 03:40:16.072  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/light-3ee16b3ea60adc77.css" {file: "https://github.githubassets.com/assets/light-3ee16b3ea60adc77.css" line: 0}]
+11-22 03:40:16.072  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/light_high_contrast-bb77a780db30c175.css" {file: "https://github.githubassets.com/assets/light_high_contrast-bb77a780db30c175.css" line: 0}]
+11-22 03:40:16.073  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/dark-534def0b30583f22.css" {file: "https://github.githubassets.com/assets/dark-534def0b30583f22.css" line: 0}]
+11-22 03:40:16.073  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/dark_high_contrast-0f67518b61ff9e26.css" {file: "https://github.githubassets.com/assets/dark_high_contrast-0f67518b61ff9e26.css" line: 0}]
+11-22 03:40:16.073  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/primer-primitives-7b6f781f48ff31c6.css" {file: "https://github.githubassets.com/assets/primer-primitives-7b6f781f48ff31c6.css" line: 0}]
+11-22 03:40:16.073  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/primer-edbffb1843552288.css" {file: "https://github.githubassets.com/assets/primer-edbffb1843552288.css" line: 0}]
+11-22 03:40:16.073  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/global-af40a4a5125988a5.css" {file: "https://github.githubassets.com/assets/global-af40a4a5125988a5.css" line: 0}]
+11-22 03:40:16.073  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/github-f73c7caa132ed70b.css" {file: "https://github.githubassets.com/assets/github-f73c7caa132ed70b.css" line: 0}]
+11-22 03:40:16.074  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/repository-6faa8cb3b0c80e0a.css" {file: "https://github.githubassets.com/assets/repository-6faa8cb3b0c80e0a.css" line: 0}]
+11-22 03:40:16.074  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/code-5fc5d14af880ef6c.css" {file: "https://github.githubassets.com/assets/code-5fc5d14af880ef6c.css" line: 0}]
+11-22 03:40:16.074  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/app-runtime.ac0bc39e0315c808.module.css" {file: "https://github.githubassets.com/assets/app-runtime.ac0bc39e0315c808.module.css" line: 0}]
+11-22 03:40:16.074  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/primer-react-css.cba9218ca8d0ccc5.module.css" {file: "https://github.githubassets.com/assets/primer-react-css.cba9218ca8d0ccc5.module.css" line: 0}]
+11-22 03:40:16.074  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/react-core.323440988d2e44d1.module.css" {file: "https://github.githubassets.com/assets/react-core.323440988d2e44d1.module.css" line: 0}]
+11-22 03:40:16.074  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/code-view.e957fab075dd6eb0.module.css" {file: "https://github.githubassets.com/assets/code-view.e957fab075dd6eb0.module.css" line: 0}]
+11-22 03:40:16.074  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/38963.9d8f2ab2609a4166.module.css" {file: "https://github.githubassets.com/assets/38963.9d8f2ab2609a4166.module.css" line: 0}]
+11-22 03:40:16.074  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/34019.611fdb339fd04f95.module.css" {file: "https://github.githubassets.com/assets/34019.611fdb339fd04f95.module.css" line: 0}]
+11-22 03:40:16.075  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/primer-react-brand-css.99dddccb73417aaf.module.css" {file: "https://github.githubassets.com/assets/primer-react-brand-css.99dddccb73417aaf.module.css" line: 0}]
+11-22 03:40:16.075  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/7207.cb1866359f51b091.module.css" {file: "https://github.githubassets.com/assets/7207.cb1866359f51b091.module.css" line: 0}]
+11-22 03:40:16.075  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/platform-4ce65ae0bf273ce2.png" {file: "https://github.githubassets.com/assets/platform-4ce65ae0bf273ce2.png" line: 0}]
+11-22 03:40:16.075  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/platform-dark-ac89fbf373737ed3.png" {file: "https://github.githubassets.com/assets/platform-dark-ac89fbf373737ed3.png" line: 0}]
+11-22 03:40:16.076  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/copilot-e2b89335a66dba00.png" {file: "https://github.githubassets.com/assets/copilot-e2b89335a66dba00.png" line: 0}]
+11-22 03:40:16.076  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/copilot-dark-2b28403b6080e898.png" {file: "https://github.githubassets.com/assets/copilot-dark-2b28403b6080e898.png" line: 0}]
+11-22 03:40:16.076  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/changelog-fd687bff072883b0.png" {file: "https://github.githubassets.com/assets/changelog-fd687bff072883b0.png" line: 0}]
+11-22 03:40:16.076  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/changelog-dark-b1c25ae971bd641b.png" {file: "https://github.githubassets.com/assets/changelog-dark-b1c25ae971bd641b.png" line: 0}]
+11-22 03:40:16.076  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/universe-a98cd54821b27569.png" {file: "https://github.githubassets.com/assets/universe-a98cd54821b27569.png" line: 0}]
+11-22 03:40:16.077  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/81758.05f0a2a04f6c2495.module.css" {file: "https://github.githubassets.com/assets/81758.05f0a2a04f6c2495.module.css" line: 0}]
+11-22 03:40:16.077  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://avatars.githubusercontent.com/u/18133?s=60&v=4" {file: "https://avatars.githubusercontent.com/u/18133?s=60&v=4" line: 0}]
+11-22 03:40:16.077  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://camo.githubusercontent.com/857d9ba36b7f4d68a6bb5d4f1e2e5af53a8ea4048f3f9b89fe8faf81453ec72a/68747470733a2f2f6769746c61622e636f6d2f6769742d73636d2f6769742f6261646765732f6d61737465722f706970656c696e652e737667" {file: "https://camo.githubusercontent.com/857d9ba36b7f4d68a6bb5d4f1e2e5af53a8ea4048f3f9b89fe8faf81453ec72a/68747470733a2f2f6769746c61622e636f6d2f6769742d73636d2f6769742f6261646765732f6d61737465722f706970656c696e652e737667" line: 0}]
+11-22 03:40:16.078  1563  2292 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 14118912
+11-22 03:40:16.085  4612  4612 D GeckoSession: handleMessage GeckoView:LocationChange uri=https://github.com/git/git
+11-22 03:40:16.085  4612  4612 D WebExtension: handleMessage GeckoView:BrowserAction:Update
+11-22 03:40:16.086  4612  4612 D GeckoSession: handleMessage GeckoView:SecurityChanged uri=null
+11-22 03:40:16.158  4612  4612 D WebExtension: handleMessage GeckoView:BrowserAction:Update
+11-22 03:40:16.158  4612  4612 I chatty  : uid=10067(com.twtrubiks.thumblinks) AndroidUI identical 2 lines
+11-22 03:40:16.158  4612  4612 D WebExtension: handleMessage GeckoView:BrowserAction:Update
+11-22 03:40:16.197  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/react-fa5e2e82e6e0ecc0.js" {file: "https://github.githubassets.com/assets/react-fa5e2e82e6e0ecc0.js" line: 0}]
+11-22 03:40:16.197  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/react-compiler-runtime-4610bd6d3de9c049.js" {file: "https://github.githubassets.com/assets/react-compiler-runtime-4610bd6d3de9c049.js" line: 0}]
+11-22 03:40:16.214  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/scheduler-58b860b049ca307c.js" {file: "https://github.githubassets.com/assets/scheduler-58b860b049ca307c.js" line: 0}]
+11-22 03:40:16.214  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/react-dom-c7f52540bb6b77ed.js" {file: "https://github.githubassets.com/assets/react-dom-c7f52540bb6b77ed.js" line: 0}]
+11-22 03:40:16.214  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/react-dom-client-35b308126995de85.js" {file: "https://github.githubassets.com/assets/react-dom-client-35b308126995de85.js" line: 0}]
+11-22 03:40:16.214  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/react-is-e0b593954b4706d8.js" {file: "https://github.githubassets.com/assets/react-is-e0b593954b4706d8.js" line: 0}]
+11-22 03:40:16.215  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/react-jsx-runtime-4915cb0f5b3aff04.js" {file: "https://github.githubassets.com/assets/react-jsx-runtime-4915cb0f5b3aff04.js" line: 0}]
+11-22 03:40:16.216  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/high-contrast-cookie-74ae35aa09cc7c63.js" {file: "https://github.githubassets.com/assets/high-contrast-cookie-74ae35aa09cc7c63.js" line: 0}]
+11-22 03:40:16.218  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/wp-runtime-e2d817e54353bda7.js" {file: "https://github.githubassets.com/assets/wp-runtime-e2d817e54353bda7.js" line: 0}]
+11-22 03:40:16.224  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/app-runtime-ca25080bcf36dff9.js" {file: "https://github.githubassets.com/assets/app-runtime-ca25080bcf36dff9.js" line: 0}]
+11-22 03:40:16.225  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/react-core-fdd4d0f430dac315.js" {file: "https://github.githubassets.com/assets/react-core-fdd4d0f430dac315.js" line: 0}]
+11-22 03:40:16.225  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/86048-f53467c0683118f6.js" {file: "https://github.githubassets.com/assets/86048-f53467c0683118f6.js" line: 0}]
+11-22 03:40:16.226  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/core-5c867a2e8343b2a4.js" {file: "https://github.githubassets.com/assets/core-5c867a2e8343b2a4.js" line: 0}]
+11-22 03:40:16.226  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/codespaces-bb1c183ae48fb6a2.js" {file: "https://github.githubassets.com/assets/codespaces-bb1c183ae48fb6a2.js" line: 0}]
+11-22 03:40:16.226  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/repositories-eec84d299a7d0aab.js" {file: "https://github.githubassets.com/assets/repositories-eec84d299a7d0aab.js" line: 0}]
+11-22 03:40:16.226  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/code-menu-704bcf1dc17438b9.js" {file: "https://github.githubassets.com/assets/code-menu-704bcf1dc17438b9.js" line: 0}]
+11-22 03:40:16.226  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/primer-react-07e7d9aae40836f8.js" {file: "https://github.githubassets.com/assets/primer-react-07e7d9aae40836f8.js" line: 0}]
+11-22 03:40:16.226  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/28372-48e332726df8d20f.js" {file: "https://github.githubassets.com/assets/28372-48e332726df8d20f.js" line: 0}]
+11-22 03:40:16.226  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/34719-2b062694fc1d0889.js" {file: "https://github.githubassets.com/assets/34719-2b062694fc1d0889.js" line: 0}]
+11-22 03:40:16.226  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/13856-0d9a8c00dd4a43f0.js" {file: "https://github.githubassets.com/assets/13856-0d9a8c00dd4a43f0.js" line: 0}]
+11-22 03:40:16.226  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/35284-c33fd03a0b8bc44e.js" {file: "https://github.githubassets.com/assets/35284-c33fd03a0b8bc44e.js" line: 0}]
+11-22 03:40:16.226  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/77485-47098e18689c6971.js" {file: "https://github.githubassets.com/assets/77485-47098e18689c6971.js" line: 0}]
+11-22 03:40:16.226  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/81650-26cc06920088a966.js" {file: "https://github.githubassets.com/assets/81650-26cc06920088a966.js" line: 0}]
+11-22 03:40:16.226  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/95223-373743307d7ea920.js" {file: "https://github.githubassets.com/assets/95223-373743307d7ea920.js" line: 0}]
+11-22 03:40:16.226  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/63358-9f9c00b061c92dc3.js" {file: "https://github.githubassets.com/assets/63358-9f9c00b061c92dc3.js" line: 0}]
+11-22 03:40:16.226  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/39901-71d99980bccde7d7.js" {file: "https://github.githubassets.com/assets/39901-71d99980bccde7d7.js" line: 0}]
+11-22 03:40:16.226  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/92756-6fe82bc4d4491f6b.js" {file: "https://github.githubassets.com/assets/92756-6fe82bc4d4491f6b.js" line: 0}]
+11-22 03:40:16.227  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/49794-291f247eec93805c.js" {file: "https://github.githubassets.com/assets/49794-291f247eec93805c.js" line: 0}]
+11-22 03:40:16.227  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/27896-f330c16e705576ab.js" {file: "https://github.githubassets.com/assets/27896-f330c16e705576ab.js" line: 0}]
+11-22 03:40:16.227  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/82797-bcf735319b72c82e.js" {file: "https://github.githubassets.com/assets/82797-bcf735319b72c82e.js" line: 0}]
+11-22 03:40:16.227  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/77157-64c1a5c6b7cd2eb4.js" {file: "https://github.githubassets.com/assets/77157-64c1a5c6b7cd2eb4.js" line: 0}]
+11-22 03:40:16.227  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/60638-dcbb0ccd0cc0f244.js" {file: "https://github.githubassets.com/assets/60638-dcbb0ccd0cc0f244.js" line: 0}]
+11-22 03:40:16.227  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/66860-7e4a5c82cb1a8209.js" {file: "https://github.githubassets.com/assets/66860-7e4a5c82cb1a8209.js" line: 0}]
+11-22 03:40:16.227  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/11231-8150c1e9e54856c0.js" {file: "https://github.githubassets.com/assets/11231-8150c1e9e54856c0.js" line: 0}]
+11-22 03:40:16.227  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/42135-1e9b6941781f2959.js" {file: "https://github.githubassets.com/assets/42135-1e9b6941781f2959.js" line: 0}]
+11-22 03:40:16.227  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/29197-87d9e6b8f568abf9.js" {file: "https://github.githubassets.com/assets/29197-87d9e6b8f568abf9.js" line: 0}]
+11-22 03:40:16.227  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/73376-60b816f255c61413.js" {file: "https://github.githubassets.com/assets/73376-60b816f255c61413.js" line: 0}]
+11-22 03:40:16.227  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/66837-e2d3be3dfb3eb666.js" {file: "https://github.githubassets.com/assets/66837-e2d3be3dfb3eb666.js" line: 0}]
+11-22 03:40:16.227  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/68536-b83297f71301272a.js" {file: "https://github.githubassets.com/assets/68536-b83297f71301272a.js" line: 0}]
+11-22 03:40:16.227  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/85951-197751193dcbd924.js" {file: "https://github.githubassets.com/assets/85951-197751193dcbd924.js" line: 0}]
+11-22 03:40:16.227  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/9467-2def71322d9edcd1.js" {file: "https://github.githubassets.com/assets/9467-2def71322d9edcd1.js" line: 0}]
+11-22 03:40:16.227  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/89930-0b4ae4904511eca2.js" {file: "https://github.githubassets.com/assets/89930-0b4ae4904511eca2.js" line: 0}]
+11-22 03:40:16.230  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/55309-5ce43da0b133eb90.js" {file: "https://github.githubassets.com/assets/55309-5ce43da0b133eb90.js" line: 0}]
+11-22 03:40:16.230  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/6005-16779510bb443a79.js" {file: "https://github.githubassets.com/assets/6005-16779510bb443a79.js" line: 0}]
+11-22 03:40:16.230  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/47051-f34ada1fe5d4e479.js" {file: "https://github.githubassets.com/assets/47051-f34ada1fe5d4e479.js" line: 0}]
+11-22 03:40:16.230  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/98423-a8c8bba38f2e34a9.js" {file: "https://github.githubassets.com/assets/98423-a8c8bba38f2e34a9.js" line: 0}]
+11-22 03:40:16.230  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/61948-32a1bd1764e930a9.js" {file: "https://github.githubassets.com/assets/61948-32a1bd1764e930a9.js" line: 0}]
+11-22 03:40:16.230  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/2540-7b74ad52d7843833.js" {file: "https://github.githubassets.com/assets/2540-7b74ad52d7843833.js" line: 0}]
+11-22 03:40:16.230  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/code-view-486e412302d33881.js" {file: "https://github.githubassets.com/assets/code-view-486e412302d33881.js" line: 0}]
+11-22 03:40:16.232  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/chunk-lazy-react-partial-keyboard-shortcuts-dialog-38554b109ba5dc5a.js" {file: "https://github.githubassets.com/assets/chunk-lazy-react-partial-keyboard-shortcuts-dialog-38554b109ba5dc5a.js" line: 0}]
+11-22 03:40:16.232  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/chunk-lazy-react-partial-app-install-banner-partial-2a7107e15729ab34.js" {file: "https://github.githubassets.com/assets/chunk-lazy-react-partial-app-install-banner-partial-2a7107e15729ab34.js" line: 0}]
+11-22 03:40:16.232  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/85486-d8bd5f8aaf4e9c5d.js" {file: "https://github.githubassets.com/assets/85486-d8bd5f8aaf4e9c5d.js" line: 0}]
+11-22 03:40:16.232  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/4926-aa172cb923bc2488.js" {file: "https://github.githubassets.com/assets/4926-aa172cb923bc2488.js" line: 0}]
+11-22 03:40:16.232  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/59839-4986f8d3ed688800.js" {file: "https://github.githubassets.com/assets/59839-4986f8d3ed688800.js" line: 0}]
+11-22 03:40:16.232  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/chunk-lazy-react-partial-marketing-header-98a9c8ca7fc67fd7.js" {file: "https://github.githubassets.com/assets/chunk-lazy-react-partial-marketing-header-98a9c8ca7fc67fd7.js" line: 0}]
+11-22 03:40:16.233  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/82041-6585505a6ec4481a.js" {file: "https://github.githubassets.com/assets/82041-6585505a6ec4481a.js" line: 0}]
+11-22 03:40:16.233  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/66877-858c9b214a4fc7f5.js" {file: "https://github.githubassets.com/assets/66877-858c9b214a4fc7f5.js" line: 0}]
+11-22 03:40:16.234  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/73486-6cd0b9cfe931b0ab.js" {file: "https://github.githubassets.com/assets/73486-6cd0b9cfe931b0ab.js" line: 0}]
+11-22 03:40:16.234  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/93425-144dcef9fd88f44d.js" {file: "https://github.githubassets.com/assets/93425-144dcef9fd88f44d.js" line: 0}]
+11-22 03:40:16.234  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/33198-d5abe3b55861749e.js" {file: "https://github.githubassets.com/assets/33198-d5abe3b55861749e.js" line: 0}]
+11-22 03:40:16.234  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/63027-1df69cab8ea0cbbf.js" {file: "https://github.githubassets.com/assets/63027-1df69cab8ea0cbbf.js" line: 0}]
+11-22 03:40:16.234  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/91104-8446538f46b7b472.js" {file: "https://github.githubassets.com/assets/91104-8446538f46b7b472.js" line: 0}]
+11-22 03:40:16.234  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/95350-91115cca479c111e.js" {file: "https://github.githubassets.com/assets/95350-91115cca479c111e.js" line: 0}]
+11-22 03:40:16.234  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/638-8ceaa960d006f7f5.js" {file: "https://github.githubassets.com/assets/638-8ceaa960d006f7f5.js" line: 0}]
+11-22 03:40:16.234  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/75355-03bbf252164e9751.js" {file: "https://github.githubassets.com/assets/75355-03bbf252164e9751.js" line: 0}]
+11-22 03:40:16.234  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/94067-e56a41940ec11fc3.js" {file: "https://github.githubassets.com/assets/94067-e56a41940ec11fc3.js" line: 0}]
+11-22 03:40:16.235  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/chunk-lazy-react-partial-global-nav-bar-d052c10f1a57f2de.js" {file: "https://github.githubassets.com/assets/chunk-lazy-react-partial-global-nav-bar-d052c10f1a57f2de.js" line: 0}]
+11-22 03:40:16.242  5000  5017 E Isolated Web Content: [JavaScript Error: "Content-Security-Policy: The page’s settings blocked an inline script (script-src-elem) from being executed because it violates the following directive: “script-src https://github.githubassets.com 'sha256-6nkh0w49y4npXaU0CPIq0z+XDtPnpaDFECgj6Y9vmx4='”. Consider using a hash ('sha256-zSWxj5qqrTIhw+tcO7XX63fkXRjFRG/J25xENl6kaGw=') or a nonce." {file: "sandbox eval code" line: 836}]
+11-22 03:40:16.434  1943  2053 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@92509a7)
+11-22 03:40:16.434  1943  1957 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@92509a7)
+11-22 03:40:16.600  4612  4612 D WebExtension: handleMessage GeckoView:BrowserAction:Update
+11-22 03:40:16.600  4612  4612 I chatty  : uid=10067(com.twtrubiks.thumblinks) AndroidUI identical 2 lines
+11-22 03:40:16.600  4612  4612 D WebExtension: handleMessage GeckoView:BrowserAction:Update
+11-22 03:40:16.770  4612  4667 D ServiceAllocator: org.mozilla.gecko.process.GeckoChildProcessServices$tab20 updateBindings: FOREGROUND priority, 0 importance, not connected pid, 3 successful binds, 0 failed binds, 0 successful unbinds
+11-22 03:40:16.775  1943  1960 I ActivityManager: Start proc 5057:com.twtrubiks.thumblinks:sandboxed_tab_disable_art_image_20/u0a67 for service com.twtrubiks.thumblinks/org.mozilla.gecko.process.GeckoChildProcessServices$tab20
+11-22 03:40:16.787  5057  5057 W le_art_image_2: Unexpected CPU variant for X86 using defaults: x86_64
+11-22 03:40:16.859  5057  5057 I ServiceChildProcess: onCreate, process name: com.twtrubiks.thumblinks:sandboxed_tab_disable_art_image_20
+11-22 03:40:16.859  5057  5057 D GeckoThread: State changed to LAUNCHED
+11-22 03:40:16.860  5057  5072 I GeckoThread: preparing to run Gecko
+11-22 03:40:16.862  5057  5072 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libmozglue.so" unused DT entry: unknown (type 0x24 arg 0x3c3e8) (ignoring)
+11-22 03:40:16.862  5057  5072 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libmozglue.so" unused DT entry: unknown (type 0x23 arg 0x150) (ignoring)
+11-22 03:40:16.862  5057  5072 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libmozglue.so" unused DT entry: unknown (type 0x25 arg 0x8) (ignoring)
+11-22 03:40:16.863  5057  5072 D GeckoThread: State changed to MOZGLUE_READY
+11-22 03:40:16.864  5057  5072 D GeckoLoader: Library base=/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64
+11-22 03:40:16.864  5057  5072 D GeckoLoader: Library base=/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64
+11-22 03:40:16.876  5057  5072 E GeckoLibLoad: Load sqlite start
+11-22 03:40:16.876  5057  5072 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libnss3.so" unused DT entry: unknown (type 0x24 arg 0x15538) (ignoring)
+11-22 03:40:16.876  5057  5072 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libnss3.so" unused DT entry: unknown (type 0x23 arg 0x628) (ignoring)
+11-22 03:40:16.876  5057  5072 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libnss3.so" unused DT entry: unknown (type 0x25 arg 0x8) (ignoring)
+11-22 03:40:16.877  5057  5072 E GeckoLibLoad: Load sqlite done
+11-22 03:40:16.877  5057  5072 D GeckoLoader: Library base=/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64
+11-22 03:40:16.877  5057  5072 E GeckoLibLoad: Load nss start
+11-22 03:40:16.877  5057  5072 E GeckoLibLoad: Load nss done
+11-22 03:40:16.877  5057  5072 D GeckoLoader: Library base=/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64
+11-22 03:40:16.877  5057  5072 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libxul.so" unused DT entry: unknown (type 0x24 arg 0x69428) (ignoring)
+11-22 03:40:16.877  5057  5072 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libxul.so" unused DT entry: unknown (type 0x23 arg 0x192a8) (ignoring)
+11-22 03:40:16.877  5057  5072 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libxul.so" unused DT entry: unknown (type 0x25 arg 0x8) (ignoring)
+11-22 03:40:16.877  5057  5072 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libgkcodecs.so" unused DT entry: unknown (type 0x24 arg 0x3150) (ignoring)
+11-22 03:40:16.877  5057  5072 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libgkcodecs.so" unused DT entry: unknown (type 0x23 arg 0xa90) (ignoring)
+11-22 03:40:16.877  5057  5072 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libgkcodecs.so" unused DT entry: unknown (type 0x25 arg 0x8) (ignoring)
+11-22 03:40:16.881  5057  5072 E GeckoLibLoad: Loaded libs in 4.713647ms total, 0ms(0ms) user, 0ms(0ms) system, 0(0) faults
+11-22 03:40:16.881  5057  5072 D GeckoThread: State changed to LIBS_READY
+11-22 03:40:16.881  5057  5072 W GeckoThread: zerdatime 182705 - runGecko
+11-22 03:40:16.883  4722  4745 E eglCodecCommon: glUtilsParamSize: unknow param 0x00008caa
+11-22 03:40:16.883  4722  4745 E eglCodecCommon: glUtilsParamSize: unknow param 0x00008caa
+11-22 03:40:16.891  4612  4667 D ServiceAllocator: org.mozilla.gecko.process.GeckoChildProcessServices$tab20 updateBindings: BACKGROUND priority, 3 importance, 5057 pid, 0 successful binds, 0 failed binds, 1 successful unbinds
+11-22 03:40:16.961  5057  5057 W com.twtrubiks.thumblinks:sandboxed_tab_disable_art_image_20: type=1400 audit(0.0:17): avc: denied { read } for comm=57656220436F6E74656E74 name="product_name" dev="sysfs" ino=195 scontext=u:r:untrusted_app:s0:c67,c256,c512,c768 tcontext=u:object_r:sysfs:s0 tclass=file permissive=0
+11-22 03:40:16.969  5057  5072 D GeckoThread: State changed to RUNNING
+11-22 03:40:16.971  5057  5072 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libsoftokn3.so" unused DT entry: unknown (type 0x24 arg 0x2350) (ignoring)
+11-22 03:40:16.971  5057  5072 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libsoftokn3.so" unused DT entry: unknown (type 0x23 arg 0x80) (ignoring)
+11-22 03:40:16.971  5057  5072 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libsoftokn3.so" unused DT entry: unknown (type 0x25 arg 0x8) (ignoring)
+11-22 03:40:16.972  5057  5072 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libfreebl3.so" unused DT entry: unknown (type 0x24 arg 0xc78) (ignoring)
+11-22 03:40:16.972  5057  5072 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libfreebl3.so" unused DT entry: unknown (type 0x23 arg 0x68) (ignoring)
+11-22 03:40:16.972  5057  5072 W linker  : Warning: "/data/app/com.twtrubiks.thumblinks-HG2mFZ_FG7vnDo437oQsJA==/lib/x86_64/libfreebl3.so" unused DT entry: unknown (type 0x25 arg 0x8) (ignoring)
+11-22 03:40:17.022  4612  4612 D GeckoSession: handleMessage GeckoView:LocationChange uri=https://github.com/git/git
+11-22 03:40:17.024  4612  4612 D WebExtension: handleMessage GeckoView:BrowserAction:Update
+11-22 03:40:17.026  4612  4612 I chatty  : uid=10067(com.twtrubiks.thumblinks) AndroidUI identical 2 lines
+11-22 03:40:17.026  4612  4612 D WebExtension: handleMessage GeckoView:BrowserAction:Update
+11-22 03:40:17.037  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/43198-ffc272575edea344.js" {file: "https://github.githubassets.com/assets/43198-ffc272575edea344.js" line: 0}]
+11-22 03:40:17.038  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/chunk-50864-13c873e66d1b01b7.js" {file: "https://github.githubassets.com/assets/chunk-50864-13c873e66d1b01b7.js" line: 0}]
+11-22 03:40:17.050  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/chunk-lazy-element-cookie-consent-link-146e1fb7319d25dc.js" {file: "https://github.githubassets.com/assets/chunk-lazy-element-cookie-consent-link-146e1fb7319d25dc.js" line: 0}]
+11-22 03:40:17.051  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/chunk-lazy-element-ghcc-consent-ebb9acf84a362e0c.js" {file: "https://github.githubassets.com/assets/chunk-lazy-element-ghcc-consent-ebb9acf84a362e0c.js" line: 0}]
+11-22 03:40:17.051  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/chunk-lazy-element-select-panel-8863c8433aa44837.js" {file: "https://github.githubassets.com/assets/chunk-lazy-element-select-panel-8863c8433aa44837.js" line: 0}]
+11-22 03:40:17.052  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/chunk-lazy-element-toggle-switch-a98ece2c192413bc.js" {file: "https://github.githubassets.com/assets/chunk-lazy-element-toggle-switch-a98ece2c192413bc.js" line: 0}]
+11-22 03:40:17.052  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/chunk-lazy-element-webauthn-get-e7e952e7bfb929d5.js" {file: "https://github.githubassets.com/assets/chunk-lazy-element-webauthn-get-e7e952e7bfb929d5.js" line: 0}]
+11-22 03:40:17.199  5000  5017 W Isolated Web Content: [JavaScript Warning: "Ignoring unsupported entryTypes: layout-shift." {file: "https://github.githubassets.com/assets/chunk-50864-13c873e66d1b01b7.js" line: 3}]
+11-22 03:40:17.264  4612  4612 D GeckoSession: handleMessage GeckoView:LocationChange uri=https://github.com/git/git
+11-22 03:40:17.265  4612  4612 D WebExtension: handleMessage GeckoView:BrowserAction:Update
+11-22 03:40:17.265  4612  4612 I chatty  : uid=10067(com.twtrubiks.thumblinks) AndroidUI identical 2 lines
+11-22 03:40:17.265  4612  4612 D WebExtension: handleMessage GeckoView:BrowserAction:Update
+11-22 03:40:17.265  4612  4612 D GeckoSession: handleMessage GeckoView:LocationChange uri=https://github.com/git/git
+11-22 03:40:17.265  4612  4612 D GeckoSession: handleMessage GeckoView:ProgressChanged uri=null
+11-22 03:40:17.265  4612  4612 D WebExtension: handleMessage GeckoView:BrowserAction:Update
+11-22 03:40:17.265  4612  4612 I chatty  : uid=10067(com.twtrubiks.thumblinks) AndroidUI identical 2 lines
+11-22 03:40:17.265  4612  4612 D WebExtension: handleMessage GeckoView:BrowserAction:Update
+11-22 03:40:17.324  4612  4612 D GeckoSession: handleMessage GeckoView:ProgressChanged uri=null
+11-22 03:40:17.324  4612  4612 D GeckoSession: handleMessage GeckoView:PageStop uri=null
+11-22 03:40:17.324  4612  4612 I ThumbLinks: 網頁載入完成 success=true https://github.com/git/git
+11-22 03:40:17.328  4612  4612 D WebExtension: handleMessage GeckoView:BrowserAction:Update
+11-22 03:40:17.329  4612  4612 I chatty  : uid=10067(com.twtrubiks.thumblinks) AndroidUI identical 2 lines
+11-22 03:40:17.329  4612  4612 D WebExtension: handleMessage GeckoView:BrowserAction:Update
+11-22 03:40:17.449  1943  2053 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@c77869f)
+11-22 03:40:17.449  1943  1957 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@c77869f)
+11-22 03:40:17.513  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://avatars.githubusercontent.com/u/54884?v=4&size=40" {file: "https://avatars.githubusercontent.com/u/54884?v=4&size=40" line: 0}]
+11-22 03:40:17.538  1871  1874 W audio_hw_generic: Not supplying enough data to HAL, expected position 5696286 , only wrote 5426640
+11-22 03:40:17.723  1943  1957 E memtrack: Couldn't load memtrack module
+11-22 03:40:17.723  1943  1957 W android.os.Debug: failed to get memory consumption info: -1
+11-22 03:40:17.728  4612  4667 D ServiceAllocator: org.mozilla.gecko.process.GeckoChildProcessServices$tab11 updateBindings: IDLE priority, 6 importance, 4937 pid, 0 successful binds, 0 failed binds, 2 successful unbinds
+11-22 03:40:17.944  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://avatars.githubusercontent.com/u/54884?s=64&v=4" {file: "https://avatars.githubusercontent.com/u/54884?s=64&v=4" line: 0}]
+11-22 03:40:17.945  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://avatars.githubusercontent.com/u/45925?s=64&v=4" {file: "https://avatars.githubusercontent.com/u/45925?s=64&v=4" line: 0}]
+11-22 03:40:17.945  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://avatars.githubusercontent.com/u/127790?s=64&v=4" {file: "https://avatars.githubusercontent.com/u/127790?s=64&v=4" line: 0}]
+11-22 03:40:17.945  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://avatars.githubusercontent.com/u/4056630?s=64&v=4" {file: "https://avatars.githubusercontent.com/u/4056630?s=64&v=4" line: 0}]
+11-22 03:40:17.945  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://avatars.githubusercontent.com/u/45301?s=64&v=4" {file: "https://avatars.githubusercontent.com/u/45301?s=64&v=4" line: 0}]
+11-22 03:40:17.945  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://avatars.githubusercontent.com/u/720?s=64&v=4" {file: "https://avatars.githubusercontent.com/u/720?s=64&v=4" line: 0}]
+11-22 03:40:17.945  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://avatars.githubusercontent.com/u/34844?s=64&v=4" {file: "https://avatars.githubusercontent.com/u/34844?s=64&v=4" line: 0}]
+11-22 03:40:17.945  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://avatars.githubusercontent.com/u/5455730?s=64&v=4" {file: "https://avatars.githubusercontent.com/u/5455730?s=64&v=4" line: 0}]
+11-22 03:40:17.945  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://avatars.githubusercontent.com/u/26122331?s=64&v=4" {file: "https://avatars.githubusercontent.com/u/26122331?s=64&v=4" line: 0}]
+11-22 03:40:17.945  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://avatars.githubusercontent.com/u/119718?s=64&v=4" {file: "https://avatars.githubusercontent.com/u/119718?s=64&v=4" line: 0}]
+11-22 03:40:17.945  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://avatars.githubusercontent.com/u/443245?s=64&v=4" {file: "https://avatars.githubusercontent.com/u/443245?s=64&v=4" line: 0}]
+11-22 03:40:17.945  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://avatars.githubusercontent.com/u/570044?s=64&v=4" {file: "https://avatars.githubusercontent.com/u/570044?s=64&v=4" line: 0}]
+11-22 03:40:17.945  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://avatars.githubusercontent.com/u/497054?s=64&v=4" {file: "https://avatars.githubusercontent.com/u/497054?s=64&v=4" line: 0}]
+11-22 03:40:17.945  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://avatars.githubusercontent.com/u/183860?s=64&v=4" {file: "https://avatars.githubusercontent.com/u/183860?s=64&v=4" line: 0}]
+11-22 03:40:17.957  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/31961.4a824b38badbf9f5.module.css" {file: "https://github.githubassets.com/assets/31961.4a824b38badbf9f5.module.css" line: 0}]
+11-22 03:40:17.958  5000  5017 I Isolated Web Content: [JavaScript Error: "Referrer Policy: Ignoring the less restricted referrer policy “no-referrer-when-downgrade” for the cross-site request: https://github.githubassets.com/assets/chunk-31961-8014dd61d3e959a2.js" {file: "https://github.githubassets.com/assets/chunk-31961-8014dd61d3e959a2.js" line: 0}]
+11-22 03:40:18.162  4612  4612 D WebExtension: handleMessage GeckoView:BrowserAction:Update
+11-22 03:40:18.163  4612  4612 D WebExtension: handleMessage GeckoView:BrowserAction:Update
+11-22 03:40:18.436  1943  2053 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@7e2f3ec)
+11-22 03:40:18.437  1943  1957 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@7e2f3ec)
+11-22 03:40:18.635  5095  5095 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-22 03:40:18.664  5095  5095 W app_process: Unexpected CPU variant for X86 using defaults: x86_64
+11-22 03:40:18.664  5095  5095 I app_process: The ClassLoaderContext is a special shared library.
+11-22 03:40:18.674  5095  5095 D AndroidRuntime: Calling main entry com.android.commands.input.Input
+11-22 03:40:18.676  5095  5095 I Input   : injectKeyEvent: KeyEvent { action=ACTION_DOWN, keyCode=KEYCODE_HOME, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=184497, downTime=184497, deviceId=-1, source=0x101 }
+11-22 03:40:18.677  5095  5095 I Input   : injectKeyEvent: KeyEvent { action=ACTION_UP, keyCode=KEYCODE_HOME, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=184497, downTime=184497, deviceId=-1, source=0x101 }
+11-22 03:40:18.678  1943  1964 D AutofillManagerService: Close system dialogs
+11-22 03:40:18.678  2085  2085 V StatusBar: mStatusBarWindow: com.android.systemui.statusbar.phone.StatusBarWindowView{a563129 V.ED..... ........ 0,0-1440,84} canPanelBeCollapsed(): false
+11-22 03:40:18.679  1943  2013 I ActivityManager: START u0 {act=android.intent.action.MAIN cat=[android.intent.category.HOME] flg=0x10200000 cmp=com.android.launcher3/.Launcher (has extras)} from uid 1000
+11-22 03:40:18.683  2085  2085 I vol.Events: writeEvent dismiss_dialog volume_controller
+11-22 03:40:18.684  5095  5095 D AndroidRuntime: Shutting down VM
+11-22 03:40:18.709  4612  4629 D EGL_emulation: eglMakeCurrent: 0x7cbb8886bf80: ver 3 0 (tinfo 0x7cbb907ffda0)
+11-22 03:40:18.978  1563  2292 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 17973248
+11-22 03:40:19.011  1563  2292 I chatty  : uid=1000(system) HwBinder:1563_2 identical 1 line
+11-22 03:40:19.021  1563  2292 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 17973248
+11-22 03:40:19.051  2556  2803 D EGL_emulation: eglMakeCurrent: 0x7cbb86c3e3a0: ver 3 0 (tinfo 0x7cbb86c0dca0)
+11-22 03:40:19.092  1563  2292 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 17973248
+11-22 03:40:19.096  2085  2301 D EGL_emulation: eglMakeCurrent: 0x7cbb86c3e6c0: ver 3 0 (tinfo 0x7cbb86cd0160)
+11-22 03:40:19.439  1943  2053 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@ec51631)
+11-22 03:40:19.440  1943  1957 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@ec51631)
+11-22 03:40:19.451  2085  2301 D EGL_emulation: eglMakeCurrent: 0x7cbb86c3e6c0: ver 3 0 (tinfo 0x7cbb86cd0160)
+11-22 03:40:19.480  1943  1966 W system_server: Long monitor contention with owner android.anim (1992) at void com.android.server.wm.WindowSurfacePlacer.lambda$new$0(com.android.server.wm.WindowSurfacePlacer)(WindowSurfacePlacer.java:117) waiters=0 in void com.android.server.wm.WindowManagerService$H.handleMessage(android.os.Message) for 395ms
+11-22 03:40:19.487  2556  2609 D         : HostConnection::get() New Host Connection established 0x7cbb907c0ae0, tid 2609
+11-22 03:40:19.496  1895  1897 W SurfaceFlinger: Attempting to set client state on removed layer: Surface(name=AppWindowToken{4afe978 token=Token{8e7eadb ActivityRecord{6d157ea u0 com.android.launcher3/.Launcher t5}}})/@0xfd81f2b - animation-leash#0
+11-22 03:40:19.496  1895  1897 W SurfaceFlinger: Attempting to set client state on removed layer: Surface(name=AppWindowToken{e4d85d3 token=Token{a6123c2 ActivityRecord{3cfd80d u0 com.twtrubiks.thumblinks/.MainActivity t8}}})/@0x6daff1f - animation-leash#0
+11-22 03:40:19.496  1895  1897 W SurfaceFlinger: Attempting to destroy on removed layer: Surface(name=AppWindowToken{4afe978 token=Token{8e7eadb ActivityRecord{6d157ea u0 com.android.launcher3/.Launcher t5}}})/@0xfd81f2b - animation-leash#0
+11-22 03:40:19.496  1895  1897 W SurfaceFlinger: Attempting to destroy on removed layer: Surface(name=AppWindowToken{e4d85d3 token=Token{a6123c2 ActivityRecord{3cfd80d u0 com.twtrubiks.thumblinks/.MainActivity t8}}})/@0x6daff1f - animation-leash#0
+11-22 03:40:19.576  2085  2301 D EGL_emulation: eglMakeCurrent: 0x7cbb86c3e6c0: ver 3 0 (tinfo 0x7cbb86cd0160)
+11-22 03:40:19.619  1943  4232 I ConfigStore: android::hardware::configstore::V1_0::ISurfaceFlingerConfigs::hasWideColorDisplay retrieved: 0
+11-22 03:40:19.619  1943  4232 I ConfigStore: android::hardware::configstore::V1_0::ISurfaceFlingerConfigs::hasHDRDisplay retrieved: 0
+11-22 03:40:19.619  1943  4232 I OpenGLRenderer: Initialized EGL, version 1.4
+11-22 03:40:19.619  1943  4232 D OpenGLRenderer: Swap behavior 1
+11-22 03:40:19.621  2085  2301 D EGL_emulation: eglMakeCurrent: 0x7cbb86c3e6c0: ver 3 0 (tinfo 0x7cbb86cd0160)
+11-22 03:40:19.639  1943  4232 D EGL_emulation: eglCreateContext: 0x7cbb6d7f8b40: maj 3 min 0 rcv 3
+11-22 03:40:19.670  1943  4232 D EGL_emulation: eglMakeCurrent: 0x7cbb6d7f8b40: ver 3 0 (tinfo 0x7cbb752ec6a0)
+11-22 03:40:20.145  4612  4636 D GeckoIdleService: Get idle time: time since reset 5129 msec
+11-22 03:40:20.145  4612  4636 D GeckoIdleService: Idle timer callback: current idle time 5129 msec
+11-22 03:40:20.145  4612  4636 D GeckoIdleService: next timeout 174870 msec from now
+11-22 03:40:20.145  4612  4636 D GeckoIdleService: SetTimerExpiryIfBefore: next timeout 174870 msec from now
+11-22 03:40:20.145  4612  4636 D GeckoIdleService: reset timer expiry to 174880 msec from now
+11-22 03:40:20.145  4612  4636 D GeckoIdleService: Idle timer callback: tell observer 0x7cbb6274c9f8 user is idle
+11-22 03:40:20.434  4722  4745 D EGL_emulation: eglMakeCurrent: 0x7cbb86c3d7c0: ver 3 0 (tinfo 0x7cbb86c0dca0)
+11-22 03:40:20.442  1943  2053 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@e7f3208)
+11-22 03:40:20.443  1943  1957 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@e7f3208)
+11-22 03:40:20.443  4722  4745 D EGL_emulation: eglMakeCurrent: 0x7cbb86c3d7c0: ver 3 0 (tinfo 0x7cbb86c0dca0)
+11-22 03:40:20.455  4612  4612 I Choreographer: Skipped 106 frames!  The application may be doing too much work on its main thread.
+11-22 03:40:20.511  4612  4612 I MemoryController: onTrimMemory(20)
+11-22 03:40:20.511  4612  4612 I MemoryController: onTrimMemory(20)
+11-22 03:40:20.512  4612  4612 D GeckoRuntime: Lifecycle: onPause
+11-22 03:40:20.512  4612  4612 D GeckoNetworkManager: Incoming event stop for state OnWithListeners -> OffWithListeners
+11-22 03:40:20.514  1943  2039 D ConnectivityService: releasing NetworkRequest [ TRACK_DEFAULT id=16, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Unwanted:  Uid: 10067] ] (release request)
+11-22 03:40:20.515  4722  4745 E eglCodecCommon: glUtilsParamSize: unknow param 0x00008caa
+11-22 03:40:20.516  4722  4745 E eglCodecCommon: glUtilsParamSize: unknow param 0x00008caa
+11-22 03:40:20.523  4612  4667 D ServiceAllocator: org.mozilla.gecko.process.GeckoChildProcessServices$gpu updateBindings: IDLE priority, 0 importance, 4722 pid, 0 successful binds, 0 failed binds, 2 successful unbinds
+11-22 03:40:20.526  4722  4745 E eglCodecCommon: glUtilsParamSize: unknow param 0x00008caa
+11-22 03:40:20.527  5057  5057 I ServiceChildProcess: Destroying GeckoServiceChildProcess
+11-22 03:40:20.527  4612  4612 D GeckoSession: handleMessage: GeckoView:DismissClipboardPermissionRequest
+11-22 03:40:20.527  4612  4612 D GeckoSession: handleMessage: GeckoView:DismissClipboardPermissionRequest
+11-22 03:40:20.527  4722  4745 E eglCodecCommon: glUtilsParamSize: unknow param 0x00008caa
+11-22 03:40:20.548  4612  4612 D GeckoSession: handleMessage GeckoView:StateUpdated uri=null
+11-22 03:40:20.552  4612  4612 D GeckoSession: handleMessage GeckoView:StateUpdated uri=null
+11-22 03:40:20.597  1943  4903 I ActivityManager: Process com.twtrubiks.thumblinks:sandboxed_tab_disable_art_image_20 (pid 5057) has died: fore SVC 
+11-22 03:40:20.597  1898  1898 I Zygote  : Process 5057 exited cleanly (0)
+11-22 03:40:20.597  1943  1961 W libprocessgroup: kill(-5057, 9) failed: No such process
+11-22 03:40:20.597  1943  1961 I libprocessgroup: Successfully killed process cgroup uid 10067 pid 5057 in 0ms
+11-22 03:40:21.437  1943  2053 I GnssLocationProvider: WakeLock acquired by sendMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@796eda1)
+11-22 03:40:21.438  1943  1957 I GnssLocationProvider: WakeLock released by handleMessage(REPORT_SV_STATUS, 0, com.android.server.location.GnssLocationProvider$SvStatusInfo@796eda1)
+11-22 03:40:21.570  4612  4612 D WebExtension: handleMessage GeckoView:BrowserAction:Update
